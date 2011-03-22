@@ -29,7 +29,7 @@ session_start();
 	$(document).ready(function(){
 		<?php
 		
-		// Tipos de navegações
+		// Tipos de navegaÃ§Ãµes
 		$_SESSION['type_navigation'] = (isset($_SESSION['type_navigation'])) ? $_SESSION['type_navigation'] : 'numbers';
 		if (isset($_GET['type_navigation'])) {
 			$_SESSION['other_options'] = 'normal';
@@ -46,7 +46,7 @@ session_start();
 			}
 		}
 		
-		// Opções do skitter
+		// OpÃ§Ãµes do skitter
 		$_SESSION['other_options'] = (isset($_SESSION['other_options'])) ? $_SESSION['other_options'] : 'numbers';
 		if (isset($_GET['other_options'])) {
 			$_SESSION['type_navigation'] = 'numbers';
