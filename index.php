@@ -213,7 +213,7 @@ session_start();
 		</div>
 		
 		<div id="download">
-			<a href="source/jquery.skitter.3.1.zip" id="botao_download"><img src="images/download-button.png" /></a>
+			<a href="https://github.com/thiagosf/SkitterSlideshow" id="botao_download"><img src="images/download-button.png" /></a>
 			<?php
 			/*
 			<div id="donate">
