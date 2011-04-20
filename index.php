@@ -19,7 +19,7 @@ session_start();
 	<link href="css/highlight.black.css" type="text/css" media="all" rel="stylesheet" />
 	<link href="css/sexy-bookmarks-style.css" type="text/css" media="all" rel="stylesheet" />
 	
-	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-1.5.2.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
 	<script src="js/jquery.skitter.min.js"></script>
 	<script src="js/highlight.js"></script>
