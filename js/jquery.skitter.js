@@ -304,13 +304,14 @@
 			var u = 0;
 			$.each(this.settings.images_links, function(i)
 			{
+				var self_il = this;
 				var image = $('<img src="" class="image_loading" />');
 				image.css({position:'absolute', top:'-9999em'});
 				self.box_skitter.append(image);
 				var img = new Image();
-				image.load(function () {
+				
+				$(img).load(function () {
 					++u;
-					
 					if (u == total) {
 						self.box_skitter.find('.loading').remove();
 						self.box_skitter.find('.image_loading').remove();
@@ -319,7 +320,7 @@
 				}).error(function () {
 					self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
 					self.box_skitter.html('<p style="color:white;">Error loading images. One or more images were not found.</p>');
-				}).attr('src', this[0]);
+				}).attr('src', self_il[0]);
 			});
 		}, 
 		
@@ -453,10 +454,10 @@
 					this.animationDirection({direction:'bottom'});
 					break;
 				case 'directionRight' : 
-					this.animationDirection({direction:'right'});
+					this.animationDirection({direction:'right', total:5});
 					break;
 				case 'directionLeft' : 
-					this.animationDirection({direction:'left'});
+					this.animationDirection({direction:'left', total:5});
 					break;
 				case 'cubeSpread' : 
 					this.animationCubeSpread();
@@ -554,7 +555,7 @@
 				var _btop = 0;
 				
 				var box_clone = this.getBoxClone();
-				box_clone.css({left: -50, top:-250, width:width_box, height:height_box});
+				box_clone.css({left: this.settings.width_skitter, top:0, width:width_box, height:height_box});
 				box_clone.find('img').css({left:-(width_box * i), top:0});
 				
 				this.addBoxClone(box_clone);
@@ -1110,7 +1111,7 @@
 		{
 			var self = this;
 			
-			var options = $.extend({}, {direction: 'top'}, options || {});
+			var options = $.extend({}, {direction: 'top', delay_type: 'sequence', total: 7}, options || {});
 			
 			this.settings.is_animating = true;
 			easing = (this.settings.easing_default == '') ? 'easeInOutExpo' : this.settings.easing_default;
@@ -1124,52 +1125,126 @@
 			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
 			this.box_skitter.find('.image_main').hide();
 			
-			var width_box 	= this.settings.width_skitter;
-			var height_box 	= this.settings.height_skitter;
+			var total 		= options.total;
 			
-			switch (options.direction)
-			{
-				default : case 'top' : 
-					var _itop = 0, _ileft = 0, _ftop = -height_box, _fleft = 0;
-					var _itopa = height_box, _ilefta = 0, _ftopa = 0, _flefta = 0;
-					break;
+			for (i = 0; i < total; i++) {
+				
+				switch (options.direction)
+				{
+					default : case 'top' : 
+						
+						var width_box 		= Math.ceil(this.settings.width_skitter / total);
+						var height_box 		= this.settings.height_skitter;
+						
+						var _itopc 			= 0;
+						var _ileftc 		= (width_box * i);
+						var _ftopc 			= -height_box;
+						var _fleftc 		= _ileftc;
+						
+						var _itopn			= height_box;
+						var _ileftn			= _ileftc;
+						var _ftopn			= 0;
+						var _fleftn			= _ileftc;
+						
+						var _vtop_image 	= 0;
+						var _vleft_image 	= -_ileftc;
+						
+						break;
+						
+					case 'bottom' : 
 					
-				case 'bottom' : 
-					var _itop = 0, _ileft = 0, _ftop = height_box, _fleft = 0;
-					var _itopa = -height_box, _ilefta = 0, _ftopa = 0, _flefta = 0;
-					break;
+						var width_box 		= Math.ceil(this.settings.width_skitter / total);
+						var height_box 		= this.settings.height_skitter;
+						
+						var _itopc 			= 0;
+						var _ileftc 		= (width_box * i);
+						var _ftopc 			= height_box;
+						var _fleftc 		= _ileftc;
+						
+						var _itopn			= -height_box;
+						var _ileftn			= _ileftc;
+						var _ftopn			= 0;
+						var _fleftn			= _ileftc;
+						
+						var _vtop_image 	= 0;
+						var _vleft_image 	= -_ileftc;
+						
+						break;
+						
+					case 'right' : 
 					
-				case 'left' : 
-					var _itop = 0, _ileft = 0, _ftop = 0, _fleft = -width_box;
-					var _itopa = 0, _ilefta = width_box, _ftopa = 0, _flefta = 0;
-					break;
+						var width_box 		= this.settings.width_skitter;
+						var height_box 		= Math.ceil(this.settings.height_skitter / total);
+						
+						var _itopc 			= (height_box * i);
+						var _ileftc 		= 0;
+						var _ftopc 			= _itopc;
+						var _fleftc 		= width_box;
+						
+						var _itopn			= _itopc;
+						var _ileftn			= -_fleftc;
+						var _ftopn			= _itopc;
+						var _fleftn			= 0;
+						
+						var _vtop_image 	= -_itopc;
+						var _vleft_image 	= 0;
+						
+						break;
+						
+					case 'left' : 
 					
-				case 'right' : 
-					var _itop = 0, _ileft = 0, _ftop = 0, _fleft = width_box;
-					var _itopa = 0, _ilefta = -width_box, _ftopa = 0, _flefta = 0;
-					break;
+						var width_box 		= this.settings.width_skitter;
+						var height_box 		= Math.ceil(this.settings.height_skitter / total);
+						
+						var _itopc 			= (height_box * i);
+						var _ileftc 		= 0;
+						var _ftopc 			= _itopc;
+						var _fleftc 		= -width_box;
+						
+						var _itopn			= _itopc;
+						var _ileftn			= -_fleftc;
+						var _ftopn			= _itopc;
+						var _fleftn			= 0;
+						
+						var _vtop_image 	= -_itopc;
+						var _vleft_image 	= 0;
+						
+						break;
+						
+				}
+				
+				switch (options.delay_type) 
+				{
+					case 'zebra' : default : var delay_time = (i % 2 == 0) ? 0 : 150; break;
+					case 'random' : var delay_time = 30 * (Math.random() * 30); break;
+					case 'sequence' : var delay_time = i * 150; break;
+				}
+				
+				// Image current
+				var img_clone 		= $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
+				var box_clone 		= $('<div class="box_clone"></div>');
+				box_clone.append(img_clone);
+				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
+				
+				box_clone.css({top:_itopc, left:_ileftc, width:width_box, height:height_box});
+				
+				this.addBoxClone(box_clone);
+				box_clone.show();
+				box_clone.delay(delay_time).animate({ top:_ftopc, left:_fleftc }, time_animate, easing);
+				
+				// Next image
+				var box_clone_next = this.getBoxClone();
+				box_clone_next.find('img').css({left:_vleft_image, top:_vtop_image});
+				
+				box_clone_next.css({top:_itopn, left:_ileftn, width:width_box, height:height_box});
+				
+				this.addBoxClone(box_clone_next);
+				box_clone_next.show();
+				
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				box_clone_next.delay(delay_time).animate({ top:_ftopn, left:_fleftn }, time_animate, easing, callback);
+				
 			}
-			
-			var img_clone 		= $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
-			var box_clone 		= $('<div class="box_clone"></div>');
-			box_clone.append(img_clone);
-			
-			box_clone.css({top:_itop, left:_ileft, width:width_box, height:height_box});
-			
-			this.addBoxClone(box_clone);
-			box_clone.show();
-			box_clone.animate({ top:_ftop, left:_fleft }, time_animate, easing);
-			
-			var box_clone = this.getBoxClone();
-			
-			box_clone.css({top:_itopa, left:_ilefta, width:width_box, height:height_box});
-			
-			this.addBoxClone(box_clone);
-			box_clone.show();
-			
-			var callback = function() { self.finishAnimation(); };
-			box_clone.animate({ top:_ftopa, left:_flefta }, time_animate, easing, callback);
-			
 		},
 		
 		animationCubeSpread: function(options)
@@ -1351,7 +1426,7 @@
 				'easeInBounce', 'easeOutBounce', 'easeInOutBounce', 
 			];
 			
-			if ($.inArray(easing, easing_accepts) > 0) {
+			if (jQuery.inArray(easing, easing_accepts) > 0) {
 				return easing;
 			}
 			else {

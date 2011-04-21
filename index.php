@@ -113,7 +113,7 @@ session_start();
 		?>
 		
 		// Skitter Tester
-		// $('.box_skitter_large').skitter({animation:'directionTop'});
+		//$('.box_skitter_large').skitter({animation:'directionRight'});
 		
 		// Highlight
 		$('pre.code').highlight({source:1, zebra:1, indent:'space', list:'ol'});
@@ -246,6 +246,9 @@ session_start();
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>21/04/2011</dt>
+					<dd>- Fixed bug in loading images in IE9</dd>
+					<dd>- Update animations: directionTop, directionBottom, directionRight, directionLeft and block</dd>
 				<dt>20/04/2011</dt>
 					<dd>- Update jQuery and jQuery UI</dd>
 				<dt>16/01/2011</dt>
