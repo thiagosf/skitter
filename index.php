@@ -79,6 +79,7 @@ session_start();
 			'paralell',
 			'blind',
 			'blindHeight',
+			'blindWidth',
 			'directionTop',
 			'directionBottom',
 			'directionRight',
@@ -99,21 +100,20 @@ session_start();
 		if ($view) {
 			$thumbs = $_SESSION['type_navigation'] && $_SESSION['type_navigation'] == 'thumbs' ? ', thumbs: true' : '';
 			$options = $_SESSION['other_options'] && $_SESSION['other_options'] == 'hideTools' ? ', hideTools: true' : '';
-			echo sprintf("$('.box_skitter_large').skitter({animation:\"%s\"%s %s});", $view, $thumbs, $options);
+			$out = sprintf("$('.box_skitter_large').skitter({animation:\"%s\"%s %s});", $view, $thumbs, $options);
 		}
 		else {
 			$thumbs = $_SESSION['type_navigation'] && $_SESSION['type_navigation'] == 'thumbs' ? '{thumbs: true}' : '';
 			$options = $_SESSION['other_options'] && $_SESSION['other_options'] == 'hideTools' ? '{hideTools: true}' : '';
-			echo sprintf("$('.box_skitter_large').skitter(%s%s);", $thumbs, $options);
+			$out = sprintf("$('.box_skitter_large').skitter(%s%s);", $thumbs, $options);
 		}
+		
+		echo $out;
 		
 		?>
 		
-		// // Skitter
-		// $('.box_skitter_large').skitter({hideTools:true});
-		
-		// // Exaple custom:
-		// $('.box_skitter_small').skitter({interval:2000, navigation:false, label:false, numbers:false, animation:'directionRight'});
+		// Skitter Tester
+		// $('.box_skitter_large').skitter({animation:'directionTop'});
 		
 		// Highlight
 		$('pre.code').highlight({source:1, zebra:1, indent:'space', list:'ol'});
@@ -177,7 +177,7 @@ session_start();
 				
 				$types = array(
 					array('label' => 'Numbers', 'type' => 'numbers'),
-					array('label' => 'Thumbs', 'type' => 'thumbs', 'options' => '<span class="update">update!</span>'),
+					array('label' => 'Thumbs', 'type' => 'thumbs'),
 				);
 				
 				foreach($types as $type) {
@@ -198,7 +198,7 @@ session_start();
 				
 				$types = array(
 					array('label' => 'Normal', 'type' => 'normal'),
-					array('label' => 'HideTools', 'type' => 'hideTools', 'options' => '<span class="new">new!</span>'),
+					array('label' => 'HideTools', 'type' => 'hideTools'),
 				);
 				
 				foreach($types as $type) {
@@ -214,19 +214,6 @@ session_start();
 		
 		<div id="download">
 			<a href="https://github.com/thiagosf/SkitterSlideshow" id="botao_download"><img src="images/download-button.png" /></a>
-			<?php
-			/*
-			<div id="donate">
-				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-					<input type="hidden" name="cmd" value="_s-xclick">
-					<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-					">
-					<input type="image" src="images/donate-button.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-					<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-				</form>
-			</div>
-			*/
-			?>
 		</div>
 		
 		<div class="sexy-bookmarks sexy-bookmarks-expand sexy-bookmarks-center sexy-bookmarks-bg-sexy">
@@ -259,6 +246,8 @@ session_start();
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>20/04/2011</dt>
+					<dd>- Update jQuery and jQuery UI</dd>
 				<dt>16/01/2011</dt>
 					<dd>- New animations: cubeStopRandom, cubeSpread</dd>
 				<dt>04/01/2011</dt>
@@ -275,33 +264,34 @@ session_start();
 		<h2>Javascript</h2>
 		<pre class="code" lang="js">
 $(function(){
-	$('.box_skitter_small').skitter();
-});</pre>
+	$('.box_skitter_large').skitter();
+});
+</pre>
 
 		<h2>HTML</h2>
 		<pre class="code" lang="html">
-<div class="box_skitter box_skitter_small">
-	<ul>
-		<li>
-			<a href="http://codecanyon.net"><img src="images/01.jpg" class="block" /></a>
-			<div class="label_text">
-				<p>Label</p>
-			</div>
-		</li>
-		<li>
-			<a href="http://activeden.net"><img src="images/02.jpg" class="cube" /></a>
-			<div class="label_text">
-				<p>Label</p>
-			</div>
-		</li>
-		<li>
-			<a href="http://themeforest.net"><img src="images/03.jpg" class="default" /></a>
-			<div class="label_text">
-				<p>Label</p>
-			</div>
-		</li>
-	</ul>
-</div>
+&lt;div class=&quot;box_skitter box_skitter_large&quot;&gt;
+	&lt;ul&gt;
+		&lt;li&gt;
+			&lt;a href=&quot;http://thiagosf.net&quot;&gt;&lt;img src=&quot;images/01.jpg&quot; class=&quot;block&quot; /&gt;&lt;/a&gt;
+			&lt;div class=&quot;label_text&quot;&gt;
+				&lt;p&gt;Label&lt;/p&gt;
+			&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;a href=&quot;http://cakephp.org&quot;&gt;&lt;img src=&quot;images/02.jpg&quot; class=&quot;cube&quot; /&gt;&lt;/a&gt;
+			&lt;div class=&quot;label_text&quot;&gt;
+				&lt;p&gt;Label&lt;/p&gt;
+			&lt;/div&gt;
+		&lt;/li&gt;
+		&lt;li&gt;
+			&lt;a href=&quot;http://jquery.com&quot;&gt;&lt;img src=&quot;images/03.jpg&quot; class=&quot;default&quot; /&gt;&lt;/a&gt;
+			&lt;div class=&quot;label_text&quot;&gt;
+				&lt;p&gt;Label&lt;/p&gt;
+			&lt;/div&gt;
+		&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;
 </pre>
 
 		<div id="options">

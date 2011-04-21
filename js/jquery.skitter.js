@@ -368,6 +368,7 @@
 				'paralell',
 				'blind',
 				'blindHeight',
+				'blindWidth',
 				'directionTop',
 				'directionBottom',
 				'directionRight',
@@ -440,7 +441,10 @@
 					this.animationBlind();
 					break;
 				case 'blindHeight' : 
-					this.animationBlindHeight();
+					this.animationBlindDimension({height:true});
+					break;
+				case 'blindWidth' : 
+					this.animationBlindDimension({height:false, time_animate:400, delay:50});
 					break;
 				case 'directionTop' : 
 					this.animationDirection({direction:'top'});
@@ -535,7 +539,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeInOutQuad' : this.settings.easing_default;
+			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -550,7 +554,6 @@
 				var _btop = 0;
 				
 				var box_clone = this.getBoxClone();
-				
 				box_clone.css({left: -50, top:-250, width:width_box, height:height_box});
 				box_clone.find('img').css({left:-(width_box * i), top:0});
 				
@@ -558,7 +561,7 @@
 				
 				var delay_time = 80 * (i);
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
-				box_clone.delay(delay_time).animate({top:_btop+'px', left:_bleft+'px', opacity:'show'}, time_animate, easing, callback);
+				box_clone.delay(delay_time).animate({top:_btop, left:_bleft, opacity:'show'}, time_animate, easing, callback);
 			}
 			
 		},
@@ -1057,15 +1060,15 @@
 			
 		},
 		
-		animationBlindHeight: function(options)
+		animationBlindDimension: function(options)
 		{
 			var self = this;
 			
-			var options = $.extend({}, {height: true}, options || {});
+			var options = $.extend({}, {height: true, time_animate: 500, delay: 100}, options || {});
 			
 			this.settings.is_animating = true;
 			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
-			var time_animate = 600 / this.settings.velocity;
+			var time_animate = options.time_animate / this.settings.velocity;
 			
 			this.setActualLevel();
 			
@@ -1085,7 +1088,7 @@
 				
 				this.addBoxClone(box_clone);
 				
-				var delay_time = 100 * i;
+				var delay_time = options.delay * i;
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
 				
 				if (!options.height) {
@@ -1157,8 +1160,6 @@
 			box_clone.show();
 			box_clone.animate({ top:_ftop, left:_fleft }, time_animate, easing);
 			
-
-			
 			var box_clone = this.getBoxClone();
 			
 			box_clone.css({top:_itopa, left:_ilefta, width:width_box, height:height_box});
@@ -1170,7 +1171,7 @@
 			box_clone.animate({ top:_ftopa, left:_flefta }, time_animate, easing, callback);
 			
 		},
-
+		
 		animationCubeSpread: function(options)
 		{
 			var self = this;

@@ -34,76 +34,43 @@ background:url(../images/logo.gif) no-repeat left top;width:320px;height:105px;o
 .label_skitter {z-index:150;position:absolute;bottom:0px;left:0px;background:url(../images/back-box-label-black.png) repeat-x left top;color:#fff;display:none;border-top:1px solid #000;}
 .label_skitter p {padding:10px;margin:0;font:normal 22px arial,tahoma;letter-spacing:-1px;}
 
-#skitter_fixed {position:fixed;right:20px;top:20px;padding:5px;background:#000;z-index:1000;color:#fff;-moz-box-shadow:#000 0 0 10px;}
+#skitter_fixed {position:fixed;right:20px;top:20px;padding:5px;background:#000;z-index:1000;color:#fff;-moz-box-shadow:#000 0 0 10px;-webkit-box-shadow:#000 0 0 10px;box-shadow:#000 0 0 10px;}
 
 #download {margin:10px 0 20px 0;height:55px;}
 #botao_download {float:left;margin:0 20px 0 0;}
 #donate {float:left;}
 
-#options {}
-#options h2 {}
 #options h3 {font:bold 26px consolas,arial;color:#000;}
-#options dl {}
 #options dt {font:bold 18px consolas,arial;border-bottom:1px dashed #333;margin:10px 0 5px 0;color:#004499;}
 #options dd {font:normal 12px consolas,arial,tahoma;padding:0 0 0 10px;margin:0 0 4px 0;}
 #options dd.description {font-size:14px;}
 #options dd.default {color:#555;font-style:italic;padding:0 0 0 20px;}
 #options dd.example {color:#cc0000;padding:0 0 0 20px;}
-#options dd.example span {border:1px solid #003300;background:#007744;color:#fff;-moz-border-radius:10px;-webkit-border-radius:10px;padding:1px 5px;}
+#options dd.example span {border:1px solid #003300;background:#007744;color:#fff;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;padding:1px 5px;}
 
-#options table {width:100%;border-collapse:collapse;border:1px solid #333;margin:20px 0;-moz-box-shadow:#444 0 0 15px;}
-#options table th {background:#333;color:#fff;text-shadow:#000 1px 1px 1px;padding:10px;text-align:left;
-	background: -moz-linear-gradient(-90deg, #333, #555);
-	background: -webkit-gradient(linear, left top, left bottom, from(#333), to(#555));
-}
-#options table th:nth-child(2n) {
-	background: -moz-linear-gradient(-90deg, #222, #444);
-	background: -webkit-gradient(linear, left top, left bottom, from(#222), to(#444));
-}
-#options table td {padding:5px;background:#fff;
-	background: -moz-linear-gradient(-90deg, #fff, #ddd);
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ddd));
-	font-size:12px;
-}
-#options table td:nth-child(2n) {
-	background: -moz-linear-gradient(-90deg, #e1e1e1, #ccc);
-	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#ccc));
-}
-#options table tr:hover td {color:#cc3333;
-	background: -moz-linear-gradient(-90deg, #ffffcc, #ffff99);
-	background: -webkit-gradient(linear, left top, left bottom, from(#ffffcc), to(#ffff99));
-}
+#options table {width:100%;border-collapse:collapse;border:1px solid #333;margin:20px 0;}
+#options table th {background:#333;color:#fff;text-shadow:#000 1px 1px 1px;padding:10px;text-align:left;}
+#options table th:nth-child(2n) { background:#222; }
+#options table td {padding:5px;background:#fff;font-size:12px;}
+#options table tr:nth-child(2n) td { background:#ddd; }
 #options table td:nth-child(3) {font-style:italic;color:#555;}
-#options table td:nth-child(4) {
-	background: -moz-linear-gradient(-90deg, #333, #444);
-	background: -webkit-gradient(linear, left top, left bottom, from(#222), to(#444));
-}
-#options table tr:hover td:nth-child(4) {background:#111;}
-/*#options table td span.code {border:1px solid #003300;background:#007744;color:#fff;-moz-border-radius:10px;-webkit-border-radius:10px;padding:1px 5px;}
-#options table tr:hover td:nth-child(4) span.code {background:#006699;border-color:#000;}*/
-#options table td span.code {color:#fff;}
-#options table tr:hover td:nth-child(4) span.code {}
+#options table td span.code {color:#000;}
 
 #examples-animations {float:left;width:100%;}
 #examples-animations div {width:800px;}
-#examples-animations a {background:#ccc;float:left;margin:0 5px 5px 0;padding:5px;-moz-border-radius:3px;-webkit-border-radius:3px;text-decoration:none;border:1px solid #999;
-	background: -moz-linear-gradient(-90deg, #ccc, #fff);
-	background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#fff));
+#examples-animations a {background:#ccc;float:left;margin:0 5px 5px 0;padding:5px;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;text-decoration:none;border:1px solid #bbb;
 	color:#000;
-	-moz-box-shadow:#fff 0 0 3px;
-	-webkit-box-shadow:#fff 0 0 3px;
+	-moz-box-shadow:#555 1px 1px 0px;
+	-webkit-box-shadow:#555 1px 1px 0px;
+	box-shadow:#555 1px 1px 0px;
 	text-shadow:#fff 1px 1px 1px;
 }
 #examples-animations a:hover {position:relative;
-	background:#eee;
-	background: -moz-linear-gradient(-90deg, #aaa, #eee);
-	background: -webkit-gradient(linear, left top, left bottom, from(#aaa), to(#eee));
-	border:1px solid #555;
+	background:#ddd;
+	border:1px solid #999;
 }
 #examples-animations a.selected {background:#333;color:#fff;border:1px solid #000;
-	background:#000;
-	background: -moz-linear-gradient(-90deg, #333, #000);
-	background: -webkit-gradient(linear, left top, left bottom, from(#333), to(#000));
+	background:#333;
 	text-shadow:none;
 }
 
@@ -111,27 +78,22 @@ background:url(../images/logo.gif) no-repeat left top;width:320px;height:105px;o
 #styles_navigation h2 {}
 #styles_navigation ul {list-style:none;}
 #styles_navigation ul li {float:left;position:relative;}
-#styles_navigation ul li a {background:#ccc;float:left;margin:0 15px 15px 0;padding:5px 15px;-moz-border-radius:6px;-webkit-border-radius:6px;text-decoration:none;border:1px solid #555;
-	background: -moz-linear-gradient(-90deg, #999, #ccc);
-	background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#ccc));
+#styles_navigation ul li a {background:#ccc;float:left;margin:0 15px 15px 0;padding:5px 15px;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;text-decoration:none;border:1px solid #bbb;
 	color:#000;
-	-moz-box-shadow:#fff 0 0 3px;
-	-webkit-box-shadow:#fff 0 0 3px;
+	-moz-box-shadow:#555 1px 1px 0px;
+	-webkit-box-shadow:#555 1px 1px 0px;
+	box-shadow:#555 1px 1px 0px;
 	text-shadow:#fff 1px 1px 1px;
-	font:bold 26px consolas,arial;
+	font:normal 26px consolas,arial;
 	letter-spacing:-2px;
 }
 
 #styles_navigation ul li a:hover {
-	background:#eee;
-	background: -moz-linear-gradient(-90deg, #aaa, #eee);
-	background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#eee));
-	border:1px solid #333;
+	background:#ddd;
+	border:1px solid #999;
 }
 #styles_navigation ul li a.selected {
-	background:#000;
-	background: -moz-linear-gradient(-90deg, #333, #000);
-	background: -webkit-gradient(linear, left top, left bottom, from(#333), to(#000));
+	background:#333;
 	text-shadow:#000 1px 1px 1px;
 	font-weight:normal;
 	color:#fff;
@@ -140,28 +102,25 @@ background:url(../images/logo.gif) no-repeat left top;width:320px;height:105px;o
 
 span.new {position:absolute;top:-5px;right:-10px;font:bold 11px arial,tahoma;color:#fff;padding:2px 5px;border:1px solid #000;
 	background:#cc0000;
-	background: -moz-linear-gradient(-90deg, #cc0000, #660000);
-	background: -webkit-gradient(linear, left top, left bottom, from(#cc0000), to(#660000));
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
 	border-radius:5px;
 	-moz-box-shadow:#999 0 0 2px;
 	-webkit-box-shadow:#999 0 0 2px;
+	box-shadow:#999 0 0 2px;
 }
 
 span.update {position:absolute;top:-5px;right:-25px;font:bold 11px arial,tahoma;color:#fff;padding:2px 5px;border:1px solid #000;
 	background:#006600;
-	background: -moz-linear-gradient(-90deg, #006600, #003300);
-	background: -webkit-gradient(linear, left top, left bottom, from(#006600), to(#003300));
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
 	border-radius:5px;
 	-moz-box-shadow:#999 0 0 2px;
 	-webkit-box-shadow:#999 0 0 2px;
+	box-shadow:#999 0 0 2px;
 }
 
 #updatelog {background:#fff;padding:10px;border-top:5px solid #333;}
-#updatelog dl {}
 #updatelog dl dt {border-bottom:1px solid #ccc;font:bold 16px consolas,arial,tahoma,sans;margin-top:5px;}
 #updatelog dl dd {font:normal 12px consolas,arial,tahoma,sans;}
 
@@ -169,8 +128,4 @@ span.update {position:absolute;top:-5px;right:-25px;font:bold 11px arial,tahoma;
  ********************************************************** */
 #footer {clear:both;margin-top:20px;}
 #footer p {text-indent:-9999em;overflow:hidden;}
-/*#footer p a {background:#ccc;padding:2px 10px;text-decoration:none;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;border:1px solid #999;}
-#footer p a:hover {background:#333;color:#fff;border:1px solid #000;}*/
-#footer p a {
-	background:url(../images/logo-thiago.png) no-repeat left top;width:50px;height:40px;float:right;
-}
+#footer p a {background:url(../images/logo-thiago.png) no-repeat left top;width:50px;height:40px;float:right;}
