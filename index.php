@@ -13,8 +13,8 @@ function getLinkAnimation($animation) {
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<title>Skitter - Slideshow for anytime!</title>
 	
-	<meta name="description" content="Slideshow for jQuery" />
-	<meta name="keywords" content="slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin" />
+	<meta name="description" content="Slideshow flexible with many options for customizations. Distributed under the GPL license" />
+	<meta name="keywords" content="slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
 	
 	<link rel="shortcut icon" href="images/favicon.ico">
@@ -287,7 +287,7 @@ function getLinkAnimation($animation) {
 		<div id="updatelog">
 			<dl>
 				<dt>23/04/2011</dt>
-					<dd>- Add mode fullscreen: <a href="fullscreen.php">fullscreen</a></dd>
+					<dd>- Add <a href="fullscreen.php">fullscreen</a> mode</dd>
 				<dt>21/04/2011</dt>
 					<dd>- Fixed bug in loading images in IE9</dd>
 					<dd>- Update animations: <?=getLinkAnimation('directionTop');?>, <?=getLinkAnimation('directionBottom');?>, <?=getLinkAnimation('directionRight');?>, <?=getLinkAnimation('directionLeft');?> and <?=getLinkAnimation('block');?></dd>
@@ -369,7 +369,7 @@ $(function(){
 						array('animateNumberActive', 'Animation/style active number', "{backgroundColor:'#cc3333', color:'#fff'}", "$('.box_skitter box_skitter_large').skitter({animateNumberActive: {backgroundColor:'#000', color:'#ccc'}});"),
 						array('thumbs', 'Navigation with thumbs', "false", "$('.box_skitter box_skitter_large').skitter({thumbs: true});"),
 						array('hideTools', 'Hide numbers and navigation', "false", "$('.box_skitter box_skitter_large').skitter({hideTools: true});"),
-						array('fullscreen', 'Fullscreen gallery', "false", "$('.box_skitter box_skitter_large').skitter({fullscreen: true});"),
+						array('fullscreen', 'Fullscreen mode', "false", "$('.box_skitter box_skitter_large').skitter({fullscreen: true});"),
 					);
 					
 					foreach($data as $linha) {

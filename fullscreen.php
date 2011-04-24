@@ -32,8 +32,8 @@ $animations = array(
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<title>Skitter - Slideshow for anytime!</title>
 	
-	<meta name="description" content="Slideshow for jQuery" />
-	<meta name="keywords" content="slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin" />
+	<meta name="description" content="Slideshow flexible with many options for customizations. Distributed under the GPL license" />
+	<meta name="keywords" content="slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
 	
 	<link rel="shortcut icon" href="images/favicon.ico">
