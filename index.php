@@ -2,6 +2,10 @@
 
 session_start();
 
+function getLinkAnimation($animation) {
+	return '<a href="?animation='.$animation.'">'.$animation.'</a>';
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
@@ -21,7 +25,7 @@ session_start();
 	
 	<script src="js/jquery-1.5.2.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
-	<script src="js/jquery.skitter.min.js"></script>
+	<script src="js/jquery.skitter.js"></script>
 	<script src="js/highlight.js"></script>
 	<script src="js/sexy-bookmarks-public.js"></script>
 	
@@ -56,6 +60,9 @@ session_start();
 					break;
 				case 'hideTools' : 
 					$_SESSION['other_options'] = 'hideTools';
+					break;
+				case 'mini' : 
+					$_SESSION['other_options'] = 'mini';
 					break;
 				default :  
 					$_SESSION['other_options'] = 'normal';
@@ -108,12 +115,16 @@ session_start();
 			$out = sprintf("$('.box_skitter_large').skitter(%s%s);", $thumbs, $options);
 		}
 		
+		if ($_SESSION['other_options'] == 'mini') {
+			echo '$(\'.box_skitter_large\').css({\'width\': 400, \'height\': 150});';
+		}
+		
 		echo $out;
 		
-		?>
-		
 		// Skitter Tester
-		//$('.box_skitter_large').skitter({animation:'directionRight'});
+		// $('.box_skitter_large').skitter({fullscreen:true});
+		
+		?>
 		
 		// Highlight
 		$('pre.code').highlight({source:1, zebra:1, indent:'space', list:'ol'});
@@ -199,13 +210,42 @@ session_start();
 				$types = array(
 					array('label' => 'Normal', 'type' => 'normal'),
 					array('label' => 'HideTools', 'type' => 'hideTools'),
+					array('label' => 'Fullscreen', 'type' => 'fullscreen', 'options' => '<span class="new">new!</span>', 'link' => 'fullscreen.php'),
 				);
 				
 				foreach($types as $type) {
 					$options = (isset($type['options'])) ? $type['options'] : '';
 					$class = isset($_SESSION['other_options']) && $_SESSION['other_options'] == $type['type'] ? 'selected' : '';
-					echo sprintf('<li><a href="?other_options=%s" class="%s">%s</a>%s</li>', $type['type'], $class, $type['label'], $options);
-					
+					if (!isset($type['link'])) {
+						echo sprintf('<li><a href="?other_options=%s" class="%s">%s</a>%s</li>', $type['type'], $class, $type['label'], $options);
+					}
+					else {
+						echo sprintf('<li><a href="%s" class="%s">%s</a>%s</li>', $type['link'], $class, $type['label'], $options);
+					}
+				}
+				
+				?>
+			</ul>
+		</div>
+		
+		<div id="styles_navigation">
+			<h2>Other view</h2>
+			<ul>
+				<?php
+				
+				$types = array(
+					array('label' => 'Mini-slides', 'type' => 'mini', 'options' => '<span class="new">new!</span>'),
+				);
+				
+				foreach($types as $type) {
+					$options = (isset($type['options'])) ? $type['options'] : '';
+					$class = isset($_SESSION['other_options']) && $_SESSION['other_options'] == $type['type'] ? 'selected' : '';
+					if (!isset($type['link'])) {
+						echo sprintf('<li><a href="?other_options=%s" class="%s">%s</a>%s</li>', $type['type'], $class, $type['label'], $options);
+					}
+					else {
+						echo sprintf('<li><a href="%s" class="%s">%s</a>%s</li>', $type['link'], $class, $type['label'], $options);
+					}
 				}
 				
 				?>
@@ -248,11 +288,11 @@ session_start();
 			<dl>
 				<dt>21/04/2011</dt>
 					<dd>- Fixed bug in loading images in IE9</dd>
-					<dd>- Update animations: directionTop, directionBottom, directionRight, directionLeft and block</dd>
+					<dd>- Update animations: <?=getLinkAnimation('directionTop');?>, <?=getLinkAnimation('directionBottom');?>, <?=getLinkAnimation('directionRight');?>, <?=getLinkAnimation('directionLeft');?> and <?=getLinkAnimation('block');?></dd>
 				<dt>20/04/2011</dt>
 					<dd>- Update jQuery and jQuery UI</dd>
 				<dt>16/01/2011</dt>
-					<dd>- New animations: cubeStopRandom, cubeSpread</dd>
+					<dd>- New animations: <?=getLinkAnimation('cubeStopRandom');?>, <?=getLinkAnimation('cubeSpread');?></dd>
 				<dt>04/01/2011</dt>
 					<dd>- Update thumbnail browsing. Now the position of the mouse will move the thumbnails</dd>
 					<dd>- Fix the problem with the effects: cubeStop, cubeHide, cubSize.</dd>
@@ -317,7 +357,7 @@ $(function(){
 					$data = array(
 						array('velocity', 'Velocity of animation', '1', "$('.box_skitter box_skitter_large').skitter({velocity: 2});"),
 						array('interval', 'Interval between transitions', '2500', "$('.box_skitter box_skitter_large').skitter({interval: 3000});"),
-						array('animation', 'Default animation', 'null or defined in &lt;li&gt; class', "$('.box_skitter box_skitter_large').skitter({animation: 'fade'});"),
+						array('animation', 'Default animation', 'null or defined in &lt;a&gt; class', "$('.box_skitter box_skitter_large').skitter({animation: 'fade'});"),
 						array('numbers', 'Numbers display', 'true', "$('.box_skitter box_skitter_large').skitter({numbers: false});"),
 						array('navigation', 'Navigation display', 'true', "$('.box_skitter box_skitter_large').skitter({navigation: false});"),
 						array('label', 'Label display', 'true', "$('.box_skitter box_skitter_large').skitter({label: false});"),
@@ -327,6 +367,7 @@ $(function(){
 						array('animateNumberActive', 'Animation/style active number', "{backgroundColor:'#cc3333', color:'#fff'}", "$('.box_skitter box_skitter_large').skitter({animateNumberActive: {backgroundColor:'#000', color:'#ccc'}});"),
 						array('thumbs', 'Navigation with thumbs', "false", "$('.box_skitter box_skitter_large').skitter({thumbs: true});"),
 						array('hideTools', 'Hide numbers and navigation', "false", "$('.box_skitter box_skitter_large').skitter({hideTools: true});"),
+						array('fullscreen', 'Fullscreen gallery', "false", "$('.box_skitter box_skitter_large').skitter({fullscreen: true});"),
 					);
 					
 					foreach($data as $linha) {
