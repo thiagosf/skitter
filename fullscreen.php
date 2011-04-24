@@ -42,7 +42,7 @@ $animations = array(
 	
 	<script src="js/jquery-1.5.2.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
-	<script src="js/jquery.skitter.js"></script>
+	<script src="js/jquery.skitter.min.js"></script>
 	
 	<script>
 	$(document).ready(function(){

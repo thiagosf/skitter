@@ -86,10 +86,6 @@
 				var width = $(window).width();
 				var height = $(window).height();
 				this.box_skitter.width(width).height(height);
-				// this.box_skitter.find('ul li').each(function() {
-					// $(this).find('img').width(width).height(height);
-					// $(this).find('img').attr('src', 'thumb.php?y='+height+'&filename='+$(this).find('img').attr('src'));
-				// });
 				this.box_skitter.css({'position':'absolute', 'top':0, 'left':0, 'z-index':1000});
 				$('body').css({'overflown':'hidden'});
 			}
