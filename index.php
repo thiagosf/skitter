@@ -286,6 +286,8 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>23/04/2011</dt>
+					<dd>- Add mode fullscreen: <a href="fullscreen.php">fullscreen</a></dd>
 				<dt>21/04/2011</dt>
 					<dd>- Fixed bug in loading images in IE9</dd>
 					<dd>- Update animations: <?=getLinkAnimation('directionTop');?>, <?=getLinkAnimation('directionBottom');?>, <?=getLinkAnimation('directionRight');?>, <?=getLinkAnimation('directionLeft');?> and <?=getLinkAnimation('block');?></dd>
