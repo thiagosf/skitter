@@ -25,7 +25,7 @@ function getLinkAnimation($animation) {
 	
 	<script src="js/jquery-1.5.2.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
-	<script src="js/jquery.skitter.min.js"></script>
+	<script src="js/jquery.skitter.js"></script>
 	<script src="js/highlight.js"></script>
 	<script src="js/sexy-bookmarks-public.js"></script>
 	
@@ -323,7 +323,7 @@ function getLinkAnimation($animation) {
 		<div id="updatelog">
 			<dl>
 				<dt>07/05/2011</dt>
-					<dd>- Added option to <a href="index.php?type_loading=xml">load data via XML slides</a>.</dd>
+					<dd>- Added option to load <a href="index.php?type_loading=xml">data via XML</a>.</dd>
 				<dt>23/04/2011</dt>
 					<dd>- Add <a href="fullscreen.php">fullscreen</a> mode</dd>
 				<dt>21/04/2011</dt>

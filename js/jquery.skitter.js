@@ -734,6 +734,84 @@
 			
 		},
 		
+		animationCubeJelly: function(options)
+		{
+			var self = this;
+			
+			this.settings.is_animating = true;
+			easing = (this.settings.easing_default == '') ? 'easeInBack' : this.settings.easing_default;
+			var time_animate = 400 / this.settings.velocity;
+			
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+			
+			this.setActualLevel();
+			
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+			
+			var division_w 	= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
+			var division_h 	= Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / 3));
+			var total		= division_w * division_h;
+			
+			var width_box 	= Math.ceil(this.settings.width_skitter / division_w);
+			var height_box 	= Math.ceil(this.settings.height_skitter / division_h);
+			
+			var init_top 	= 0;
+			var init_left 	= 0;
+			
+			var col_t 		= 0;
+			var col 		= 0;
+			var u			= -1;
+			
+			for (i = 0; i < total; i++) {
+			
+				if (col % 2 != 0) {
+					if (col_t == 0) {
+						u = u + division_h + 1;
+					}
+					u--;
+				} 
+				else {
+					if (col > 0 && col_t == 0) {
+						u = u + 2;
+					}
+					u++;
+				}
+			
+				init_top 			= (i % 2 == 0) ? init_top : -init_top;
+				init_left 			= (i % 2 == 0) ? init_left : -init_left;
+
+				var _vtop 			= init_top + (height_box * col_t);
+				var _vleft 			= (init_left + (width_box * col));
+				var _vtop_image 	= -(height_box * col_t);
+				
+				var _vleft_image 	= -(width_box * col);
+				var _btop 			= _vtop - 50;
+				var _bleft 			= _vleft - 50;
+				
+				var box_clone = this.getBoxCloneImgOld(image_old);
+				box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
+				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
+				
+				this.addBoxClone(box_clone);
+				box_clone.show();
+				
+				var random = 50;
+				var delay_time = (random * i);
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				console.log(delay_time);
+				
+				box_clone.delay(delay_time).animate({width:'+=100px', height:'+=100px', top:'-=20px',  left: '-=20px', opacity:'hide'}, time_animate, easing, callback);
+				col_t++;
+				
+				if (col_t == division_h) {
+					col_t = 0;
+					col++;
+				}
+				
+			}
+		},
+		
 		animationCubeSize: function(options)
 		{
 			var self = this;
