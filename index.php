@@ -31,21 +31,35 @@ function getLinkAnimation($animation) {
 	
 	<script>
 	$(document).ready(function(){
+		
 		<?php
+		
+		$mode_xml = false;
+		
+		// Tipos de navegações
+		$_SESSION['type_loading'] = (isset($_SESSION['type_loading'])) ? $_SESSION['type_loading'] : 'html';
+		if (isset($_GET['type_loading'])) {
+			$_SESSION['other_options'] = 'normal';
+			switch($_GET['type_loading']) {
+				case 'html' : default : 
+					$_SESSION['type_loading'] = 'html';
+					break;
+				case 'xml' : 
+					$_SESSION['type_loading'] = 'xml';
+					break;
+			}
+		}
 		
 		// Tipos de navegações
 		$_SESSION['type_navigation'] = (isset($_SESSION['type_navigation'])) ? $_SESSION['type_navigation'] : 'numbers';
 		if (isset($_GET['type_navigation'])) {
 			$_SESSION['other_options'] = 'normal';
 			switch($_GET['type_navigation']) {
-				case 'numbers' : 
+				case 'numbers' : default :  
 					$_SESSION['type_navigation'] = 'numbers';
 					break;
 				case 'thumbs' : 
 					$_SESSION['type_navigation'] = 'thumbs';
-					break;
-				default :  
-					$_SESSION['type_navigation'] = 'numbers';
 					break;
 			}
 		}
@@ -55,7 +69,7 @@ function getLinkAnimation($animation) {
 		if (isset($_GET['other_options'])) {
 			$_SESSION['type_navigation'] = 'numbers';
 			switch($_GET['other_options']) {
-				case 'normal' : 
+				case 'normal' : default :  
 					$_SESSION['other_options'] = 'normal';
 					break;
 				case 'hideTools' : 
@@ -63,9 +77,6 @@ function getLinkAnimation($animation) {
 					break;
 				case 'mini' : 
 					$_SESSION['other_options'] = 'mini';
-					break;
-				default :  
-					$_SESSION['other_options'] = 'normal';
 					break;
 			}
 		}
@@ -95,34 +106,36 @@ function getLinkAnimation($animation) {
 			'cubeSpread',
 		);
 		
+		$options = array();
 		$view = null;
+		
 		if (isset($_GET['animation'])) {
 			$animation = $_GET['animation'];
-			
 			if (in_array($animation, $animations)) {
-				$view = $animation;
+				$options[] = 'animation: "'.$animation.'"';
 			}
 		}
 		
-		if ($view) {
-			$thumbs = $_SESSION['type_navigation'] && $_SESSION['type_navigation'] == 'thumbs' ? ', thumbs: true' : '';
-			$options = $_SESSION['other_options'] && $_SESSION['other_options'] == 'hideTools' ? ', hideTools: true' : '';
-			$out = sprintf("$('.box_skitter_large').skitter({animation:\"%s\"%s %s});", $view, $thumbs, $options);
-		}
-		else {
-			$thumbs = $_SESSION['type_navigation'] && $_SESSION['type_navigation'] == 'thumbs' ? '{thumbs: true}' : '';
-			$options = $_SESSION['other_options'] && $_SESSION['other_options'] == 'hideTools' ? '{hideTools: true}' : '';
-			$out = sprintf("$('.box_skitter_large').skitter(%s%s);", $thumbs, $options);
+		if ($_SESSION['type_navigation'] == 'thumbs') {
+			$options[] = 'thumbs: true';
 		}
 		
+		if ($_SESSION['other_options'] == 'hideTools') {
+			$options[] = 'hideTools: true';
+		}
+		
+		if ($_SESSION['type_loading'] == 'xml') {
+			$options[] = 'xml: "xml/slides.xml"';
+		}
+		
+		$options = implode(', ', $options);
+		$out     = sprintf("$('.box_skitter_large').skitter({%s});", $options);
+		
 		if ($_SESSION['other_options'] == 'mini') {
-			echo '$(\'.box_skitter_large\').css({\'width\': 400, \'height\': 150});';
+			echo '$(\'.box_skitter_large\').css({\'width\': 400, \'height\': 150});'."\n\t\t";
 		}
 		
 		echo $out;
-		
-		// Skitter Tester
-		// $('.box_skitter_large').skitter({fullscreen:true});
 		
 		?>
 		
@@ -141,6 +154,7 @@ function getLinkAnimation($animation) {
 	<div id="content">
 		<div class="border_box">
 			<div class="box_skitter box_skitter_large">
+			<?php if ($_SESSION['type_loading'] != 'xml') { ;?>
 				<ul>
 					<?php
 					
@@ -159,6 +173,7 @@ function getLinkAnimation($animation) {
 					
 					?>
 				</ul>
+			<?php } ;?>
 			</div>
 		</div>
 		
@@ -182,7 +197,28 @@ function getLinkAnimation($animation) {
 		
 		
 		<div id="styles_navigation">
-			<h2>Types of navigation</h2>
+			<h2>Type of loading</h2>
+			<ul>
+				<?php
+				
+				$types = array(
+					array('label' => 'HTML', 'type' => 'html'),
+					array('label' => 'XML', 'type' => 'xml', 'options' => '<span class="new">new!</span>', 'link' => 'fullscreen.php'),
+				);
+				
+				foreach($types as $type) {
+					$options = (isset($type['options'])) ? $type['options'] : '';
+					$class = $_SESSION['type_loading'] == $type['type'] ? 'selected' : '';
+					echo sprintf('<li><a href="?type_loading=%s" class="%s">%s</a>%s</li>', $type['type'], $class, $type['label'], $options);
+					
+				}
+				
+				?>
+			</ul>
+		</div>
+		
+		<div id="styles_navigation">
+			<h2>Type of navigation</h2>
 			<ul>
 				<?php
 				
@@ -193,7 +229,7 @@ function getLinkAnimation($animation) {
 				
 				foreach($types as $type) {
 					$options = (isset($type['options'])) ? $type['options'] : '';
-					$class = isset($_SESSION['type_navigation']) && $_SESSION['type_navigation'] == $type['type'] ? 'selected' : '';
+					$class = $_SESSION['type_navigation'] == $type['type'] ? 'selected' : '';
 					echo sprintf('<li><a href="?type_navigation=%s" class="%s">%s</a>%s</li>', $type['type'], $class, $type['label'], $options);
 					
 				}
@@ -210,7 +246,7 @@ function getLinkAnimation($animation) {
 				$types = array(
 					array('label' => 'Normal', 'type' => 'normal'),
 					array('label' => 'HideTools', 'type' => 'hideTools'),
-					array('label' => 'Fullscreen', 'type' => 'fullscreen', 'options' => '<span class="new">new!</span>', 'link' => 'fullscreen.php'),
+					array('label' => 'Fullscreen', 'type' => 'fullscreen', 'link' => 'fullscreen.php'),
 				);
 				
 				foreach($types as $type) {
@@ -234,7 +270,7 @@ function getLinkAnimation($animation) {
 				<?php
 				
 				$types = array(
-					array('label' => 'Mini-slides', 'type' => 'mini', 'options' => '<span class="new">new!</span>'),
+					array('label' => 'Mini-slides', 'type' => 'mini'),
 				);
 				
 				foreach($types as $type) {
@@ -286,6 +322,8 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>07/05/2011</dt>
+					<dd>- Added option to <a href="index.php?type_loading=xml">load data via XML slides</a>.</dd>
 				<dt>23/04/2011</dt>
 					<dd>- Add <a href="fullscreen.php">fullscreen</a> mode</dd>
 				<dt>21/04/2011</dt>
@@ -370,6 +408,7 @@ $(function(){
 						array('thumbs', 'Navigation with thumbs', "false", "$('.box_skitter box_skitter_large').skitter({thumbs: true});"),
 						array('hideTools', 'Hide numbers and navigation', "false", "$('.box_skitter box_skitter_large').skitter({hideTools: true});"),
 						array('fullscreen', 'Fullscreen mode', "false", "$('.box_skitter box_skitter_large').skitter({fullscreen: true});"),
+						array('xml', 'Loading data from XML file', "false", "$('.box_skitter box_skitter_large').skitter({xml: \"xml/slides.xml\"});"),
 					);
 					
 					foreach($data as $linha) {

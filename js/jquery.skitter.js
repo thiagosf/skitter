@@ -47,7 +47,7 @@
 		animateNumberActive: 	{backgroundColor:'#cc3333', color:'#fff'},
 		hideTools: 				false,
 		fullscreen: 			false,
-
+		xml: 					false,
 		structure: 	  '<a href="#" class="prev_button">prev</a>'
 					+ '<a href="#" class="next_button">next</a>'
 					+ '<span class="info_slide"></span>'
@@ -57,8 +57,7 @@
 					+ '</div>'
 	};
 	
-	$.skitter = function(obj, options, number) 
-	{
+	$.skitter = function(obj, options, number) {
 		this.box_skitter = $(obj);
 		this.timer = null;
 		this.settings = $.extend({}, defaults, options || {});
@@ -116,20 +115,12 @@
 			}
 			
 			this.box_skitter.find('.label_skitter').width(this.settings.width_skitter);
-			
 			var initial_select_class = ' image_number_select', u = 0;
-			
 			this.settings.images_links = new Array();
 			
-			this.box_skitter.find('ul li').each(function(){
-				++u;
-				var link 			= ($(this).find('a').length) ? $(this).find('a').attr('href') : '#';
-				var src 			= $(this).find('img').attr('src');
-				var animation_type 	= $(this).find('img').attr('class');
-				var label 			= $(this).find('.label_text').html();
-				
+			// Add image, link, animation type and label
+			var addImageLink = function (link, src, animation_type, label) {
 				self.settings.images_links.push([src, link, animation_type, label]);
-				
 				if (!self.settings.thumbs) {
 					self.box_skitter.find('.info_slide').append(
 						'<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'">'+u+'</span> '
@@ -142,9 +133,40 @@
 							+'</span> '
 					);
 				}
-				
 				initial_select_class = '';
-			});
+			};
+			
+			// Load from HTML
+			if (!this.settings.xml) {
+				this.box_skitter.find('ul li').each(function(){
+					++u;
+					var link 			= ($(this).find('a').length) ? $(this).find('a').attr('href') : '#';
+					var src 			= $(this).find('img').attr('src');
+					var animation_type 	= $(this).find('img').attr('class');
+					var label 			= $(this).find('.label_text').html();
+					addImageLink(link, src, animation_type, label);
+				});
+			}
+			// Load from XML
+			else {
+				$.ajax({
+					type: 'GET',
+					url: this.settings.xml,
+					async: false,
+					dataType: 'xml',
+					success: function(xml) {
+						var ul = $('<ul></ul>');
+						$(xml).find('skitter slide').each(function(){
+							++u;
+							var link 			= ($(this).find('link').text()) ? $(this).find('link').text() : '#';
+							var src 			= $(this).find('image').text();
+							var animation_type 	= $(this).find('image').attr('type');
+							var label 			= $(this).find('label').text();
+							addImageLink(link, src, animation_type, label);
+						});
+					}
+				});
+			}
 			
 			// Thumbs
 			if (self.settings.thumbs) 
@@ -160,7 +182,7 @@
 				self.box_skitter.css({height:self.box_skitter.height() + self.box_skitter.find('.info_slide').height() + 5});
 				self.settings.label = false;
 				
-				// Scroll with mouse
+				// Scrolling with mouse movement
 				var width_image = 0, 
 					width_skitter = this.settings.width_skitter,
 					height_skitter = this.settings.height_skitter, 
@@ -185,9 +207,7 @@
 				x_value += 90;
 				
 				self.box_skitter.mousemove(function(e){
-					var x = e.pageX, 
-						y = e.pageY, 
-						new_x = 0;
+					var x = e.pageX, y = e.pageY, new_x = 0;
 					
 					x = x - x_value;
 					y = y - y_value;
@@ -531,7 +551,6 @@
 				else {
 					box_clone.css({left:(this.settings.width_skitter / 2), top:this.settings.height_skitter + 50, width:width_box, height:height_box});
 				}
-					
 				
 				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
 				
@@ -596,7 +615,7 @@
 
 			this.setActualLevel();
 
-			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+			this.setLinkAtual();
 			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
 
 			var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
@@ -625,11 +644,7 @@
 				var _btop = _vtop - _ftop;
 				var _bleft = _vleft - _ftop;
 
-				var img_clone 		= $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
-				img_clone 			= this.resizeImage(img_clone);
-				var box_clone 		= $('<div class="box_clone"></div>');
-
-				box_clone.append(img_clone);
+				var box_clone = this.getBoxCloneImgOld(image_old);
 				box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
 				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
 
@@ -656,82 +671,6 @@
 			}
 		},
 		
-		animationCubeStopOld: function(options)
-		{
-			var self = this;
-			
-			var options = $.extend({}, {random: false}, options || {});
-			
-			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutBack' : this.settings.easing_default;
-			var time_animate = 1000 / this.settings.velocity;
-			
-			var image_old = this.box_skitter.find('.image_main').attr('src');
-			
-			this.setActualLevel();
-			
-			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
-			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
-			
-			var division_w 	= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
-			var division_h 	= Math.ceil(this.settings.height_skitter / this.settings.height_skitter / 3);
-			var total		= division_w * division_h;
-			
-			var width_box 	= Math.ceil(this.settings.width_skitter / division_w);
-			var height_box 	= Math.ceil(this.settings.height_skitter / division_h);
-			
-			var init_top 	= 0;
-			var init_left 	= 0;
-			
-			var col_t 		= 0;
-			var col 		= 0;
-			var _ftop		= this.settings.width_skitter / 16;
-			
-			for (i = 0; i < total; i++) {
-				
-				init_top 			= (i % 2 == 0) ? init_top : -init_top;
-				init_left 			= (i % 2 == 0) ? init_left : -init_left;
-
-				var _vtop 			= init_top + (height_box * col_t);
-				var _vleft 			= (init_left + (width_box * col));
-				var _vtop_image 	= -(height_box * col_t);
-				
-				var _vleft_image 	= -(width_box * col);
-				var _btop 			= _vtop - _ftop;
-				var _bleft 			= _vleft - _ftop;
-				
-				var img_clone 		= $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
-				img_clone 			= this.resizeImage(img_clone);
-				var box_clone 		= $('<div class="box_clone"></div>');
-				
-				box_clone.append(img_clone);
-				box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
-				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
-				
-				this.addBoxClone(box_clone);
-				box_clone.show();
-				
-				var delay_time = 50 * i;
-				
-				if (options.random) {
-					time_animate = 1000 / this.settings.velocity;
-					_btop = _vtop;
-					_bleft = _vleft;
-					delay_time = 30 * (Math.random() * 30);
-				}
-				
-				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
-				box_clone.delay(delay_time).animate({opacity:'hide', top:_btop+'px', left:_bleft+'px'}, time_animate, easing, callback);
-				
-				col_t++;
-				if (col_t == division_h) {
-					col_t = 0;
-					col++;
-				}
-			}
-			
-		},
-		
 		animationCubeHide: function(options)
 		{
 			var self = this;
@@ -744,7 +683,7 @@
 			
 			this.setActualLevel();
 			
-			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+			this.setLinkAtual();
 			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
 			
 			var division_w 	= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
@@ -773,11 +712,7 @@
 				var _btop 			= _vtop - 50;
 				var _bleft 			= _vleft - 50;
 				
-				var img_clone 		= $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
-				img_clone 			= this.resizeImage(img_clone);
-				var box_clone 		= $('<div class="box_clone"></div>');
-				
-				box_clone.append(img_clone);
+				var box_clone = this.getBoxCloneImgOld(image_old);
 				box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
 				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
 				
@@ -811,7 +746,7 @@
 			
 			this.setActualLevel();
 			
-			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+			this.setLinkAtual();
 			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
 			
 			var division_w 	= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
@@ -841,11 +776,7 @@
 				var _btop 			= _vtop - _ftop;
 				var _bleft 			= _vleft - _ftop;
 				
-				var img_clone 		= $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
-				img_clone 			= this.resizeImage(img_clone);
-				var box_clone 		= $('<div class="box_clone"></div>');
-				box_clone.append(img_clone);
-				
+				var box_clone = this.getBoxCloneImgOld(image_old);
 				box_clone.css({left:_vleft, top:_vtop, width:width_box, height:height_box});
 				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
 				
@@ -1213,7 +1144,7 @@
 			
 			this.setActualLevel();
 			
-			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+			this.setLinkAtual();
 			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
 			this.box_skitter.find('.image_main').hide();
 			
@@ -1312,11 +1243,7 @@
 					case 'sequence' : var delay_time = i * 100; break;
 				}
 				
-				// Image current
-				var img_clone 		= $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
-				img_clone 			= this.resizeImage(img_clone);
-				var box_clone 		= $('<div class="box_clone"></div>');
-				box_clone.append(img_clone);
+				var box_clone = this.getBoxCloneImgOld(image_old);
 				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
 				
 				box_clone.css({top:_itopc, left:_ileftc, width:width_box, height:height_box});
@@ -1487,11 +1414,33 @@
 				this.settings.image_i = 0;
 			}
 		},
-
+		
 		// Get box clone
 		getBoxClone: function()
 		{
-			var img_clone = $('<a href="'+this.settings.link_atual+'"><img src="'+this.settings.image_atual+'" /></a>');
+			if (this.settings.link_atual != '#') {
+				var img_clone = $('<a href="'+this.settings.link_atual+'"><img src="'+this.settings.image_atual+'" /></a>');
+			} 
+			else {
+				var img_clone = $('<img src="'+this.settings.image_atual+'" />');
+			}
+			
+			img_clone = this.resizeImage(img_clone);
+			var box_clone = $('<div class="box_clone"></div>');
+			box_clone.append(img_clone);
+			return box_clone;
+		},
+		
+		// Get box clone
+		getBoxCloneImgOld: function(image_old)
+		{
+			if (this.settings.link_atual != '#') {
+				var img_clone = $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
+			} 
+			else {
+				var img_clone = $('<img src="'+image_old+'" />');
+			}
+			
 			img_clone = this.resizeImage(img_clone);
 			var box_clone = $('<div class="box_clone"></div>');
 			box_clone.append(img_clone);
@@ -1517,16 +1466,16 @@
 		getEasing: function(easing)
 		{
 			var easing_accepts = [
-				'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 
-				'easeInCubic', 'easeOutCubic', 'easeInOutCubic', 
-				'easeInQuart', 'easeOutQuart', 'easeInOutQuart', 
-				'easeInQuint', 'easeOutQuint', 'easeInOutQuint', 
-				'easeInSine', 'easeOutSine', 'easeInOutSine', 
-				'easeInExpo', 'easeOutExpo', 'easeInOutExpo', 
-				'easeInCirc', 'easeOutCirc', 'easeInOutCirc', 
-				'easeInElastic', 'easeOutElastic', 'easeInOutElastic', 
-				'easeInBack', 'easeOutBack', 'easeInOutBack', 
-				'easeInBounce', 'easeOutBounce', 'easeInOutBounce', 
+				'easeInQuad', 		'easeOutQuad', 		'easeInOutQuad', 
+				'easeInCubic', 		'easeOutCubic', 	'easeInOutCubic', 
+				'easeInQuart', 		'easeOutQuart', 	'easeInOutQuart', 
+				'easeInQuint', 		'easeOutQuint', 	'easeInOutQuint', 
+				'easeInSine', 		'easeOutSine', 		'easeInOutSine', 
+				'easeInExpo',		'easeOutExpo', 		'easeInOutExpo', 
+				'easeInCirc', 		'easeOutCirc', 		'easeInOutCirc', 
+				'easeInElastic', 	'easeOutElastic', 	'easeInOutElastic', 
+				'easeInBack', 		'easeOutBack', 		'easeInOutBack', 
+				'easeInBounce', 	'easeOutBounce', 	'easeInOutBounce', 
 			];
 			
 			if (jQuery.inArray(easing, easing_accepts) > 0) {
@@ -1605,9 +1554,17 @@
 			});
 		}, 
 		
-		/**
-		 * Hide tools
-		 */
+		// Set link atual
+		setLinkAtual: function() {
+			if (this.settings.link_atual != '#') {
+				this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+			}
+			else {
+				this.box_skitter.find('.image a').removeAttr('href');
+			}
+		},
+		
+		// Hide tools
 		hideTools: function() {
 			this.box_skitter.find('.info_slide').hide();
 			this.box_skitter.find('.prev_button').hide();
