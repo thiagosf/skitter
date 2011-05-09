@@ -37,11 +37,7 @@ background:url(../images/logo.gif) no-repeat left top;width:320px;height:105px;o
 #skitter_fixed {position:fixed;right:20px;top:20px;padding:5px;background:#000;z-index:1000;color:#fff;-moz-box-shadow:#000 0 0 10px;-webkit-box-shadow:#000 0 0 10px;box-shadow:#000 0 0 10px;}
 
 #download {margin:10px 0 20px 0;height:55px;}
-<<<<<<< HEAD
 #botao_download {float:left;margin:0 20px 0 -6px;}
-=======
-#botao_download {float:left;margin:0 20px 0 0;}
->>>>>>> origin/master
 #donate {float:left;}
 
 #options h3 {font:bold 26px consolas,arial;color:#000;}

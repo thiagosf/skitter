@@ -48,7 +48,6 @@
 		hideTools: 				false,
 		fullscreen: 			false,
 		xml: 					false,
-<<<<<<< HEAD
 		dots: 					false,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
@@ -59,15 +58,6 @@
 										+ '<div class="label_skitter"></div>'
 									+ '</div>'
 								+ '</div>'
-=======
-		structure: 	  '<a href="#" class="prev_button">prev</a>'
-					+ '<a href="#" class="next_button">next</a>'
-					+ '<span class="info_slide"></span>'
-					+ '<div class="image">'
-					+ '<a href=""><img class="image_main" /></a>'
-					+ '<div class="label_skitter"></div>'
-					+ '</div>'
->>>>>>> origin/master
 	};
 	
 	$.skitter = function(obj, options, number) {
@@ -127,66 +117,33 @@
 				this.box_skitter.find('.next_button').hide();
 			}
 			
-<<<<<<< HEAD
 			this.box_skitter.find('.container_skitter').width(this.settings.width_skitter);
 			this.box_skitter.find('.container_skitter').height(this.settings.height_skitter);
 			this.box_skitter.find('.label_skitter').width(this.settings.width_skitter);
 			
-=======
-			this.box_skitter.find('.label_skitter').width(this.settings.width_skitter);
->>>>>>> origin/master
 			var initial_select_class = ' image_number_select', u = 0;
 			this.settings.images_links = new Array();
 			
 			// Add image, link, animation type and label
 			var addImageLink = function (link, src, animation_type, label) {
 				self.settings.images_links.push([src, link, animation_type, label]);
-<<<<<<< HEAD
 				if (self.settings.thumbs) {
 					self.box_skitter.find('.info_slide').append(
 						'<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'">'
 							+'<img src="'+src+'" width="300" />'
 							+'</span> '
-=======
-				if (!self.settings.thumbs) {
-					self.box_skitter.find('.info_slide').append(
-						'<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'">'+u+'</span> '
->>>>>>> origin/master
 					);
 				}
 				else {
 					self.box_skitter.find('.info_slide').append(
-<<<<<<< HEAD
 						'<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'">'+u+'</span> '
-=======
-						'<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'">'
-							+'<img src="'+src+'" width="300" />'
-							+'</span> '
->>>>>>> origin/master
 					);
 				}
 				initial_select_class = '';
 			};
-<<<<<<< HEAD
 
 			// Load from XML
 			if (this.settings.xml) {
-=======
-			
-			// Load from HTML
-			if (!this.settings.xml) {
-				this.box_skitter.find('ul li').each(function(){
-					++u;
-					var link 			= ($(this).find('a').length) ? $(this).find('a').attr('href') : '#';
-					var src 			= $(this).find('img').attr('src');
-					var animation_type 	= $(this).find('img').attr('class');
-					var label 			= $(this).find('.label_text').html();
-					addImageLink(link, src, animation_type, label);
-				});
-			}
-			// Load from XML
-			else {
->>>>>>> origin/master
 				$.ajax({
 					type: 'GET',
 					url: this.settings.xml,
@@ -205,7 +162,6 @@
 					}
 				});
 			}
-<<<<<<< HEAD
 			// Load from json
 			else if (this.settings.json) {
 				
@@ -221,8 +177,6 @@
 					addImageLink(link, src, animation_type, label);
 				});
 			}
-=======
->>>>>>> origin/master
 			
 			// Thumbs
 			if (self.settings.thumbs) 
@@ -238,7 +192,6 @@
 				self.box_skitter.css({height:self.box_skitter.height() + self.box_skitter.find('.info_slide').height() + 5});
 				self.settings.label = false;
 				
-<<<<<<< HEAD
 				self.box_skitter.append('<div class="container_thumbs"></div>');
 				var copy_info_slide = self.box_skitter.find('.info_slide').clone();
 				self.box_skitter.find('.info_slide').remove();
@@ -247,8 +200,6 @@
 					.height(50)
 					.append(copy_info_slide);
 				
-=======
->>>>>>> origin/master
 				// Scrolling with mouse movement
 				var width_image = 0, 
 					width_skitter = this.settings.width_skitter,
@@ -273,7 +224,6 @@
 				width_valor = width_skitter - 100;
 				x_value += 90;
 				
-<<<<<<< HEAD
 				if (width_info_slide > self.settings.width_skitter) {
 					self.box_skitter.mousemove(function(e){
 						var x = e.pageX, y = e.pageY, new_x = 0;
@@ -291,23 +241,6 @@
 						}
 					});
 				}
-=======
-				self.box_skitter.mousemove(function(e){
-					var x = e.pageX, y = e.pageY, new_x = 0;
-					
-					x = x - x_value;
-					y = y - y_value;
-					novo_width = w_info_slide_thumb - width_valor;
-					new_x = -((novo_width * x) / width_valor);
-					
-					if (new_x > 0) new_x = 0;
-					if (new_x < -(w_info_slide_thumb - width_skitter - 5)) new_x = -(w_info_slide_thumb - width_skitter - 5);
-					
-					if (y > height_skitter) {
-						info_slide_thumb.css({left: new_x});
-					}
-				});
->>>>>>> origin/master
 				
 				self.box_skitter.find('.scroll_thumbs').css({'left':10});
 				
@@ -317,15 +250,12 @@
 				}
 				
 			}
-<<<<<<< HEAD
 			else if (self.settings.dots)
 			{
 				self.box_skitter.find('.info_slide').addClass('info_slide_dots').removeClass('info_slide');
 				var left_info_slide_dots = (self.settings.width_skitter - self.box_skitter.find('.info_slide_dots').width()) / 2;
 				self.box_skitter.find('.info_slide_dots').css({'left':left_info_slide_dots});
 			}
-=======
->>>>>>> origin/master
 			else 
 			{
 				if (self.box_skitter.find('.info_slide').height() > 20) {
@@ -594,12 +524,9 @@
 				case 'cubeSpread' : 
 					this.animationCubeSpread();
 					break;
-<<<<<<< HEAD
 				case 'cubeJelly' : 
 					this.animationCubeJelly();
 					break;
-=======
->>>>>>> origin/master
 				default : 
 					this.animationTube();
 					break;
@@ -842,11 +769,7 @@
 			
 			this.settings.is_animating = true;
 			easing = (this.settings.easing_default == '') ? 'easeInBack' : this.settings.easing_default;
-<<<<<<< HEAD
 			var time_animate = 300 / this.settings.velocity;
-=======
-			var time_animate = 400 / this.settings.velocity;
->>>>>>> origin/master
 			
 			var image_old = this.box_skitter.find('.image_main').attr('src');
 			
@@ -902,12 +825,7 @@
 				this.addBoxClone(box_clone);
 				box_clone.show();
 				
-<<<<<<< HEAD
 				var delay_time = (50 * i);
-=======
-				var random = 50;
-				var delay_time = (random * i);
->>>>>>> origin/master
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
 				console.log(delay_time);
 				
@@ -1647,11 +1565,7 @@
 		// Add box clone in box_skitter
 		addBoxClone: function(box_clone)
 		{
-<<<<<<< HEAD
 			this.box_skitter.find('.container_skitter').append(box_clone);
-=======
-			this.box_skitter.append(box_clone);
->>>>>>> origin/master
 		},
 		
 		// Get accepts easing 

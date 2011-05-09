@@ -61,12 +61,9 @@ function getLinkAnimation($animation) {
 				case 'thumbs' : 
 					$_SESSION['type_navigation'] = 'thumbs';
 					break;
-<<<<<<< HEAD
 				case 'dots' : 
 					$_SESSION['type_navigation'] = 'dots';
 					break;
-=======
->>>>>>> origin/master
 			}
 		}
 		
@@ -110,10 +107,7 @@ function getLinkAnimation($animation) {
 			'directionLeft',
 			'cubeStopRandom',
 			'cubeSpread',
-<<<<<<< HEAD
 			'cubeJelly',
-=======
->>>>>>> origin/master
 		);
 		
 		$options = array();
@@ -129,7 +123,6 @@ function getLinkAnimation($animation) {
 		if ($_SESSION['type_navigation'] == 'thumbs') {
 			$options[] = 'thumbs: true';
 		}
-<<<<<<< HEAD
 		else if ($_SESSION['type_navigation'] == 'dots') {
 			echo "$('.border_box').css({'margin-bottom':'35px'});\n\t\t";
 			$options[] = 'dots: true';
@@ -137,8 +130,6 @@ function getLinkAnimation($animation) {
 			$options[] = "animateNumberOver: {backgroundColor:'#333', color:'#fff'}";
 			$options[] = "animateNumberActive: {backgroundColor:'#004499', color:'#fff'}";
 		}
-=======
->>>>>>> origin/master
 		
 		if ($_SESSION['other_options'] == 'hideTools') {
 			$options[] = 'hideTools: true';
@@ -180,10 +171,7 @@ function getLinkAnimation($animation) {
 					
 					$out = null;
 					foreach($animations as $i => $animation) {
-<<<<<<< HEAD
 						if ($i == 22) break;
-=======
->>>>>>> origin/master
 						$image = str_pad(($i + 1), 3, '0', STR_PAD_LEFT);
 						$out .= '<li>';
 						$out .= sprintf('<a href="#%s"><img src="images/%s.jpg" class="%s" /></a>', $animation, $image, $animation);
@@ -227,11 +215,7 @@ function getLinkAnimation($animation) {
 				
 				$types = array(
 					array('label' => 'HTML', 'type' => 'html'),
-<<<<<<< HEAD
 					array('label' => 'XML', 'type' => 'xml', 'options' => '<span class="new">new!</span>'),
-=======
-					array('label' => 'XML', 'type' => 'xml', 'options' => '<span class="new">new!</span>', 'link' => 'fullscreen.php'),
->>>>>>> origin/master
 				);
 				
 				foreach($types as $type) {
@@ -253,10 +237,7 @@ function getLinkAnimation($animation) {
 				$types = array(
 					array('label' => 'Numbers', 'type' => 'numbers'),
 					array('label' => 'Thumbs', 'type' => 'thumbs'),
-<<<<<<< HEAD
 					array('label' => 'Dots', 'type' => 'dots', 'options' => '<span class="new">new!</span>'),
-=======
->>>>>>> origin/master
 				);
 				
 				foreach($types as $type) {
@@ -354,7 +335,6 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
-<<<<<<< HEAD
 				<dt>08/05/2011</dt>
 					<dd>- <a href="index.php?type_navigation=dots">Navigation with dots</a></dd>
 					<dd>- New animation: <?=getLinkAnimation('cubeJelly');?></dd>
@@ -364,12 +344,6 @@ function getLinkAnimation($animation) {
 					<dd>- Added option to load <a href="index.php?type_loading=xml">data via XML</a>.</dd>
 				<dt>23/04/2011</dt>
 					<dd>- Added <a href="fullscreen.php">fullscreen</a> mode</dd>
-=======
-				<dt>07/05/2011</dt>
-					<dd>- Added option to load <a href="index.php?type_loading=xml">data via XML</a>.</dd>
-				<dt>23/04/2011</dt>
-					<dd>- Add <a href="fullscreen.php">fullscreen</a> mode</dd>
->>>>>>> origin/master
 				<dt>21/04/2011</dt>
 					<dd>- Fixed bug in loading images in IE9</dd>
 					<dd>- Update animations: <?=getLinkAnimation('directionTop');?>, <?=getLinkAnimation('directionBottom');?>, <?=getLinkAnimation('directionRight');?>, <?=getLinkAnimation('directionLeft');?> and <?=getLinkAnimation('block');?></dd>
@@ -421,7 +395,6 @@ $(function(){
 &lt;/div&gt;
 </pre>
 
-<<<<<<< HEAD
 		<h2>XML</h2>
 		<pre class="code" lang="html">
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
@@ -444,8 +417,6 @@ $(function(){
 &lt;/skitter&gt;
 </pre>
 
-=======
->>>>>>> origin/master
 		<div id="options">
 			<h2>Extend</h2>
 			<h3>Options</h3>
@@ -464,7 +435,6 @@ $(function(){
 					<?php
 					
 					$data = array(
-<<<<<<< HEAD
 						array('velocity', 'Velocity of animation', '1', "$('.box_skitter_large').skitter({velocity: 2});"),
 						array('interval', 'Interval between transitions', '2500', "$('.box_skitter_large').skitter({interval: 3000});"),
 						array('animation', 'Default animation', 'null or defined in &lt;a&gt; class', "$('.box_skitter_large').skitter({animation: 'fade'});"),
@@ -480,22 +450,6 @@ $(function(){
 						array('fullscreen', 'Fullscreen mode', "false", "$('.box_skitter_large').skitter({fullscreen: true});"),
 						array('xml', 'Loading data from XML file', "false", "$('.box_skitter_large').skitter({xml: \"xml/slides.xml\"});"),
 						array('dots', 'Navigation with dots', "false", "$('.box_skitter_large').skitter({dots: true});"),
-=======
-						array('velocity', 'Velocity of animation', '1', "$('.box_skitter box_skitter_large').skitter({velocity: 2});"),
-						array('interval', 'Interval between transitions', '2500', "$('.box_skitter box_skitter_large').skitter({interval: 3000});"),
-						array('animation', 'Default animation', 'null or defined in &lt;a&gt; class', "$('.box_skitter box_skitter_large').skitter({animation: 'fade'});"),
-						array('numbers', 'Numbers display', 'true', "$('.box_skitter box_skitter_large').skitter({numbers: false});"),
-						array('navigation', 'Navigation display', 'true', "$('.box_skitter box_skitter_large').skitter({navigation: false});"),
-						array('label', 'Label display', 'true', "$('.box_skitter box_skitter_large').skitter({label: false});"),
-						array('easing_default', 'Easing default', 'null', "$('.box_skitter box_skitter_large').skitter({easing_default: 'easeOutBack'});"),
-						array('animateNumberOut', 'Animation/style number', "{backgroundColor:'#333', color:'#fff'}", "$('.box_skitter box_skitter_large').skitter({animateNumberOut: {backgroundColor:'#000', color:'#ccc'}});"),
-						array('animateNumberOver', 'Animation/style hover number', "{backgroundColor:'#000', color:'#fff'}", "$('.box_skitter box_skitter_large').skitter({animateNumberOver: {backgroundColor:'#000', color:'#ccc'}});"),
-						array('animateNumberActive', 'Animation/style active number', "{backgroundColor:'#cc3333', color:'#fff'}", "$('.box_skitter box_skitter_large').skitter({animateNumberActive: {backgroundColor:'#000', color:'#ccc'}});"),
-						array('thumbs', 'Navigation with thumbs', "false", "$('.box_skitter box_skitter_large').skitter({thumbs: true});"),
-						array('hideTools', 'Hide numbers and navigation', "false", "$('.box_skitter box_skitter_large').skitter({hideTools: true});"),
-						array('fullscreen', 'Fullscreen mode', "false", "$('.box_skitter box_skitter_large').skitter({fullscreen: true});"),
-						array('xml', 'Loading data from XML file', "false", "$('.box_skitter box_skitter_large').skitter({xml: \"xml/slides.xml\"});"),
->>>>>>> origin/master
 					);
 					
 					foreach($data as $linha) {
@@ -537,9 +491,5 @@ $(function(){
 
 	</script>
 
-<<<<<<< HEAD
-=======
-	
->>>>>>> origin/master
 </body>
 </html>
