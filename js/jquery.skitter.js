@@ -49,7 +49,6 @@
 		fullscreen: 			false,
 		xml: 					false,
 		dots: 					false,
-		
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
