@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skitter>
+	<slide>
+		<link>#directionTop</link>
+		<image type="directionTop">images/001.jpg</image>
+		<label><![CDATA[<p>directionTop</p>]]></label>
+	</slide>
+	<slide>
+		<link>#cubeSize</link>
+		<image type="cubeSize">images/002.jpg</image>
+		<label><![CDATA[<p>cubeSize</p>]]></label>
+	</slide>
+	<slide>
+		<link>#paralell</link>
+		<image type="paralell">images/003.jpg</image>
+		<label><![CDATA[<p>paralell</p>]]></label>
+	</slide>
+</skitter>
