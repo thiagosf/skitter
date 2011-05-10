@@ -335,6 +335,8 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>09/05/2011</dt>
+					<dd>- Control over the width of the label. <strong>(Hint of Ronny Sherer)</strong></dd>
 				<dt>08/05/2011</dt>
 					<dd>- <a href="index.php?type_navigation=dots">Navigation with dots</a></dd>
 					<dd>- New animation: <?=getLinkAnimation('cubeJelly');?></dd>
@@ -450,6 +452,7 @@ $(function(){
 						array('fullscreen', 'Fullscreen mode', "false", "$('.box_skitter_large').skitter({fullscreen: true});"),
 						array('xml', 'Loading data from XML file', "false", "$('.box_skitter_large').skitter({xml: \"xml/slides.xml\"});"),
 						array('dots', 'Navigation with dots', "false", "$('.box_skitter_large').skitter({dots: true});"),
+						array('width_label', 'Width label', "null", "$('.box_skitter_large').skitter({width_label: '300px'});"),
 					);
 					
 					foreach($data as $linha) {

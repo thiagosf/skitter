@@ -49,6 +49,7 @@
 		fullscreen: 			false,
 		xml: 					false,
 		dots: 					false,
+		width_label: 			null,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -119,7 +120,9 @@
 			
 			this.box_skitter.find('.container_skitter').width(this.settings.width_skitter);
 			this.box_skitter.find('.container_skitter').height(this.settings.height_skitter);
-			this.box_skitter.find('.label_skitter').width(this.settings.width_skitter);
+			
+			var width_label = this.settings.width_label ? this.settings.width_label : this.settings.width_skitter;
+			this.box_skitter.find('.label_skitter').width(width_label);
 			
 			var initial_select_class = ' image_number_select', u = 0;
 			this.settings.images_links = new Array();
