@@ -14,7 +14,7 @@ function getLinkAnimation($animation) {
 	<title>Skitter - Slideshow for anytime!</title>
 	
 	<meta name="description" content="Slideshow flexible with many options for customizations. Distributed under the GPL license" />
-	<meta name="keywords" content="slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
+	<meta name="keywords" content="jquery slideshow, slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
 	
 	<link rel="shortcut icon" href="images/favicon.ico">
@@ -336,7 +336,7 @@ function getLinkAnimation($animation) {
 		<div id="updatelog">
 			<dl>
 				<dt>09/05/2011</dt>
-					<dd>- Control over the width of the label. <strong>(Hint of Ronny Sherer)</strong></dd>
+					<dd>- Control over the width of the label. <strong>(Hint of Ronny)</strong></dd>
 				<dt>08/05/2011</dt>
 					<dd>- <a href="index.php?type_navigation=dots">Navigation with dots</a></dd>
 					<dd>- New animation: <?=getLinkAnimation('cubeJelly');?></dd>
