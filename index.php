@@ -304,6 +304,7 @@ function getLinkAnimation($animation) {
 		
 		<div id="download">
 			<a href="https://github.com/thiagosf/SkitterSlideshow" id="botao_download"><img src="images/download-button.png" /></a>
+			<a href="http://wordpress.org/extend/plugins/wp-skitter-slideshow/"><img src="images/download-wp.png" /></a>
 		</div>
 		
 		<div class="sexy-bookmarks sexy-bookmarks-expand sexy-bookmarks-center sexy-bookmarks-bg-sexy">
