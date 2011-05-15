@@ -133,10 +133,6 @@ function show_skitter()
 		$get_option = get_option($option);
 		$get_option = filterValueSkitter($option, $get_option);
 		if (!empty($get_option) && !in_array($option, $block)) {
-			// if ($option == 'wp_skitter_animation' && $get_option == '"random"') {
-				// $option = 'random_ia'; 
-				// $get_option = '"true"';
-			// }
 			$options[] = str_replace('wp_skitter_', '', $option).': '.$get_option;
 		}
 	}
@@ -160,7 +156,6 @@ jQuery(window).load(function() {
 		
 		<?php
 		
-		//$crop = ;
 		if (get_option('wp_skitter_crop')) {
 			$thumbnail = get_the_post_thumbnail($post->ID, 'large');
 			preg_match('/src="([^"]*)"/i', $thumbnail, $matches);
@@ -175,8 +170,8 @@ jQuery(window).load(function() {
 		}
 		
 		$content = strip_tags(get_the_content());
-		if (strstr($content, 'http://') !== false) {
-			$link = $content;
+		if (preg_match('/^Link:(http:\/\/.*)/i', $content, $matches)) {
+			$link = $matches[1];
 		}
 		else {
 			$link = get_permalink();

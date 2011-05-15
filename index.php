@@ -108,6 +108,7 @@ function getLinkAnimation($animation) {
 			'cubeStopRandom',
 			'cubeSpread',
 			'cubeJelly',
+			'random', 
 		);
 		
 		$options = array();
