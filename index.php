@@ -337,6 +337,8 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>15/05/2011</dt>
+					<dd>- Added <a href="http://wordpress.org/extend/plugins/wp-skitter-slideshow/">plugin</a> for Wordpress</dd>
 				<dt>09/05/2011</dt>
 					<dd>- Control over the width of the label. <strong>(Hint of Ronny)</strong></dd>
 				<dt>08/05/2011</dt>

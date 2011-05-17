@@ -6,7 +6,7 @@
  * @version 3.1
  * @date August 04, 2010
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
- * @license Distributed under the GPL license
+ * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
  */
 
