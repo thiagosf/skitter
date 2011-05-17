@@ -13,7 +13,7 @@ function getLinkAnimation($animation) {
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 	<title>Skitter - Slideshow for anytime!</title>
 	
-	<meta name="description" content="Slideshow flexible with many options for customizations. Distributed under the GPL license" />
+	<meta name="description" content="Slideshow flexible with many options for customizations." />
 	<meta name="keywords" content="jquery slideshow, slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
 	
