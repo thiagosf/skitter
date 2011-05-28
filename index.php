@@ -11,9 +11,9 @@ function getLinkAnimation($animation) {
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<title>Skitter - Slideshow for anytime!</title>
+	<title>Skitter - Slideshow for anytime! More a jQuery Slideshow</title>
 	
-	<meta name="description" content="Slideshow flexible with many options for customizations." />
+	<meta name="description" content="Slideshow flexible with many options for customizations. This jQuery Slideshow is free!" />
 	<meta name="keywords" content="jquery slideshow, slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
 	
@@ -24,7 +24,10 @@ function getLinkAnimation($animation) {
 	<link href="css/sexy-bookmarks-style.css" type="text/css" media="all" rel="stylesheet" />
 	
 	<script src="js/jquery-1.5.2.min.js"></script>
-	<script src="js/jquery-ui.min.js"></script>
+	
+	<script src="js/jquery.easing.1.3.js"></script>
+	<script src="js/jquery.animate-colors-min.js"></script>
+	
 	<script src="js/jquery.skitter.min.js"></script>
 	<script src="js/highlight.js"></script>
 	<script src="js/sexy-bookmarks-public.js"></script>
@@ -81,6 +84,9 @@ function getLinkAnimation($animation) {
 				case 'mini' : 
 					$_SESSION['other_options'] = 'mini';
 					break;
+				case 'show_randomly' : 
+					$_SESSION['other_options'] = 'show_randomly';
+					break;
 			}
 		}
 		
@@ -109,6 +115,7 @@ function getLinkAnimation($animation) {
 			'cubeSpread',
 			'cubeJelly',
 			'random', 
+			'randomSmart', 
 		);
 		
 		$options = array();
@@ -134,6 +141,9 @@ function getLinkAnimation($animation) {
 		
 		if ($_SESSION['other_options'] == 'hideTools') {
 			$options[] = 'hideTools: true';
+		}
+		else if ($_SESSION['other_options'] == 'show_randomly') {
+			$options[] = 'show_randomly: true';
 		}
 		
 		if ($_SESSION['type_loading'] == 'xml') {
@@ -261,6 +271,7 @@ function getLinkAnimation($animation) {
 					array('label' => 'Normal', 'type' => 'normal'),
 					array('label' => 'HideTools', 'type' => 'hideTools'),
 					array('label' => 'Fullscreen', 'type' => 'fullscreen', 'link' => 'fullscreen.php'),
+					array('label' => 'Randomly Sliders', 'type' => 'show_randomly', 'options' => '<span class="new">new!</span>'),
 				);
 				
 				foreach($types as $type) {
@@ -337,10 +348,15 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>28/05/2011</dt>
+					<dd>- New animation: <?=getLinkAnimation('randomSmart');?></dd>
+					<dd>- Change in the animation: <?=getLinkAnimation('random');?></dd>
+					<dd>- New mode: <a href="index.php?other_options=show_randomly">ramdomly sliders</a>. <strong>Hint of <a href="http://blog.it0091.com/2011/04/28/jquery-skitter-slideshow-display-images-randomly-on-each-page/" target="_blank">Team IT0091</a></strong></dd>
+					<dd>- <strong>jQueryUI</strong> removed and added plugins compatible: <strong>jQuery easing</strong> and <strong>jQuery animate colors</strong></dd>
 				<dt>15/05/2011</dt>
 					<dd>- Added <a href="http://wordpress.org/extend/plugins/wp-skitter-slideshow/">plugin</a> for Wordpress</dd>
 				<dt>09/05/2011</dt>
-					<dd>- Control over the width of the label. <strong>(Hint of Ronny)</strong></dd>
+					<dd>- Control over the width of the label. <strong>Hint of Ronny</strong></dd>
 				<dt>08/05/2011</dt>
 					<dd>- <a href="index.php?type_navigation=dots">Navigation with dots</a></dd>
 					<dd>- New animation: <?=getLinkAnimation('cubeJelly');?></dd>
@@ -367,6 +383,18 @@ function getLinkAnimation($animation) {
 			</dl>
 		</div>
 		
+		
+		<h2>Includes</h2>
+		<pre class="code" lang="html">
+// Styles
+&lt;link href=&quot;css/skitter.styles.css&quot; type=&quot;text/css&quot; media=&quot;all&quot; rel=&quot;stylesheet&quot; /&gt;
+
+// Scripts
+&lt;script src=&quot;js/jquery-1.5.2.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/jquery.skitter.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/jquery.easing.1.3.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/jquery.animate-colors-min.js&quot;&gt;&lt;/script&gt;
+</pre>
 		
 		<h2>Javascript</h2>
 		<pre class="code" lang="js">
@@ -457,6 +485,7 @@ $(function(){
 						array('xml', 'Loading data from XML file', "false", "$('.box_skitter_large').skitter({xml: \"xml/slides.xml\"});"),
 						array('dots', 'Navigation with dots', "false", "$('.box_skitter_large').skitter({dots: true});"),
 						array('width_label', 'Width label', "null", "$('.box_skitter_large').skitter({width_label: '300px'});"),
+						array('show_randomly', 'Randomly sliders', "false", "$('.box_skitter_large').skitter({show_randonly: true});"),
 					);
 					
 					foreach($data as $linha) {

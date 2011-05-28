@@ -41,6 +41,7 @@
 		is_animating:  			false,
 		is_hover_box_skitter: 	false,
 		random_ia: 				null,
+		show_randomly: 			false,
 		thumbs: 				false,
 		animateNumberOut: 		{backgroundColor:'#333', color:'#fff'},
 		animateNumberOver: 		{backgroundColor:'#fff', color:'#000'},
@@ -268,6 +269,9 @@
 			
 			this.box_skitter.find('ul').hide();
 			
+			if (this.settings.show_randomly)
+			this.settings.images_links.sort(function(a,b) {return Math.random() - 0.5;});
+			
 			this.settings.image_atual 	= this.settings.images_links[0][0];
 			this.settings.link_atual 	= this.settings.images_links[0][1];
 			this.settings.label_atual 	= this.settings.images_links[0][3];
@@ -393,7 +397,7 @@
 		{
 			var self = this;
 			
-			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+			this.setLinkAtual();
 			this.box_skitter.find('.image a img').attr({'src': this.settings.image_atual});
 			img_link = this.box_skitter.find('.image a');
 			img_link = this.resizeImage(img_link);
@@ -442,11 +446,12 @@
 				'cubeSpread'
 				
 			];
+			
 			animation_type = (this.settings.animation == '' && this.settings.images_links[this.settings.image_i][2]) ? 
 				this.settings.images_links[this.settings.image_i][2] : (this.settings.animation == '' ? 'default' : this.settings.animation);
 			
-			// Random type
-			if (animation_type == 'random') 
+			// RandomUnique
+			if (animation_type == 'randomSmart') 
 			{
 				if (!this.settings.random_ia) {
 					animations_functions.sort(function() {
@@ -455,6 +460,12 @@
 					this.settings.random_ia = animations_functions;
 				}
 				animation_type = this.settings.random_ia[this.settings.image_i];
+			}
+			// Random
+			else if (animation_type == 'random') 
+			{
+				var random_id = parseInt(Math.random() * animations_functions.length);
+				animation_type = animations_functions[random_id];
 			}
 			
 			switch (animation_type) 
@@ -1608,7 +1619,7 @@
 		showBoxText: function () 
 		{
 			var self = this;
-			if (this.settings.label_atual != undefined && self.settings.label) {
+			if (this.settings.label_atual != undefined && this.settings.label_atual != '' && self.settings.label) {
 				self.box_skitter.find('.label_skitter').slideDown(400);
 			}
 		},
