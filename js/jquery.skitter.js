@@ -364,8 +364,7 @@
 			
 			var loading = $('<div class="loading">Loading</div>');
 			this.box_skitter.append(loading);
-			total = this.settings.images_links.length;
-			
+			var total = this.settings.images_links.length;
 			
 			var u = 0;
 			$.each(this.settings.images_links, function(i)

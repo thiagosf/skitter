@@ -13,6 +13,7 @@ h2 {letter-spacing:-2px;margin:15px 0 10px 0;color:#333;font-weight:normal;}
 #header {}
 #header h1 {font:bold 48px consolas, deja vu,arial;color:#006699;margin:0 0 10px 0;letter-spacing:2px;text-shadow:#fff 1px 1px 1px;text-decoration:underline;
 background:url(../images/logo.gif) no-repeat left top;width:320px;height:105px;overflow:hidden;text-indent:-9999em;margin-left:-15px;}
+#header h1 a {width:320px;height:105px;overflow:hidden;text-indent:-9999em;float:left;}
 #header p {font-weight:bold;font-size:18px;}
 
 /** Content

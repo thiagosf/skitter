@@ -169,7 +169,7 @@ function getLinkAnimation($animation) {
 </head>
 <body>
 	<div id="header">
-		<h1>Skitter</h1>
+		<h1><a href="index.php">Skitter</a></h1>
 		<p>Slideshow for anytime!</p>
 	</div>
 	
@@ -199,7 +199,6 @@ function getLinkAnimation($animation) {
 			<?php } ;?>
 			</div>
 		</div>
-		
 		<div id="examples-animations">
 			<div>
 				<?php
@@ -296,6 +295,7 @@ function getLinkAnimation($animation) {
 				
 				$types = array(
 					array('label' => 'Mini-slides', 'type' => 'mini'),
+					array('label' => 'Multiple instances', 'type' => 'multiple', 'link' => 'multiple.php', 'options' => '<span class="new">new!</span>'),
 				);
 				
 				foreach($types as $type) {
@@ -348,6 +348,8 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>30/05/2011</dt>
+					<dd>- Display <a href="multiple.php">multiple instances</a> on the same page!</dd>
 				<dt>28/05/2011</dt>
 					<dd>- New animation: <?=getLinkAnimation('randomSmart');?></dd>
 					<dd>- Change in the animation: <?=getLinkAnimation('random');?></dd>
@@ -391,7 +393,7 @@ function getLinkAnimation($animation) {
 
 // Scripts
 &lt;script src=&quot;js/jquery-1.5.2.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;js/jquery.skitter.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;js/jquery.skitter.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;js/jquery.easing.1.3.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;js/jquery.animate-colors-min.js&quot;&gt;&lt;/script&gt;
 </pre>
