@@ -370,9 +370,9 @@
 			$.each(this.settings.images_links, function(i)
 			{
 				var self_il = this;
-				var image = $('<img src="" class="image_loading" />');
-				image.css({position:'absolute', top:'-9999em'});
-				self.box_skitter.append(image);
+				var loading = $('<span class="image_loading"></span>');
+				loading.css({position:'absolute', top:'-9999em'});
+				self.box_skitter.append(loading);
 				var img = new Image();
 				
 				$(img).load(function () {
@@ -1705,12 +1705,12 @@
 		}, 
 		
 		/**
-		 * Gera números aleatórios inteiros entre um intervalo
+		 * Gera nÃºmeros aleatÃ³rios inteiros entre um intervalo
 		 * @author Daniel Castro Machado <daniel@cdt.unb.br>
 		 */
 		randomUnique: function (valorIni, valorFim) {
 			var numRandom;
-			do numRandom = Math.random(); while (numRandom == 1); // Evita gerar o número valorFim + 1
+			do numRandom = Math.random(); while (numRandom == 1); // Evita gerar o nÃºmero valorFim + 1
 			return (numRandom * (valorFim - valorIni + 1) + valorIni) | 0;
 		}
 		
