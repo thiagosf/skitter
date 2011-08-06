@@ -3,7 +3,7 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.1
+ * @version 3.2
  * @date August 04, 2010
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
@@ -51,6 +51,9 @@
 		xml: 					false,
 		dots: 					false,
 		width_label: 			null,
+		opacity_elements:		0.75, // Final opacity of elements in hideTools
+		interval_in_elements:	300, // Interval animation hover elements hideTools
+		interval_out_elements:	500, // Interval animation out elements hideTools
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -287,7 +290,7 @@
 			{
 				this.box_skitter.find('.prev_button').click(function() {
 					if (self.settings.is_animating == false) {
-						clearInterval(this.timer);
+						self.clearTimer(true);
 						self.settings.image_i -= 2;
 						
 						if (self.settings.image_i == -2) {
@@ -307,7 +310,7 @@
 				
 				this.box_skitter.find('.next_button').click(function() {
 					if (self.settings.is_animating == false) {
-						clearInterval(self.timer);
+						self.clearTimer(true);
 						
 						self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
 						self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
@@ -337,7 +340,7 @@
 					if ($(this).attr('class') != 'image_number image_number_select') {
 						if (self.settings.is_animating == false) {
 							self.box_skitter.find('.box_clone').stop();
-							clearInterval(self.timer);
+							self.clearTimer(true);
 							
 							var new_i = $(this).attr('rel');
 							self.settings.image_i = Math.floor(new_i);
@@ -449,7 +452,9 @@
 				'directionBottom',
 				'directionRight',
 				'directionLeft',
-				'cubeSpread'
+				'cubeSpread',
+				'glassCube',
+				'glassBlock'
 				
 			];
 			
@@ -544,6 +549,12 @@
 					break;
 				case 'cubeJelly' : 
 					this.animationCubeJelly();
+					break;
+				case 'glassCube' : 
+					this.animationGlassCube();
+					break;
+				case 'glassBlock' : 
+					this.animationGlassBlock();
 					break;
 				default : 
 					this.animationTube();
@@ -1479,6 +1490,98 @@
 			}
 		}, 
 		
+		animationGlassCube: function(options)
+		{
+			var self = this;
+			
+			this.settings.is_animating = true;
+			easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
+			var time_animate = 500 / this.settings.velocity;
+			
+			this.setActualLevel();
+			
+			var total 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10)) * 2;
+			var width_box 	= Math.ceil(this.settings.width_skitter / total) * 2;
+			var height_box 	= (this.settings.height_skitter) / 2;
+			var col			= 0;
+			
+			for (i = 0; i < total; i++) {
+				mod = (i % 2) == 0 ? true : false;
+				
+				var _ileft = (width_box * (col));
+				var _itop = (mod) ? -self.settings.height_skitter : self.settings.height_skitter;
+				
+				var _fleft = (width_box * (col));
+				var _ftop = (mod) ? 0 : (height_box);
+				
+				var _bleft = -(width_box * col);
+				var _btop = (mod) ? 0 : -(height_box);
+				
+				var delay_time = 120 * col;
+				
+				var box_clone = this.getBoxClone();
+				box_clone.css({left: _ileft, top:_itop, width:width_box, height:height_box});
+				
+				box_clone
+					.find('img')
+					.css({left: _bleft + (width_box / 1.5), top: _btop})
+					.delay(delay_time)
+					.animate({left: _bleft, top: _btop}, (time_animate * 1.9), 'easeOutQuad');
+				
+				this.addBoxClone(box_clone);
+				
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				box_clone.show().delay(delay_time).animate({top:_ftop, left:_fleft}, time_animate, easing, callback);
+				
+				if ((i % 2) != 0) col++;
+			}
+		},
+		
+		animationGlassBlock: function(options)
+		{
+			var self = this;
+			
+			this.settings.is_animating = true;
+			easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
+			var time_animate = 700 / this.settings.velocity;
+			
+			this.setActualLevel();
+			
+			var total 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+			var width_box 	= Math.ceil(this.settings.width_skitter / total);
+			var height_box 	= (this.settings.height_skitter);
+			
+			for (i = 0; i < total; i++) {
+				var _ileft = (width_box * (i));
+				var _itop = 0;
+				
+				var _fleft = (width_box * (i));
+				var _ftop = 0;
+				
+				var _bleft = -(width_box * (i));
+				var _btop = 0;
+				
+				var delay_time = 100 * i;
+				
+				var box_clone = this.getBoxClone();
+				box_clone.css({left: _ileft, top:_itop, width:width_box, height:height_box});
+				
+				box_clone
+					.find('img')
+					.css({left: _bleft + (width_box / 1.5), top: _btop})
+					.delay(delay_time)
+					.animate({left: _bleft, top: _btop}, (time_animate * 1.1), 'easeInOutQuad');
+				
+				this.addBoxClone(box_clone);
+				
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				box_clone.delay(delay_time).animate({top:_ftop, left:_fleft, opacity: 'show'}, time_animate, easing, callback);
+				
+			}
+		},
+		
+		// End animations ----------------------
+		
 		// Finish animation
 		finishAnimation: function (options) 
 		{
@@ -1496,7 +1599,7 @@
 		// Complete move
 		completeMove: function () 
 		{
-			clearInterval(this.timer);
+			this.clearTimer(true);
 			this.box_skitter.find('.box_clone').remove();
 			this.nextImage();
 		},
@@ -1643,27 +1746,68 @@
 		stopOnMouseOver: function () 
 		{
 			var self = this;
+			var opacity_elements = self.settings.opacity_elements;
+			var interval_in_elements = self.settings.interval_in_elements;
+			var interval_out_elements = self.settings.interval_out_elements;
+			
 			self.box_skitter.hover(function() {
 				
 				if (self.settings.hideTools) {
-					self.box_skitter.find('.info_slide').show().css({opacity:0}).animate({opacity:0.75}, 300);
-					self.box_skitter.find('.prev_button').show().css({opacity:0}).animate({opacity:0.75}, 300);
-					self.box_skitter.find('.next_button').show().css({opacity:0}).animate({opacity:0.75}, 300);
-				
+					if (self.settings.numbers) {
+						self.box_skitter
+							.find('.info_slide')
+							.show()
+							.css({opacity:0})
+							.animate({opacity: opacity_elements}, interval_in_elements);
+					}
+					
+					if (self.settings.navigation) {
+						self.box_skitter
+							.find('.prev_button')
+							.show()
+							.css({opacity:0})
+							.animate({opacity: opacity_elements}, interval_in_elements);
+							
+						self.box_skitter
+							.find('.next_button')
+							.show().css({opacity:0})
+							.animate({opacity: opacity_elements}, interval_in_elements);
+					}
 				}
 				
-				clearInterval(self.timer);
+				self.clearTimer(true);
 				self.settings.is_hover_box_skitter = true;
 				
 			}, function() {
 			
 				if (self.settings.hideTools) {
-					self.box_skitter.find('.info_slide').queue("fx", []).show().css({opacity:0.75}).animate({opacity:0}, 500);
-					self.box_skitter.find('.prev_button').queue("fx", []).show().css({opacity:0.75}).animate({opacity:0}, 500);
-					self.box_skitter.find('.next_button').queue("fx", []).show().css({opacity:0.75}).animate({opacity:0}, 500);
+					if (self.settings.numbers) {
+						self.box_skitter
+							.find('.info_slide')
+							.queue("fx", [])
+							.show()
+							.css({opacity: opacity_elements})
+							.animate({opacity:0}, interval_out_elements);
+					}
+					
+					if (self.settings.navigation) {
+						self.box_skitter
+							.find('.prev_button')
+							.queue("fx", [])
+							.show()
+							.css({opacity: opacity_elements})
+							.animate({opacity:0}, interval_out_elements);
+							
+						self.box_skitter
+							.find('.next_button')
+							.queue("fx", [])
+							.show()
+							.css({opacity: opacity_elements})
+							.animate({opacity:0}, interval_out_elements);
+					}
 				}
 				
-				clearInterval(self.timer);
+				self.clearTimer(true);
 				if (!self.settings.is_animating && self.settings.images_links.length > 1) {
 					self.timer = setTimeout(function() {
 						self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval);
@@ -1676,6 +1820,12 @@
 				
 			});
 		}, 
+		
+		// Stop timer
+		clearTimer: function (force) {
+			var self = this;
+			clearInterval(self.timer);
+		},
 		
 		// Set link atual
 		setLinkAtual: function() {

@@ -33,11 +33,14 @@ $animations = array(
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<title>Skitter - Slideshow for anytime! More a jQuery Slideshow</title>
+	<title>Skitter - Slideshow for anytime!</title>
 	
 	<meta name="description" content="Slideshow flexible with many options for customizations. This jQuery Slideshow is free!" />
 	<meta name="keywords" content="jquery slideshow, slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
+	
+	<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Rosario' rel='stylesheet' type='text/css'>
 	
 	<link rel="shortcut icon" href="images/favicon.ico">
 	<link href="css/styles.css" type="text/css" media="all" rel="stylesheet" />
@@ -68,6 +71,7 @@ $animations = array(
 	</script>
 </head>
 <body>
+<div id="page">
 	<div id="header">
 		<h1><a href="index.php">Skitter</a></h1>
 		<p>Slideshow for anytime!</p>
@@ -193,5 +197,6 @@ $animations = array(
 
 	</script>
 
+</div>
 </body>
 </html>

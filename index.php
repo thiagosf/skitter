@@ -11,11 +11,14 @@ function getLinkAnimation($animation) {
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<title>Skitter - Slideshow for anytime! More a jQuery Slideshow</title>
+	<title>Skitter - Slideshow for anytime!</title>
 	
 	<meta name="description" content="Slideshow flexible with many options for customizations. This jQuery Slideshow is free!" />
 	<meta name="keywords" content="jquery slideshow, slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
+	
+	<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Rosario' rel='stylesheet' type='text/css'>
 	
 	<link rel="shortcut icon" href="images/favicon.ico">
 	<link href="css/styles.css" type="text/css" media="all" rel="stylesheet" />
@@ -113,8 +116,15 @@ function getLinkAnimation($animation) {
 			'cubeStopRandom',
 			'cubeSpread',
 			'cubeJelly',
+			'glassCube',
+			'glassBlock',
 			'random', 
 			'randomSmart', 
+		);
+		
+		$new_animations = array(
+			'glassCube', 
+			'glassBlock', 
 		);
 		
 		$options = array();
@@ -131,7 +141,7 @@ function getLinkAnimation($animation) {
 			$options[] = 'thumbs: true';
 		}
 		else if ($_SESSION['type_navigation'] == 'dots') {
-			echo "$('.border_box').css({'margin-bottom':'35px'});\n\t\t";
+			echo "$('.border_box').css({'margin-bottom':'50px'});\n\t\t";
 			$options[] = 'dots: true';
 			$options[] = "animateNumberOut: {backgroundColor:'#555', color:'#fff'}";
 			$options[] = "animateNumberOver: {backgroundColor:'#333', color:'#fff'}";
@@ -167,6 +177,7 @@ function getLinkAnimation($animation) {
 	</script>
 </head>
 <body>
+<div id="page">
 	<div id="header">
 		<h1><a href="index.php">Skitter</a></h1>
 		<p>Slideshow for anytime!</p>
@@ -198,6 +209,7 @@ function getLinkAnimation($animation) {
 			<?php } ;?>
 			</div>
 		</div>
+		<?//exit;?>
 		<div id="examples-animations">
 			<div>
 				<?php
@@ -207,7 +219,13 @@ function getLinkAnimation($animation) {
 				
 				foreach($animations as $animation) {
 					$class = (isset($_GET['animation']) && $_GET['animation'] == $animation) ? 'selected' : '';
-					echo sprintf('<a href="?animation=%s" class="%s">%s</a>', $animation, $class, $animation);
+					
+					$new_animation = '';
+					if (in_array($animation, $new_animations)) {
+						$new_animation = '<span class="new_animation">new!</span>';
+					}
+					
+					echo sprintf('<a href="?animation=%s" class="%s">%s%s</a>', $animation, $class, $animation, $new_animation);
 				}
 				
 				?>
@@ -216,7 +234,6 @@ function getLinkAnimation($animation) {
 		
 		<div style="clear:both"></div>
 		
-		
 		<div id="styles_navigation">
 			<h2>Type of loading</h2>
 			<ul>
@@ -224,7 +241,7 @@ function getLinkAnimation($animation) {
 				
 				$types = array(
 					array('label' => 'HTML', 'type' => 'html'),
-					array('label' => 'XML', 'type' => 'xml', 'options' => '<span class="new">new!</span>'),
+					array('label' => 'XML', 'type' => 'xml'),
 				);
 				
 				foreach($types as $type) {
@@ -246,7 +263,7 @@ function getLinkAnimation($animation) {
 				$types = array(
 					array('label' => 'Numbers', 'type' => 'numbers'),
 					array('label' => 'Thumbs', 'type' => 'thumbs'),
-					array('label' => 'Dots', 'type' => 'dots', 'options' => '<span class="new">new!</span>'),
+					array('label' => 'Dots', 'type' => 'dots'),
 				);
 				
 				foreach($types as $type) {
@@ -269,7 +286,7 @@ function getLinkAnimation($animation) {
 					array('label' => 'Normal', 'type' => 'normal'),
 					array('label' => 'HideTools', 'type' => 'hideTools'),
 					array('label' => 'Fullscreen', 'type' => 'fullscreen', 'link' => 'fullscreen.php'),
-					array('label' => 'Randomly Sliders', 'type' => 'show_randomly', 'options' => '<span class="new">new!</span>'),
+					array('label' => 'Randomly Sliders', 'type' => 'show_randomly'),
 				);
 				
 				foreach($types as $type) {
@@ -294,7 +311,7 @@ function getLinkAnimation($animation) {
 				
 				$types = array(
 					array('label' => 'Mini-slides', 'type' => 'mini'),
-					array('label' => 'Multiple instances', 'type' => 'multiple', 'link' => 'multiple.php', 'options' => '<span class="new">new!</span>'),
+					array('label' => 'Multiple instances', 'type' => 'multiple', 'link' => 'multiple.php'),
 				);
 				
 				foreach($types as $type) {
@@ -314,39 +331,45 @@ function getLinkAnimation($animation) {
 		
 		<div id="download">
 			<a href="https://github.com/thiagosf/SkitterSlideshow" id="botao_download"><img src="images/download-button.png" /></a>
-			<a href="http://wordpress.org/extend/plugins/wp-skitter-slideshow/"><img src="images/download-wp.png" /></a>
+			<a href="http://wordpress.org/extend/plugins/wp-skitter-slideshow/" id="botao_wp"><img src="images/download-wp.png" /></a>
+			<a href="../../cakephp/skitter_helper/" id="botao_helper"><img src="images/download-helper.png" /></a>
 		</div>
 		
-		<div class="sexy-bookmarks sexy-bookmarks-expand sexy-bookmarks-center sexy-bookmarks-bg-sexy">
-			<ul class="socials">
-				<li class="sexy-delicious"><a href="http://del.icio.us/post" rel="nofollow" class="external" title="Share this on del.icio.us">Share this on del.icio.us</a></li>
-				<li class="sexy-facebook"><a href="http://www.facebook.com/share.php" rel="nofollow" class="external" title="Share this on Facebook">Share this on Facebook</a></li>
-				<li class="sexy-digg"><a href="http://digg.com/submit" rel="nofollow" class="external" title="Digg this!">Digg this!</a></li>
-				<li class="sexy-twitter"><a href="http://twitter.com/home" rel="nofollow" class="external" title="Tweet This!">Tweet This!</a></li>
-				<li class="sexy-twittley"><a href="http://twittley.com/submit/" rel="nofollow" class="external" title="Submit this to Twittley">Submit this to Twittley</a></li>
-				
-				<li class="sexy-yahoobuzz"><a href="http://buzz.yahoo.com/submit/" rel="nofollow" class="external" title="Buzz up!">Buzz up!</a></li>
-				<li class="sexy-myspace"><a href="http://www.myspace.com/Modules/PostTo/Pages/" rel="nofollow" class="external" title="Post this to MySpace">Post this to MySpace</a></li>
-				<li class="sexy-google"><a href="http://www.google.com/bookmarks/mark" rel="nofollow" class="external" title="Add this to Google Bookmarks">Add this to Google Bookmarks</a></li>
+		<div id="box_share">
+			<div class="sexy-bookmarks sexy-bookmarks-expand sexy-bookmarks-center sexy-bookmarks-bg-sexy">
+				<ul class="socials">
+					<li class="sexy-delicious"><a href="http://del.icio.us/post" rel="nofollow" class="external" title="Share this on del.icio.us">Share this on del.icio.us</a></li>
+					<li class="sexy-facebook"><a href="http://www.facebook.com/share.php" rel="nofollow" class="external" title="Share this on Facebook">Share this on Facebook</a></li>
+					<li class="sexy-digg"><a href="http://digg.com/submit" rel="nofollow" class="external" title="Digg this!">Digg this!</a></li>
+					<li class="sexy-twitter"><a href="http://twitter.com/home" rel="nofollow" class="external" title="Tweet This!">Tweet This!</a></li>
+					<li class="sexy-twittley"><a href="http://twittley.com/submit/" rel="nofollow" class="external" title="Submit this to Twittley">Submit this to Twittley</a></li>
+					
+					<li class="sexy-yahoobuzz"><a href="http://buzz.yahoo.com/submit/" rel="nofollow" class="external" title="Buzz up!">Buzz up!</a></li>
+					<li class="sexy-myspace"><a href="http://www.myspace.com/Modules/PostTo/Pages/" rel="nofollow" class="external" title="Post this to MySpace">Post this to MySpace</a></li>
+					<li class="sexy-google"><a href="http://www.google.com/bookmarks/mark" rel="nofollow" class="external" title="Add this to Google Bookmarks">Add this to Google Bookmarks</a></li>
 
-				<li class="sexy-scriptstyle"><a href="http://scriptandstyle.com/submit" rel="nofollow" class="external" title="Submit this to Script &amp; Style">Submit this to Script &amp; Style</a></li>
-				<li class="sexy-reddit"><a href="http://reddit.com/submit" rel="nofollow" class="external" title="Share this on Reddit">Share this on Reddit</a></li>
-				<li class="sexy-stumbleupon"><a href="http://www.stumbleupon.com/submit" rel="nofollow" class="external" title="Stumble upon something good? Share it on StumbleUpon">Stumble upon something good? Share it on StumbleUpon</a></li>
-				<li class="sexy-mixx"><a href="http://www.mixx.com/submit" rel="nofollow" class="external" title="Share this on Mixx">Share this on Mixx</a></li>
+					<li class="sexy-scriptstyle"><a href="http://scriptandstyle.com/submit" rel="nofollow" class="external" title="Submit this to Script &amp; Style">Submit this to Script &amp; Style</a></li>
+					<li class="sexy-reddit"><a href="http://reddit.com/submit" rel="nofollow" class="external" title="Share this on Reddit">Share this on Reddit</a></li>
+					<li class="sexy-stumbleupon"><a href="http://www.stumbleupon.com/submit" rel="nofollow" class="external" title="Stumble upon something good? Share it on StumbleUpon">Stumble upon something good? Share it on StumbleUpon</a></li>
+					<li class="sexy-mixx"><a href="http://www.mixx.com/submit" rel="nofollow" class="external" title="Share this on Mixx">Share this on Mixx</a></li>
 
-				<li class="sexy-technorati"><a href="http://technorati.com/faves" rel="nofollow" class="external" title="Share this on Technorati">Share this on Technorati</a></li>
-				<li class="sexy-blinklist"><a href="http://www.blinklist.com/index.php" rel="nofollow" class="external" title="Share this on Blinklist">Share this on Blinklist</a></li>
-				<li class="sexy-diigo"><a href="http://www.diigo.com/post">Post this on Diigo</a></li>
-				
-				<li class="sexy-designfloat"><a href="http://www.designfloat.com/submit.php" rel="nofollow" class="external" title="Submit this to DesignFloat">Submit this to DesignFloat</a></li>
-				<li class="sexy-newsvine"><a href="http://www.newsvine.com/_tools/seed&amp;save" rel="nofollow" class="external" title="Seed this on Newsvine">Seed this on Newsvine</a></li>
-				
-			</ul>
+					<li class="sexy-technorati"><a href="http://technorati.com/faves" rel="nofollow" class="external" title="Share this on Technorati">Share this on Technorati</a></li>
+					<li class="sexy-blinklist"><a href="http://www.blinklist.com/index.php" rel="nofollow" class="external" title="Share this on Blinklist">Share this on Blinklist</a></li>
+					<li class="sexy-diigo"><a href="http://www.diigo.com/post">Post this on Diigo</a></li>
+					
+					<li class="sexy-designfloat"><a href="http://www.designfloat.com/submit.php" rel="nofollow" class="external" title="Submit this to DesignFloat">Submit this to DesignFloat</a></li>
+					<li class="sexy-newsvine"><a href="http://www.newsvine.com/_tools/seed&amp;save" rel="nofollow" class="external" title="Seed this on Newsvine">Seed this on Newsvine</a></li>
+					
+				</ul>
+			</div>
 		</div>
 		
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>05/08/2011</dt>
+					<dd>- New animations: <?=getLinkAnimation('glassCube');?>, <?=getLinkAnimation('glassBlock');?></dd>
+					<dd>- Bug fixed hideTools</dd>
 				<dt>30/05/2011</dt>
 					<dd>- Display <a href="multiple.php">multiple instances</a> on the same page!</dd>
 				<dt>28/05/2011</dt>
@@ -383,7 +406,6 @@ function getLinkAnimation($animation) {
 					<dd>- Creation of Skitter Slideshow!</dd>
 			</dl>
 		</div>
-		
 		
 		<h2>Includes</h2>
 		<pre class="code" lang="html">
@@ -477,16 +499,16 @@ $(function(){
 						array('navigation', 'Navigation display', 'true', "$('.box_skitter_large').skitter({navigation: false});"),
 						array('label', 'Label display', 'true', "$('.box_skitter_large').skitter({label: false});"),
 						array('easing_default', 'Easing default', 'null', "$('.box_skitter_large').skitter({easing_default: 'easeOutBack'});"),
-						array('animateNumberOut', 'Animation/style number', "{backgroundColor:'#333', color:'#fff'}", "$('.box_skitter_large').skitter({animateNumberOut: {backgroundColor:'#000', color:'#ccc'}});"),
-						array('animateNumberOver', 'Animation/style hover number', "{backgroundColor:'#000', color:'#fff'}", "$('.box_skitter_large').skitter({animateNumberOver: {backgroundColor:'#000', color:'#ccc'}});"),
-						array('animateNumberActive', 'Animation/style active number', "{backgroundColor:'#cc3333', color:'#fff'}", "$('.box_skitter_large').skitter({animateNumberActive: {backgroundColor:'#000', color:'#ccc'}});"),
+						array('animateNumberOut', 'Animation/style number/dot', "{backgroundColor:'#333', color:'#fff'}", "$('.box_skitter_large').skitter({animateNumberOut: {backgroundColor:'#000', color:'#ccc'}});"),
+						array('animateNumberOver', 'Animation/style hover number/dot', "{backgroundColor:'#000', color:'#fff'}", "$('.box_skitter_large').skitter({animateNumberOver: {backgroundColor:'#000', color:'#ccc'}});"),
+						array('animateNumberActive', 'Animation/style active number/dot', "{backgroundColor:'#cc3333', color:'#fff'}", "$('.box_skitter_large').skitter({animateNumberActive: {backgroundColor:'#000', color:'#ccc'}});"),
 						array('thumbs', 'Navigation with thumbs', "false", "$('.box_skitter_large').skitter({thumbs: true});"),
 						array('hideTools', 'Hide numbers and navigation', "false", "$('.box_skitter_large').skitter({hideTools: true});"),
 						array('fullscreen', 'Fullscreen mode', "false", "$('.box_skitter_large').skitter({fullscreen: true});"),
 						array('xml', 'Loading data from XML file', "false", "$('.box_skitter_large').skitter({xml: \"xml/slides.xml\"});"),
 						array('dots', 'Navigation with dots', "false", "$('.box_skitter_large').skitter({dots: true});"),
 						array('width_label', 'Width label', "null", "$('.box_skitter_large').skitter({width_label: '300px'});"),
-						array('show_randomly', 'Randomly sliders', "false", "$('.box_skitter_large').skitter({show_randonly: true});"),
+						array('show_randomly', 'Randomly sliders', "false", "$('.box_skitter_large').skitter({show_randomly: true});"),
 					);
 					
 					foreach($data as $linha) {
@@ -507,6 +529,26 @@ $(function(){
 			</table>
 			
 		</div>
+		
+		<div id="disqus_thread"></div>
+		<script type="text/javascript">
+			/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+			var disqus_shortname = 'skitter'; // required: replace example with your forum shortname
+
+			// The following are highly recommended additional parameters. Remove the slashes in front to use.
+			// var disqus_identifier = 'unique_dynamic_id_1234';
+			// var disqus_url = 'http://example.com/permalink-to-page.html';
+
+			/* * * DON'T EDIT BELOW THIS LINE * * */
+			(function() {
+				var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+				dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+				(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+		
 	</div>
 	
 	<div id="footer">
@@ -528,5 +570,6 @@ $(function(){
 
 	</script>
 
+</div>
 </body>
 </html>

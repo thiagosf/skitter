@@ -36,6 +36,9 @@ $animations = array(
 	<meta name="keywords" content="slides, slide, slideshow, gallery, images, effects, easing, transitions, jquery, plugin, gpl license, free, customizations, flexible" />
 	<meta name="author" content="Thiago S.F. - http://thiagosf.net" />
 	
+	<link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Rosario' rel='stylesheet' type='text/css'>
+	
 	<link rel="shortcut icon" href="images/favicon.ico">
 	<link href="css/styles.css" type="text/css" media="all" rel="stylesheet" />
 	<link href="css/skitter.styles.css" type="text/css" media="all" rel="stylesheet" />
