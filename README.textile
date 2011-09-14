@@ -1,5 +1,5 @@
 h1. Skitter - Slideshow for anytime!
 
-With 27 different animations, two types of navigation and many options to customize!
+With 30 different animations, two types of navigation and many options to customize!
 
 License: Dual licensed under the MIT or GPL Version 2 licenses

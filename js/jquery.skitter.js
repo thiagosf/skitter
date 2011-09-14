@@ -11,7 +11,7 @@
  */
 
 (function($) {
-
+	
 	var number_skitter = 0;
 	
 	$.fn.skitter = function(options) {
@@ -54,6 +54,7 @@
 		opacity_elements:		0.75, // Final opacity of elements in hideTools
 		interval_in_elements:	300, // Interval animation hover elements hideTools
 		interval_out_elements:	500, // Interval animation out elements hideTools
+		onLoad:					null,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -394,7 +395,7 @@
 					}
 				}).error(function () {
 					self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
-					self.box_skitter.html('<p style="color:white;">Error loading images. One or more images were not found.</p>');
+					self.box_skitter.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
 				}).attr('src', self_il[0]);
 			});
 		}, 
@@ -423,6 +424,8 @@
 			else {
 				this.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
 			}
+			
+			if ($.isFunction(this.settings.onLoad)) this.settings.onLoad();
 		},
 		
 		/**
@@ -454,8 +457,10 @@
 				'directionLeft',
 				'cubeSpread',
 				'glassCube',
-				'glassBlock'
-				
+				'glassBlock',
+				'circles',
+				'circlesInside',
+				'circlesRotate'
 			];
 			
 			animation_type = (this.settings.animation == '' && this.settings.images_links[this.settings.image_i][2]) ? 
@@ -555,6 +560,15 @@
 					break;
 				case 'glassBlock' : 
 					this.animationGlassBlock();
+					break;
+				case 'circles' : 
+					this.animationCircles();
+					break;
+				case 'circlesInside' : 
+					this.animationCirclesInside();
+					break;
+				case 'circlesRotate' : 
+					this.animationCirclesRotate();
 					break;
 				default : 
 					this.animationTube();
@@ -1580,6 +1594,138 @@
 			}
 		},
 		
+		animationCircles: function(options)
+		{
+			var self = this;
+			
+			this.settings.is_animating = true;
+			easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
+			var time_animate = 500 / this.settings.velocity;
+			
+			this.setActualLevel();
+			
+			var total 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+			var size_box	= 100;
+			
+			var radius		= Math.sqrt(Math.pow((this.settings.width_skitter), 2) + Math.pow((this.settings.height_skitter), 2));
+			var radius		= Math.ceil(radius);
+			
+			for (i = 0; i < total; i++) {
+				var _ileft = (self.settings.width_skitter / 2) - (size_box / 2);
+				var _itop = (self.settings.height_skitter / 2) - (size_box / 2);
+				
+				var _fleft = _ileft; 
+				var _ftop = _itop; 
+				
+				var box_clone = this.getBoxClone();
+				box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+					'border-radius': radius+'px'
+				});
+				box_clone.find('img').css({left: -_ileft, top: -_itop});
+				
+				size_box += 100;
+				
+				this.addBoxClone(box_clone);
+				
+				var delay_time = 70 * i;
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'show'}, time_animate, easing, callback);
+				
+			}
+		},
+		
+		animationCirclesInside: function(options)
+		{
+			var self = this;
+			
+			this.settings.is_animating = true;
+			easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
+			var time_animate = 500 / this.settings.velocity;
+			
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+			
+			this.setActualLevel();
+			
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+			
+			var total 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+			
+			var radius		= Math.sqrt(Math.pow((this.settings.width_skitter), 2) + Math.pow((this.settings.height_skitter), 2));
+			var radius		= Math.ceil(radius);
+			var size_box	= radius;
+			
+			for (i = 0; i < total; i++) {
+				var _ileft = (self.settings.width_skitter / 2) - (size_box / 2);
+				var _itop = (self.settings.height_skitter / 2) - (size_box / 2);
+				
+				var _fleft = _ileft; 
+				var _ftop = _itop; 
+				
+				var box_clone = this.getBoxCloneImgOld(image_old);
+				box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+					'border-radius': radius+'px'
+				});
+				box_clone.find('img').css({left: -_ileft, top: -_itop});
+				
+				size_box -= 100;
+				
+				this.addBoxClone(box_clone);
+				box_clone.show();
+				
+				var delay_time = 70 * i;
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'hide'}, time_animate, easing, callback);
+				
+			}
+		},
+		
+		animationCirclesRotate: function(options)
+		{
+			var self = this;
+			
+			this.settings.is_animating = true;
+			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var time_animate = 500 / this.settings.velocity;
+			
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+			
+			this.setActualLevel();
+			
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+			
+			var total 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+			
+			var radius		= Math.sqrt(Math.pow((this.settings.width_skitter), 2) + Math.pow((this.settings.height_skitter), 2));
+			var radius		= Math.ceil(radius);
+			var size_box	= radius;
+			
+			for (i = 0; i < total; i++) {
+				var _ileft = (self.settings.width_skitter / 2) - (size_box / 2);
+				var _itop = (self.settings.height_skitter / 2) - (size_box / 2);
+				
+				var _fleft = _ileft; 
+				var _ftop = _itop; 
+				
+				var box_clone = this.getBoxCloneImgOld(image_old);
+				box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+					'border-radius': radius+'px'
+				});
+				box_clone.find('img').css({left: -_ileft, top: -_itop});
+				
+				size_box -= 100;
+				
+				this.addBoxClone(box_clone);
+				box_clone.show();
+				
+				var delay_time = 100 * i;
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				var _rotate = (i % 2 == 0) ? '20deg' : '-20deg';
+				box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'hide', rotate: _rotate}, time_animate, easing, callback);
+			}
+		},
+		
 		// End animations ----------------------
 		
 		// Finish animation
@@ -1872,5 +2018,229 @@
 		}
 		
 	});
+	
+	/**
+	 * Helper function for cross-browser CSS3 support, prepends all possible prefixes to all properties passed in
+	 * @param {Object} props Ker/value pairs of CSS3 properties
+	 */
+	$.fn.css3 = function(props) {
+		var css = {};
+		var prefixes = ['webkit', 'moz', 'ms', 'o'];
+
+		for(var prop in props)
+		{
+			// Add the vendor specific versions
+			for(var i=0; i<prefixes.length; i++)
+				css['-'+prefixes[i]+'-'+prop] = props[prop];
+			
+			// Add the actual version	
+			css[prop] = props[prop];
+		}
+		
+		this.css(css);
+		return this;
+	};
+	
+    // Monkey patch jQuery 1.3.1+ to add support for setting or animating CSS
+    // scale and rotation independently.
+    // 2009-2010 Zachary Johnson www.zachstronaut.com
+    // Updated 2010.11.06
+    var rotateUnits = 'deg';
+    
+    $.fn.rotate = function (val)
+    {
+        var style = $(this).css('transform') || 'none';
+        
+        if (typeof val == 'undefined')
+        {
+            if (style)
+            {
+                var m = style.match(/rotate\(([^)]+)\)/);
+                if (m && m[1])
+                {
+                    return m[1];
+                }
+            }
+            
+            return 0;
+        }
+        
+        var m = val.toString().match(/^(-?\d+(\.\d+)?)(.+)?$/);
+        if (m)
+        {
+            if (m[3])
+            {
+                rotateUnits = m[3];
+            }
+            
+            $(this).css(
+                'transform',
+                style.replace(/none|rotate\([^)]*\)/, '') + 'rotate(' + m[1] + rotateUnits + ')'
+            );
+        }
+        
+        return this;
+    };
+    
+    // Note that scale is unitless.
+    $.fn.scale = function (val, duration, options)
+    {
+        var style = $(this).css('transform');
+        
+        if (typeof val == 'undefined')
+        {
+            if (style)
+            {
+                var m = style.match(/scale\(([^)]+)\)/);
+                if (m && m[1])
+                {
+                    return m[1];
+                }
+            }
+            
+            return 1;
+        }
+        
+        $(this).css(
+            'transform',
+            style.replace(/none|scale\([^)]*\)/, '') + 'scale(' + val + ')'
+        );
+        
+        return this;
+    };
+
+    // fx.cur() must be monkey patched because otherwise it would always
+    // return 0 for current rotate and scale values
+    var curProxied = $.fx.prototype.cur;
+    $.fx.prototype.cur = function ()
+    {
+        if (this.prop == 'rotate')
+        {
+            return parseFloat($(this.elem).rotate());
+        }
+        else if (this.prop == 'scale')
+        {
+            return parseFloat($(this.elem).scale());
+        }
+        
+        return curProxied.apply(this, arguments);
+    };
+    
+    $.fx.step.rotate = function (fx)
+    {
+        $(fx.elem).rotate(fx.now + rotateUnits);
+    };
+    
+    $.fx.step.scale = function (fx)
+    {
+        $(fx.elem).scale(fx.now);
+    };
+    
+    var animateProxied = $.fn.animate;
+    $.fn.animate = function (prop)
+    {
+        if (typeof prop['rotate'] != 'undefined')
+        {
+            var m = prop['rotate'].toString().match(/^(([+-]=)?(-?\d+(\.\d+)?))(.+)?$/);
+            if (m && m[5])
+            {
+                rotateUnits = m[5];
+            }
+            
+            prop['rotate'] = m[1];
+        }
+        
+        return animateProxied.apply(this, arguments);
+    };
+	
+    // Monkey patch jQuery 1.3.1+ css() method to support CSS 'transform'
+    // property uniformly across Safari/Chrome/Webkit, Firefox 3.5+, IE 9+, and Opera 11+.
+    // 2009-2011 Zachary Johnson www.zachstronaut.com
+    // Updated 2011.05.04 (May the fourth be with you!)
+    function getTransformProperty(element)
+    {
+        // Try transform first for forward compatibility
+        // In some versions of IE9, it is critical for msTransform to be in
+        // this list before MozTranform.
+        var properties = ['transform', 'WebkitTransform', 'msTransform', 'MozTransform', 'OTransform'];
+        var p;
+        while (p = properties.shift())
+        {
+            if (typeof element.style[p] != 'undefined')
+            {
+                return p;
+            }
+        }
+        
+        // Default to transform also
+        return 'transform';
+    };
+    
+    var _propsObj = null;
+    
+    var proxied = $.fn.css;
+    $.fn.css = function (arg, val)
+    {
+        // Temporary solution for current 1.6.x incompatibility, while
+        // preserving 1.3.x compatibility, until I can rewrite using CSS Hooks
+        if (_propsObj === null)
+        {
+            if (typeof $.cssProps != 'undefined')
+            {
+                _propsObj = $.cssProps;
+            }
+            else if (typeof $.props != 'undefined')
+            {
+                _propsObj = $.props;
+            }
+            else
+            {
+                _propsObj = {};
+            }
+        }
+		
+        if
+        (
+            typeof _propsObj['transform'] == 'undefined'
+            &&
+            (
+                arg == 'transform'
+                ||
+                (
+                    typeof arg == 'object'
+                    && typeof arg['transform'] != 'undefined'
+                )
+            )
+        )
+        {
+            _propsObj['transform'] = getTransformProperty(this.get(0));
+        }
+		
+        if (_propsObj['transform'] != 'transform')
+        {
+            // Call in form of css('transform' ...)
+            if (arg == 'transform')
+            {
+                arg = _propsObj['transform'];
+                if (typeof val == 'undefined' && jQuery.style)
+                {
+                    return jQuery.style(this.get(0), arg);
+                }
+            }
+
+            // Call in form of css({'transform': ...})
+            else if
+            (
+                typeof arg == 'object'
+                && typeof arg['transform'] != 'undefined'
+            )
+            {
+                arg[_propsObj['transform']] = arg['transform'];
+                delete arg['transform'];
+            }
+        }
+        
+        return proxied.apply(this, arguments);
+    };
 
 })(jQuery)

@@ -26,7 +26,7 @@ function getLinkAnimation($animation) {
 	<link href="css/highlight.black.css" type="text/css" media="all" rel="stylesheet" />
 	<link href="css/sexy-bookmarks-style.css" type="text/css" media="all" rel="stylesheet" />
 	
-	<script src="js/jquery-1.5.2.min.js"></script>
+	<script src="js/jquery-1.6.3.min.js"></script>
 	<script src="js/jquery.easing.1.3.js"></script>
 	<script src="js/jquery.animate-colors-min.js"></script>
 	
@@ -41,7 +41,7 @@ function getLinkAnimation($animation) {
 		
 		$mode_xml = false;
 		
-		// Tipos de navegações
+		// Tipos de navegaÃ§Ãµes
 		$_SESSION['type_loading'] = (isset($_SESSION['type_loading'])) ? $_SESSION['type_loading'] : 'html';
 		if (isset($_GET['type_loading'])) {
 			$_SESSION['other_options'] = 'normal';
@@ -55,7 +55,7 @@ function getLinkAnimation($animation) {
 			}
 		}
 		
-		// Tipos de navegações
+		// Tipos de navegaÃ§Ãµes
 		$_SESSION['type_navigation'] = (isset($_SESSION['type_navigation'])) ? $_SESSION['type_navigation'] : 'numbers';
 		if (isset($_GET['type_navigation'])) {
 			$_SESSION['other_options'] = 'normal';
@@ -72,7 +72,7 @@ function getLinkAnimation($animation) {
 			}
 		}
 		
-		// Opções do skitter
+		// OpÃ§Ãµes do skitter
 		$_SESSION['other_options'] = (isset($_SESSION['other_options'])) ? $_SESSION['other_options'] : 'numbers';
 		if (isset($_GET['other_options'])) {
 			$_SESSION['type_navigation'] = 'numbers';
@@ -118,13 +118,17 @@ function getLinkAnimation($animation) {
 			'cubeJelly',
 			'glassCube',
 			'glassBlock',
+			'circles',
+			'circlesInside',
+			'circlesRotate',
 			'random', 
 			'randomSmart', 
 		);
 		
 		$new_animations = array(
-			'glassCube', 
-			'glassBlock', 
+			'circles',
+			'circlesInside',
+			'circlesRotate',
 		);
 		
 		$options = array();
@@ -179,7 +183,7 @@ function getLinkAnimation($animation) {
 <body>
 <div id="page">
 	<div id="header">
-		<h1><a href="index.php">Skitter</a></h1>
+		<h1><a href="http://thiagosf.net/projects/jquery/skitter">Skitter</a></h1>
 		<p>Slideshow for anytime!</p>
 	</div>
 	
@@ -367,6 +371,10 @@ function getLinkAnimation($animation) {
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>08/09/2011</dt>
+					<dd>- New animations: <?=getLinkAnimation('circles');?>, <?=getLinkAnimation('circlesInside');?> and <?=getLinkAnimation('circlesRotate');?></dd>
+					<dd>- Callback onLoad: calling a user-defined function to load images</dd>
+					<dd>- Added <a href="https://github.com/zachstronaut/jquery-animate-css-rotate-scale">rotate-scale plugin</a>: to the effect of rotation</dd>
 				<dt>05/08/2011</dt>
 					<dd>- New animations: <?=getLinkAnimation('glassCube');?>, <?=getLinkAnimation('glassBlock');?></dd>
 					<dd>- Bug fixed hideTools</dd>
@@ -404,6 +412,17 @@ function getLinkAnimation($animation) {
 					<dd>- Added the type of thumbnail browsing.</dd>
 				<dt>04/08/2010</dt>
 					<dd>- Creation of Skitter Slideshow!</dd>
+			</dl>
+		</div>
+		
+		<h2>Next updates:</h2>
+		<div id="updatelog">
+			<dl>
+				<dt>Option play/pause manually.</dt>
+				<dt>Progress bar slide actually.</dt>
+					<!--<dd>- New animations: <?=getLinkAnimation('glassCube');?>, <?=getLinkAnimation('glassBlock');?></dd>
+					<dd>- Bug fixed hideTools</dd>-->
+				
 			</dl>
 		</div>
 		
@@ -509,6 +528,7 @@ $(function(){
 						array('dots', 'Navigation with dots', "false", "$('.box_skitter_large').skitter({dots: true});"),
 						array('width_label', 'Width label', "null", "$('.box_skitter_large').skitter({width_label: '300px'});"),
 						array('show_randomly', 'Randomly sliders', "false", "$('.box_skitter_large').skitter({show_randomly: true});"),
+						array('onLoad', 'Callback', "null", "$('.box_skitter_large').skitter({onLoad: function() { console.log('start!') } });"),
 					);
 					
 					foreach($data as $linha) {

@@ -48,7 +48,7 @@ $animations = array(
 	<link href="css/highlight.black.css" type="text/css" media="all" rel="stylesheet" />
 	<link href="css/sexy-bookmarks-style.css" type="text/css" media="all" rel="stylesheet" />
 	
-	<script src="js/jquery-1.5.2.min.js"></script>
+	<script src="js/jquery-1.6.3.min.js"></script>
 	<script src="js/jquery.easing.1.3.js"></script>
 	<script src="js/jquery.animate-colors-min.js"></script>
 	
@@ -127,7 +127,7 @@ $animations = array(
 		</div>
 	</div>
 	<div style="clear:both;"></div>
-		<div class="border_box" style="margin-bottom:35px;">
+		<div class="border_box" style="margin-bottom:45px;">
 			<div class="box_skitter box_skitter_medium">
 				<ul>
 					<?php
