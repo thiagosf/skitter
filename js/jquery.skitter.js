@@ -63,7 +63,8 @@
 										+ '<a href=""><img class="image_main" /></a>'
 										+ '<div class="label_skitter"></div>'
 									+ '</div>'
-								+ '</div>'
+								+ '</div>',
+		max_number_height: 20
 	};
 	
 	$.skitter = function(obj, options, number) {
@@ -273,7 +274,7 @@
 			}
 			else 
 			{
-				if (self.box_skitter.find('.info_slide').height() > 20) {
+				if (self.box_skitter.find('.info_slide').height() > self.settings.max_number_height) {
 					self.box_skitter.find('.info_slide').hide();
 				}
 			}
