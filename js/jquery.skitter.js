@@ -13,12 +13,25 @@
 (function($) {
 	
 	var number_skitter = 0;
+	var skitters = []
 	
-	$.fn.skitter = function(options) {
-		return this.each(function() {
-			new $sk(this, options, number_skitter);
-			++number_skitter;
-		});
+	$.fn.skitter = function() {
+        var options = arguments[0]
+        var arg = arguments[1]
+        var that = this
+        if (options == "setimage") {
+            return this.each(function() {
+                var skitternumber = $(this).data('skitter_number')
+                skitters[skitternumber].jumpToImage(arg)
+    		});
+        }
+        else {
+    		return this.each(function() {
+    		    $(this).data('skitter_number', number_skitter)
+    			skitters.push(new $sk(this, options, number_skitter));
+    			++number_skitter;
+    		});
+    	}
 	};
 	
 	var defaults = {
@@ -64,6 +77,7 @@
 										+ '<div class="label_skitter"></div>'
 									+ '</div>'
 								+ '</div>',
+								
 		max_number_height: 20
 	};
 	
@@ -102,6 +116,7 @@
 			
 			this.settings.width_skitter 	= parseFloat(this.box_skitter.css('width'));
 			this.settings.height_skitter 	= parseFloat(this.box_skitter.css('height'));
+			
 			
 			if (!this.settings.width_skitter || !this.settings.height_skitter) {
 				console.warn('Width or height size is null! - Skitter Slideshow');
@@ -340,18 +355,8 @@
 				
 				this.box_skitter.find('.image_number').click(function(){
 					if ($(this).attr('class') != 'image_number image_number_select') {
-						if (self.settings.is_animating == false) {
-							self.box_skitter.find('.box_clone').stop();
-							self.clearTimer(true);
-							
-							var new_i = $(this).attr('rel');
-							self.settings.image_i = Math.floor(new_i);
-							
-							self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
-							self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
-							self.box_skitter.find('.box_clone').remove();
-							self.nextImage();
-						}
+					    var imageNumber = $(this).attr('rel');
+						self.jumpToImage(imageNumber)
 					}
 					return false;
 				});
@@ -427,6 +432,24 @@
 			}
 			
 			if ($.isFunction(this.settings.onLoad)) this.settings.onLoad();
+		},
+		
+		/**
+		 * Jump to image
+		 */
+		jumpToImage: function(imageNumber) 
+		{
+			if (this.settings.is_animating == false) {
+				this.box_skitter.find('.box_clone').stop();
+				this.clearTimer(true);
+		
+				this.settings.image_i = Math.floor(imageNumber);
+				
+				this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+				this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
+				this.box_skitter.find('.box_clone').remove();
+				this.nextImage();
+			}
 		},
 		
 		/**
@@ -1757,6 +1780,7 @@
 			this.addClassNumber();
 			this.hideBoxText();
 			this.increasingImage();
+			this.box_skitter.trigger('imageSwitched', [this, this.settings.image_i])
 		},
 
 		// Set image and link
