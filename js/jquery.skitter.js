@@ -3,8 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.2
+ * @version 3.3
  * @date August 04, 2010
+ * @update September 19, 2011
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -12,11 +13,13 @@
 
 (function($) {
 	
-	var number_skitter = 0;
+	var number_skitter = 0,
+		skitters = [];
 	
 	$.fn.skitter = function(options) {
 		return this.each(function() {
-			new $sk(this, options, number_skitter);
+			$(this).data('skitter_number', number_skitter);
+			skitters.push(new $sk(this, options, number_skitter));
 			++number_skitter;
 		});
 	};
@@ -55,6 +58,8 @@
 		interval_in_elements:	300, // Interval animation hover elements hideTools
 		interval_out_elements:	500, // Interval animation out elements hideTools
 		onLoad:					null,
+		imageSwitched:			null,
+		max_number_height: 		20,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -63,8 +68,8 @@
 										+ '<a href=""><img class="image_main" /></a>'
 										+ '<div class="label_skitter"></div>'
 									+ '</div>'
-								+ '</div>',
-		max_number_height: 20
+								+ '</div>'
+		
 	};
 	
 	$.skitter = function(obj, options, number) {
@@ -340,18 +345,8 @@
 				
 				this.box_skitter.find('.image_number').click(function(){
 					if ($(this).attr('class') != 'image_number image_number_select') {
-						if (self.settings.is_animating == false) {
-							self.box_skitter.find('.box_clone').stop();
-							self.clearTimer(true);
-							
-							var new_i = $(this).attr('rel');
-							self.settings.image_i = Math.floor(new_i);
-							
-							self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
-							self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
-							self.box_skitter.find('.box_clone').remove();
-							self.nextImage();
-						}
+					    var imageNumber = $(this).attr('rel');
+						self.jumpToImage(imageNumber);
 					}
 					return false;
 				});
@@ -427,6 +422,24 @@
 			}
 			
 			if ($.isFunction(this.settings.onLoad)) this.settings.onLoad();
+		},
+		
+		/**
+		 * Jump to image
+		 */
+		jumpToImage: function(imageNumber) 
+		{
+			if (this.settings.is_animating == false) {
+				this.box_skitter.find('.box_clone').stop();
+				this.clearTimer(true);
+				
+				this.settings.image_i = Math.floor(imageNumber);
+				
+				this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+				this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
+				this.box_skitter.find('.box_clone').remove();
+				this.nextImage();
+			}
 		},
 		
 		/**
@@ -952,8 +965,8 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
-			var time_animate = 500 / this.settings.velocity;
+			easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
+			var time_animate = 700 / this.settings.velocity;
 			
 			this.setActualLevel();
 			
@@ -1753,6 +1766,7 @@
 
 		// Actual config for animation
 		setActualLevel: function() {
+			if ($.isFunction(this.settings.imageSwitched)) this.settings.imageSwitched(this.settings.image_i, this);
 			this.setImageLink();
 			this.addClassNumber();
 			this.hideBoxText();
@@ -2026,7 +2040,7 @@
 	 */
 	$.fn.css3 = function(props) {
 		var css = {};
-		var prefixes = ['webkit', 'moz', 'ms', 'o'];
+		var prefixes = ['moz', 'ms', 'o', 'webkit'];
 
 		for(var prop in props)
 		{
@@ -2140,11 +2154,9 @@
     var animateProxied = $.fn.animate;
     $.fn.animate = function (prop)
     {
-        if (typeof prop['rotate'] != 'undefined')
-        {
+        if (typeof prop['rotate'] != 'undefined') {
             var m = prop['rotate'].toString().match(/^(([+-]=)?(-?\d+(\.\d+)?))(.+)?$/);
-            if (m && m[5])
-            {
+            if (m && m[5]) {
                 rotateUnits = m[5];
             }
             
@@ -2165,10 +2177,8 @@
         // this list before MozTranform.
         var properties = ['transform', 'WebkitTransform', 'msTransform', 'MozTransform', 'OTransform'];
         var p;
-        while (p = properties.shift())
-        {
-            if (typeof element.style[p] != 'undefined')
-            {
+        while (p = properties.shift()) {
+            if (typeof element.style[p] != 'undefined') {
                 return p;
             }
         }
@@ -2184,18 +2194,14 @@
     {
         // Temporary solution for current 1.6.x incompatibility, while
         // preserving 1.3.x compatibility, until I can rewrite using CSS Hooks
-        if (_propsObj === null)
-        {
-            if (typeof $.cssProps != 'undefined')
-            {
+        if (_propsObj === null) {
+            if (typeof $.cssProps != 'undefined') {
                 _propsObj = $.cssProps;
             }
-            else if (typeof $.props != 'undefined')
-            {
+            else if (typeof $.props != 'undefined') {
                 _propsObj = $.props;
             }
-            else
-            {
+            else {
                 _propsObj = {};
             }
         }
@@ -2212,19 +2218,15 @@
                     && typeof arg['transform'] != 'undefined'
                 )
             )
-        )
-        {
+        ) {
             _propsObj['transform'] = getTransformProperty(this.get(0));
         }
 		
-        if (_propsObj['transform'] != 'transform')
-        {
+        if (_propsObj['transform'] != 'transform') {
             // Call in form of css('transform' ...)
-            if (arg == 'transform')
-            {
+            if (arg == 'transform') {
                 arg = _propsObj['transform'];
-                if (typeof val == 'undefined' && jQuery.style)
-                {
+                if (typeof val == 'undefined' && jQuery.style) {
                     return jQuery.style(this.get(0), arg);
                 }
             }
@@ -2234,8 +2236,7 @@
             (
                 typeof arg == 'object'
                 && typeof arg['transform'] != 'undefined'
-            )
-            {
+            ) {
                 arg[_propsObj['transform']] = arg['transform'];
                 delete arg['transform'];
             }
