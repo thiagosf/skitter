@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.3
+ * @version 3.4
  * @date August 04, 2010
- * @update September 19, 2011
+ * @update October 28, 2011
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -60,6 +60,7 @@
 		onLoad:					null,
 		imageSwitched:			null,
 		max_number_height: 		20,
+		numbers_align:			'left',
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -266,21 +267,49 @@
 				self.box_skitter.find('.scroll_thumbs').css({'left':10});
 				
 				if (width_info_slide < self.settings.width_skitter) {
-					self.box_skitter.find('.info_slide').width(self.settings.width_skitter);
+					self.box_skitter.find('.info_slide').width('auto');
 					self.box_skitter.find('.box_scroll_thumbs').hide();
+					
+					var class_info = '.info_slide';
+					switch (self.settings.numbers_align) {
+						case 'center' : 
+							var _vleft = (self.settings.width_skitter - self.box_skitter.find(class_info).width()) / 2;
+							self.box_skitter.find(class_info).css({'left':_vleft});
+							break;
+							
+						case 'right' : 
+							self.box_skitter.find(class_info).css({'left':'auto', 'right':'-5px'});
+							break;
+							
+						case 'left' : 
+							self.box_skitter.find(class_info).css({'left':'0px'});
+							break;
+					}
 				}
 				
 			}
-			else if (self.settings.dots)
-			{
-				self.box_skitter.find('.info_slide').addClass('info_slide_dots').removeClass('info_slide');
-				var left_info_slide_dots = (self.settings.width_skitter - self.box_skitter.find('.info_slide_dots').width()) / 2;
-				self.box_skitter.find('.info_slide_dots').css({'left':left_info_slide_dots});
-			}
 			else 
 			{
-				if (self.box_skitter.find('.info_slide').height() > self.settings.max_number_height) {
-					self.box_skitter.find('.info_slide').hide();
+				var class_info = '.info_slide';
+				
+				if (self.settings.dots) {
+					self.box_skitter.find('.info_slide').addClass('info_slide_dots').removeClass('info_slide');
+					class_info = '.info_slide_dots';
+				}
+				
+				switch (self.settings.numbers_align) {
+					case 'center' : 
+						var _vleft = (self.settings.width_skitter - self.box_skitter.find(class_info).width()) / 2;
+						self.box_skitter.find(class_info).css({'left':_vleft});
+						break;
+						
+					case 'right' : 
+						self.box_skitter.find(class_info).css({'left':'auto', 'right':'15px'});
+						break;
+						
+					case 'left' : 
+						self.box_skitter.find(class_info).css({'left':'15px'});
+						break;
 				}
 			}
 			
@@ -297,7 +326,7 @@
 			{
 				this.box_skitter.find('.prev_button').click(function() {
 					if (self.settings.is_animating == false) {
-						self.clearTimer(true);
+						
 						self.settings.image_i -= 2;
 						
 						if (self.settings.image_i == -2) {
@@ -307,23 +336,13 @@
 							self.settings.image_i = self.settings.images_links.length - 1;
 						}
 						
-						self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
-						self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
-						self.box_skitter.find('.box_clone').remove();
-						self.nextImage();
+						self.jumpToImage(self.settings.image_i);
 					}
 					return false;
 				});
 				
 				this.box_skitter.find('.next_button').click(function() {
-					if (self.settings.is_animating == false) {
-						self.clearTimer(true);
-						
-						self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
-						self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
-						self.box_skitter.find('.box_clone').remove();
-						self.nextImage();
-					}
+					self.jumpToImage(self.settings.image_i);
 					return false;
 				});
 				
@@ -345,7 +364,7 @@
 				
 				this.box_skitter.find('.image_number').click(function(){
 					if ($(this).attr('class') != 'image_number image_number_select') {
-					    var imageNumber = $(this).attr('rel');
+					    var imageNumber = parseInt($(this).attr('rel'));
 						self.jumpToImage(imageNumber);
 					}
 					return false;
@@ -432,12 +451,12 @@
 			if (this.settings.is_animating == false) {
 				this.box_skitter.find('.box_clone').stop();
 				this.clearTimer(true);
-				
 				this.settings.image_i = Math.floor(imageNumber);
 				
 				this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
 				this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
 				this.box_skitter.find('.box_clone').remove();
+				
 				this.nextImage();
 			}
 		},
@@ -1749,10 +1768,10 @@
 			this.box_skitter.find('.image_main').show();
 			this.showBoxText();
 			this.settings.is_animating = false;
+			this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
+			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
 			if (!this.settings.is_hover_box_skitter) {
 				this.timer = setTimeout(function() { self.completeMove(); }, this.settings.interval);
-				this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
-				this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
 			}
 		},
 
@@ -1977,8 +1996,8 @@
 						
 					}, self.settings.interval);
 				}
-				self.settings.is_hover_box_skitter = false;
 				
+				self.settings.is_hover_box_skitter = false;
 			});
 		}, 
 		

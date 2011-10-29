@@ -24,13 +24,17 @@
 .box_skitter .box_scroll_thumbs {padding:0 10px;}
 .box_skitter .box_scroll_thumbs .scroll_thumbs {position:absolute;bottom:60px;left:50px;background:#ccc;background:-moz-linear-gradient(-90deg, #555, #fff);background:-webkit-gradient(linear, left top, left bottom, from(#555), to(#fff));width:200px;height:10px;overflow:hidden;text-indent:-9999em;z-index:101;-moz-border-radius:20px;-webkit-border-radius:20px;border-radius:20px;cursor:pointer;border:1px solid #333;}
 
-.box_skitter .info_slide_dots {position:absolute;bottom:-40px;z-index:100;padding:5px 0 5px 5px;-moz-border-radius:50px;-webkit-border-radius:50px;border-radius:50px;}
+.box_skitter .info_slide_dots {position:absolute;bottom:-40px;z-index:151;padding:5px 0 5px 5px;-moz-border-radius:50px;-webkit-border-radius:50px;border-radius:50px;}
 .box_skitter .info_slide_dots .image_number {background:#333;float:left;margin:0 5px 0 0;cursor:pointer;-moz-border-radius:50px;-webkit-border-radius:50px;border-radius:50px;width:18px;height:18px;text-indent:-9999em;overflow:hidden;}
 .box_skitter .info_slide_dots .image_number_select {background:#cc0000;float:left;margin:0 5px 0 0;}
 
 .box_skitter .label_skitter {z-index:150;position:absolute;bottom:0px;left:0px;display:none;}
 
 .loading {position:absolute; top:50%; right:50%; z-index:10000; margin:-16px -16px;color:#fff;text-indent:-9999em;overflow:hidden;background:url(../images/ajax-loader.gif) no-repeat left top;width:32px;height:32px;}
+
+.label_skitter {z-index:150;position:absolute;bottom:0px;left:0px;color:#fff;display:none;opacity:0.8;background:#000;}
+.label_skitter p {padding:10px;margin:0;font:normal 22px arial,tahoma;letter-spacing:-1px;}
+.info_slide * {font-family:Consolas,arial,tahoma !important;}
 
 /**
  * Example for dimenions:

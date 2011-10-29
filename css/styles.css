@@ -38,10 +38,6 @@ background:url(../images/logo.png) no-repeat left top;width:320px;height:105px;o
 #cubeSize {background:url(../images/thumb-6.gif) no-repeat left bottom;}
 #horizontal {background:url(../images/thumb-7.gif) no-repeat left bottom;}
 
-.label_skitter {z-index:150;position:absolute;bottom:0px;left:0px;background:url(../images/back-box-label-black.png) repeat-x left top;color:#fff;display:none;border-top:1px solid #000;}
-.label_skitter p {padding:10px;margin:0;font:normal 22px arial,tahoma;letter-spacing:-1px;}
-.info_slide * {font-family:Consolas,arial,tahoma !important;}
-
 #skitter_fixed {position:fixed;right:20px;top:20px;padding:5px;background:#000;z-index:1000;color:#fff;}
 
 #download {margin:10px 0 20px 0;height:55px;}
