@@ -3,7 +3,7 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.4
+ * @version 3.5
  * @date August 04, 2010
  * @update October 28, 2011
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
@@ -61,6 +61,7 @@
 		imageSwitched:			null,
 		max_number_height: 		20,
 		numbers_align:			'left',
+		preview:				false,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -372,6 +373,41 @@
 				
 				this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
 				this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
+				
+				// Preview
+				if (self.settings.preview && self.settings.dots) 
+				{
+					var preview = $('<div id="preview_slide"><ul></ul></div>');
+					
+					for (var i = 0; i < this.settings.images_links.length; i++) {
+						var li = $('<li></li>');
+						var img = $('<img />');
+						img.attr('src', this.settings.images_links[i][0]);
+						li.append(img);
+						preview.find('ul').append(li);
+					}
+					
+					var width_preview_ul = parseInt(this.settings.images_links.length * 100);
+					preview.find('ul').width(width_preview_ul);
+					$(class_info).append(preview);
+					
+					self.box_skitter.find(class_info).find('.image_number').mouseenter(function() {
+						var _left_info = parseFloat(self.box_skitter.find(class_info).css('left'));
+						var _left_image = parseFloat($(this).offset().left);
+						var _left_preview = (_left_image - _left_info) - 65;
+						
+						var rel = parseInt($(this).attr('rel'));
+						var image_current_preview = $('#preview_slide_current img').attr('src');
+						var _left_ul = -(rel * 100);
+						
+						$('#preview_slide').find('ul').animate({left: _left_ul}, {duration:200, queue: false, easing: 'easeOutSine'});
+						$('#preview_slide').fadeTo(1,1).animate({left: _left_preview}, {duration:200, queue: false});
+					});
+					
+					self.box_skitter.find(class_info).mouseleave(function() {
+						$('#preview_slide').animate({opacity: 'hide'}, {duration: 200, queue: false});
+					});
+				}
 			}
 			
 			if (this.settings.hideTools) {
@@ -421,6 +457,7 @@
 		start: function()
 		{
 			var self = this;
+			self.windowFocusOut();
 			
 			this.setLinkAtual();
 			this.box_skitter.find('.image a img').attr({'src': this.settings.image_atual});
@@ -2049,6 +2086,26 @@
 			var numRandom;
 			do numRandom = Math.random(); while (numRandom == 1); // Evita gerar o número valorFim + 1
 			return (numRandom * (valorFim - valorIni + 1) + valorIni) | 0;
+		},
+		
+		/** 
+		 * Stop on window focus out
+		 * @author Dan Partac (http://thiagosf.net/projects/jquery/skitter/#comment-355473307)
+		 */
+		windowFocusOut: function () {
+			var self = this;
+			$(window).bind('blur', function(){
+				self.clearTimer(true);
+			});
+			$(window).bind('focus', function(){
+				if ( self.settings.images_links.length > 1 ) {
+					self.timer = setTimeout(function() {
+						self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval);
+						self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
+						self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
+					}, self.settings.interval);
+				}
+			});
 		}
 		
 	});

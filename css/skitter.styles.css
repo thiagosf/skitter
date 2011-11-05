@@ -1,5 +1,5 @@
-/* Skitter styles */
-
+/* =Skitter styles
+----------------------------------------------- */
 .box_skitter {position:relative;width:800px;height:300px;background:#000;}
 .box_skitter ul {display:none;}
 .box_skitter .container_skitter {overflow:hidden;position:relative;}
@@ -36,8 +36,14 @@
 .label_skitter p {padding:10px;margin:0;font:normal 22px arial,tahoma;letter-spacing:-1px;}
 .info_slide * {font-family:Consolas,arial,tahoma !important;}
 
-/**
- * Example for dimenions:
- */
+/* =Preview slide
+----------------------------------------------- */
+#preview_slide { display:none; position:absolute; z-index:152; bottom:30px; left:-40px; width:100px; height:100px; background:#fff; border:1px solid #222; -moz-box-shadow:rgba(0,0,0,0.7) 2px 2px 5px; -webkit-box-shadow:rgba(0,0,0,0.7) 2px 2px 5px; box-shadow:rgba(0,0,0,0.7) 2px 2px 5px; overflow:hidden; }
+#preview_slide ul { height:100px; overflow:hidden; margin:0; list-style:none; display:block; position:absolute; top:0; left:0; }
+#preview_slide ul li { width:100px; height:100px; overflow:hidden; float:left; margin:0; padding:0; position:relative; display:block; }
+#preview_slide ul li img { position:absolute; top:0; left:0; height:150px; width:auto; }
+
+/* =Example for dimenions:
+----------------------------------------------- */
 .box_skitter_large {width:800px;height:300px;}
-.box_skitter_small {width:200px;height:200px;}
+.box_skitter_small {width:200px;height:100px;}
