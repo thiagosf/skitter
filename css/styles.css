@@ -22,8 +22,13 @@ background:url(../images/logo.png) no-repeat left top;width:320px;height:105px;o
 
 /** Content
  ********************************************************** */
-.border_box {background:#000;padding:1px;float:left;margin:0 0 10px 0;
+#content {float:left;width:100%;}
+
+.border_box {background:#000;padding:1px;
 	-moz-box-shadow:#000 0 0 5px;
+	margin:0 0 10px 0;
+	width:800px;
+	height:300px;
 }
 
 #examples {background:#fff;padding:5px;border:1px solid #999;}
