@@ -312,6 +312,12 @@
 						self.box_skitter.find(class_info).css({'left':'15px'});
 						break;
 				}
+				
+				if (!self.settings.dots) {
+					if (self.box_skitter.find('.info_slide').height() > 20) {
+						self.box_skitter.find('.info_slide').hide();
+					}
+				}
 			}
 			
 			this.box_skitter.find('ul').hide();
