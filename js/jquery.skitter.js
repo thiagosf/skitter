@@ -3,7 +3,7 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.5
+ * @version 3.6
  * @date August 04, 2010
  * @update October 28, 2011
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
@@ -62,6 +62,12 @@
 		max_number_height: 		20,
 		numbers_align:			'left',
 		preview:				false,
+		focus:					false,
+		foucs_active:			false,
+		focus_position:			'center',
+		controls:				false,
+		controls_position:		'center',
+		_is_paused:				false,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -229,7 +235,7 @@
 					height_skitter = this.settings.height_skitter, 
 					w_info_slide_thumb = 0,
 					info_slide_thumb = self.box_skitter.find('.info_slide_thumb'),
-					x_value = self.box_skitter.offset().left,
+					x_value = 0,
 					y_value = self.box_skitter.offset().top;
 					
 				info_slide_thumb.find('.image_number').each(function(){
@@ -245,10 +251,11 @@
 				width_valor = this.settings.width_skitter;
 				
 				width_valor = width_skitter - 100;
-				x_value += 90;
 				
 				if (width_info_slide > self.settings.width_skitter) {
 					self.box_skitter.mousemove(function(e){
+						x_value = self.box_skitter.offset().left + 90;
+						
 						var x = e.pageX, y = e.pageY, new_x = 0;
 						
 						x = x - x_value;
@@ -353,11 +360,8 @@
 					return false;
 				});
 				
-				this.box_skitter.find('.next_button, .prev_button').hover(function() {
-					$(this).stop().animate({opacity:0.5}, 200);
-				}, function(){
-					$(this).stop().animate({opacity:1.0}, 200);
-				});
+				self.box_skitter.find('.next_button, .prev_button').bind('mouseover', self.mouseOverButton);
+				self.box_skitter.find('.next_button, .prev_button').bind('mouseleave', self.mouseOutButton);
 				
 				this.box_skitter.find('.image_number').hover(function() {
 					if ($(this).attr('class') != 'image_number image_number_select') {
@@ -416,8 +420,19 @@
 				}
 			}
 			
+			// hideTools
 			if (this.settings.hideTools) {
 				this.hideTools();
+			}
+			
+			// Focus
+			if (this.settings.focus) {
+				this.focusSkitter();
+			}
+			
+			// Constrols
+			if (self.settings.controls) {
+				this.setControls();
 			}
 			
 			this.loadImages();
@@ -1823,7 +1838,7 @@
 		{
 			this.clearTimer(true);
 			this.box_skitter.find('.box_clone').remove();
-			this.nextImage();
+			if (!this.settings._is_paused) this.nextImage();
 		},
 
 		// Actual config for animation
@@ -2001,6 +2016,12 @@
 				self.clearTimer(true);
 				self.settings.is_hover_box_skitter = true;
 				
+				if (self.settings.focus && !self.settings.foucs_active) {
+					self.box_skitter.find('.focus_button').stop().animate({opacity:1}, 200);
+				}
+				
+				if (self.settings.controls) self.box_skitter.find('.play_pause_button').stop().animate({opacity:1}, 200);
+				
 			}, function() {
 			
 				if (self.settings.hideTools) {
@@ -2041,6 +2062,12 @@
 				}
 				
 				self.settings.is_hover_box_skitter = false;
+				
+				if (self.settings.focus && !self.settings.foucs_active) {
+					self.box_skitter.find('.focus_button').stop().animate({opacity:0.3}, 200);
+				}
+				
+				if (self.settings.controls) self.box_skitter.find('.play_pause_button').stop().animate({opacity:0.3}, 200);
 			});
 		}, 
 		
@@ -2067,6 +2094,150 @@
 			this.box_skitter.find('.next_button').hide();
 			this.box_skitter.find('.label_skitter').hide();
 		}, 
+		
+		// Animation mouse over
+		mouseOverButton: function() {
+			$(this).stop().animate({opacity:0.5}, 200);
+		}, 
+		
+		// Animation mouse out
+		mouseOutButton: function() {
+			$(this).stop().animate({opacity:1}, 200);
+		}, 
+		
+		// Focus Skitter
+		focusSkitter: function() {
+			var self = this;
+			
+			var focus_button = $('<a href="#" class="focus_button">focus</a>');
+			self.box_skitter.append(focus_button);
+			
+			var _left = (self.settings.width_skitter - focus_button.width()) / 2;
+			var _space = 0;
+			
+			if (self.settings.controls) _left -= 25;
+			if (self.settings.controls_position == self.settings.focus_position) _space = focus_button.width() + 5;
+			
+			var cssPosition = {left: _left};
+			
+			switch (self.settings.focus_position)
+			{
+				case 'leftTop' 		: cssPosition = {left: 5 + _space, top: 30}; break;
+				case 'rightTop' 	: cssPosition = {right: 5 + _space, top: 30}; break;
+				case 'leftBottom' 	: cssPosition = {left: 5 + _space, bottom: 5, top: 'auto'}; break;
+				case 'rightBottom' 	: cssPosition = {right: 5 + _space, bottom: 5, top: 'auto'}; break;
+			}
+			
+			focus_button
+				.css(cssPosition)
+				.animate({opacity:0.3}, self.settings.interval_in_elements);
+			
+			$(document).keypress(function(e) {
+				var code = (e.keyCode ? e.keyCode : e.which);
+				if (code == 27) $('#overlay_skitter').trigger('click');
+			});
+			
+			self.box_skitter.find('.focus_button').click(function() {
+				self.settings.foucs_active = true;
+				
+				$(this)
+					.stop()
+					.animate({opacity:0}, self.settings.interval_out_elements);
+				
+				var div = $('<div id="overlay_skitter"></div>')
+					.height( $(document).height() )
+					.hide()
+					.fadeTo(self.settings.interval_in_elements, 0.98);
+					
+				var _top = $('.box_skitter').offset().top;
+				var _left = $('.box_skitter').offset().left;
+				var _topFinal = (($(window).height() - $('.box_skitter').height()) / 2) + $(document).scrollTop();
+				var _leftFinal = ($(window).width() - $('.box_skitter').width()) / 2;
+				
+				self.box_skitter.before('<div id="mark_position"></div>');
+				$('body').prepend(div);
+				$('body').prepend(self.box_skitter);
+				self.box_skitter
+					.css({'top':_top, 'left':_left, 'position':'absolute', 'z-index':9999})
+					.animate({'top':_topFinal, 'left':_leftFinal}, 2000, 'easeOutExpo');
+				
+				$('#mark_position')	
+					.width($('.box_skitter').width())
+					.height($('.box_skitter').height())
+					.css({'background':'none'})
+					.fadeTo(300,0.3);
+				
+				$('#overlay_skitter').click(function() {
+					if ($(this).hasClass('finish_overlay_skitter')) return false;
+					
+					self.settings.foucs_active = false;
+					$(this).addClass('finish_overlay_skitter');
+					
+					$('#mark_position').before($('.box_skitter'));
+					
+					self.box_skitter.find('.focus_button').animate({opacity:0.3}, 200);
+					
+					self.box_skitter
+						.stop()
+						.animate({'top':_top, 'left':_left}, 300, 'easeOutExpo', function() {
+							$(this).css({'position':'relative', 'top':0, 'left': 0});
+							$('#mark_position').remove();
+						});
+					
+					$('#overlay_skitter').fadeTo(self.settings.interval_out_elements, 0, function() {
+						$(this).remove();
+					});
+					
+					return false;
+				});
+				
+				return false;
+			});
+		},
+		
+		// Controls: play and stop
+		setControls: function() {
+			var self = this;
+			
+			var play_pause_button = $('<a href="#" class="play_pause_button">pause</a>');
+			self.box_skitter.append(play_pause_button);
+			
+			var _left = (self.settings.width_skitter - play_pause_button.width()) / 2;
+			
+			if (self.settings.focus) _left += 25;
+			
+			var cssPosition = {left: _left};
+			
+			switch (self.settings.controls_position)
+			{
+				case 'leftTop' 		: cssPosition = {left: 5, top: 30}; break;
+				case 'rightTop' 	: cssPosition = {right: 5, top: 30}; break;
+				case 'leftBottom' 	: cssPosition = {left: 5, bottom: 5, top: 'auto'}; break;
+				case 'rightBottom' 	: cssPosition = {right: 5, bottom: 5, top: 'auto'}; break;
+			}
+			
+			play_pause_button
+				.css(cssPosition)
+				.animate({opacity:0.3}, self.settings.interval_in_elements);
+			
+			play_pause_button.click(function() {
+				if (!self.settings._is_paused) {
+					$(this).html('play');
+					$(this).fadeTo(100, 0.5).fadeTo(100, 1);
+					self.settings._is_paused = true;
+					$(this).addClass('play_button');
+					self.clearTimer(true);
+				}
+				else {
+					$(this).html('pause');
+					$(this).fadeTo(100, 0.5).fadeTo(100, 1);
+					self.settings._is_paused = false;
+					$(this).removeClass('play_button');
+				}
+				
+				return false;
+			});
+		},
 		
 		/**
 		 * Shuffle array
@@ -2123,9 +2294,8 @@
 	$.fn.css3 = function(props) {
 		var css = {};
 		var prefixes = ['moz', 'ms', 'o', 'webkit'];
-
-		for(var prop in props)
-		{
+		
+		for(var prop in props) {
 			// Add the vendor specific versions
 			for(var i=0; i<prefixes.length; i++)
 				css['-'+prefixes[i]+'-'+prop] = props[prop];
@@ -2144,34 +2314,24 @@
     // Updated 2010.11.06
     var rotateUnits = 'deg';
     
-    $.fn.rotate = function (val)
-    {
+    $.fn.rotate = function (val) {
         var style = $(this).css('transform') || 'none';
         
-        if (typeof val == 'undefined')
-        {
-            if (style)
-            {
+        if (typeof val == 'undefined') {
+            if (style) {
                 var m = style.match(/rotate\(([^)]+)\)/);
-                if (m && m[1])
-                {
+                if (m && m[1]) {
                     return m[1];
                 }
             }
-            
             return 0;
         }
         
         var m = val.toString().match(/^(-?\d+(\.\d+)?)(.+)?$/);
-        if (m)
-        {
-            if (m[3])
-            {
-                rotateUnits = m[3];
-            }
-            
-            $(this).css(
-                'transform',
+		
+        if (m) {
+            if (m[3]) rotateUnits = m[3];
+            $(this).css('transform',
                 style.replace(/none|rotate\([^)]*\)/, '') + 'rotate(' + m[1] + rotateUnits + ')'
             );
         }
@@ -2180,26 +2340,20 @@
     };
     
     // Note that scale is unitless.
-    $.fn.scale = function (val, duration, options)
-    {
+    $.fn.scale = function (val, duration, options) {
         var style = $(this).css('transform');
         
-        if (typeof val == 'undefined')
-        {
-            if (style)
-            {
+        if (typeof val == 'undefined') {
+            if (style) {
                 var m = style.match(/scale\(([^)]+)\)/);
-                if (m && m[1])
-                {
+                if (m && m[1]) {
                     return m[1];
                 }
             }
-            
             return 1;
         }
-        
-        $(this).css(
-            'transform',
+		
+        $(this).css('transform',
             style.replace(/none|scale\([^)]*\)/, '') + 'scale(' + val + ')'
         );
         
@@ -2209,39 +2363,31 @@
     // fx.cur() must be monkey patched because otherwise it would always
     // return 0 for current rotate and scale values
     var curProxied = $.fx.prototype.cur;
-    $.fx.prototype.cur = function ()
-    {
-        if (this.prop == 'rotate')
-        {
+    $.fx.prototype.cur = function () {
+        if (this.prop == 'rotate') {
             return parseFloat($(this.elem).rotate());
         }
-        else if (this.prop == 'scale')
-        {
+        else if (this.prop == 'scale') {
             return parseFloat($(this.elem).scale());
         }
-        
         return curProxied.apply(this, arguments);
     };
     
-    $.fx.step.rotate = function (fx)
-    {
+    $.fx.step.rotate = function (fx) {
         $(fx.elem).rotate(fx.now + rotateUnits);
     };
     
-    $.fx.step.scale = function (fx)
-    {
+    $.fx.step.scale = function (fx) {
         $(fx.elem).scale(fx.now);
     };
     
     var animateProxied = $.fn.animate;
-    $.fn.animate = function (prop)
-    {
+    $.fn.animate = function (prop) {
         if (typeof prop['rotate'] != 'undefined') {
             var m = prop['rotate'].toString().match(/^(([+-]=)?(-?\d+(\.\d+)?))(.+)?$/);
             if (m && m[5]) {
                 rotateUnits = m[5];
             }
-            
             prop['rotate'] = m[1];
         }
         
@@ -2252,11 +2398,7 @@
     // property uniformly across Safari/Chrome/Webkit, Firefox 3.5+, IE 9+, and Opera 11+.
     // 2009-2011 Zachary Johnson www.zachstronaut.com
     // Updated 2011.05.04 (May the fourth be with you!)
-    function getTransformProperty(element)
-    {
-        // Try transform first for forward compatibility
-        // In some versions of IE9, it is critical for msTransform to be in
-        // this list before MozTranform.
+    function getTransformProperty(element) {
         var properties = ['transform', 'WebkitTransform', 'msTransform', 'MozTransform', 'OTransform'];
         var p;
         while (p = properties.shift()) {
@@ -2264,18 +2406,13 @@
                 return p;
             }
         }
-        
-        // Default to transform also
         return 'transform';
     };
     
     var _propsObj = null;
     
     var proxied = $.fn.css;
-    $.fn.css = function (arg, val)
-    {
-        // Temporary solution for current 1.6.x incompatibility, while
-        // preserving 1.3.x compatibility, until I can rewrite using CSS Hooks
+    $.fn.css = function (arg, val) {
         if (_propsObj === null) {
             if (typeof $.cssProps != 'undefined') {
                 _propsObj = $.cssProps;
@@ -2312,7 +2449,7 @@
                     return jQuery.style(this.get(0), arg);
                 }
             }
-
+			
             // Call in form of css({'transform': ...})
             else if
             (
@@ -2327,4 +2464,4 @@
         return proxied.apply(this, arguments);
     };
 
-})(jQuery)
+})(jQuery);

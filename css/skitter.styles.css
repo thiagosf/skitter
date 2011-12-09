@@ -43,6 +43,14 @@
 #preview_slide ul li { width:100px; height:100px; overflow:hidden; float:left; margin:0; padding:0; position:relative; display:block; }
 #preview_slide ul li img { position:absolute; top:0; left:0; height:150px; width:auto; }
 
+/* =Focus
+----------------------------------------------- */
+#overlay_skitter { position:absolute; top:0; left:0; width:100%; z-index:9998; opacity:1; background:#000; }
+
+.box_skitter .focus_button {position:absolute;top:50%;z-index:100;width:42px;height:42px;overflow:hidden;text-indent:-9999em;margin-top:-25px;background:url(../images/focus-button.png) no-repeat left top;opacity:0;}
+.box_skitter .play_pause_button {position:absolute;top:50%;z-index:151;width:42px;height:42px;overflow:hidden;text-indent:-9999em;margin-top:-25px;background:url(../images/pause-button.png) no-repeat left top;opacity:0;}
+.box_skitter .play_pause_button.play_button {background:url(../images/play-button.png) no-repeat left top;}
+
 /* =Example for dimenions:
 ----------------------------------------------- */
 .box_skitter_large {width:800px;height:300px;}

@@ -10,7 +10,7 @@ h2 {letter-spacing:-2px;margin:15px 0 10px 0;color:#333;font-weight:normal;}
 
 /** Page
  ********************************************************** */
-#page {background:url(../images/this-is-a-free-plugin.png) no-repeat top right;}
+#page {background:url(../images/this-is-a-free-plugin.png) no-repeat top right;min-width:1050px;}
 
 /** Header
  ********************************************************** */
@@ -25,7 +25,10 @@ background:url(../images/logo.png) no-repeat left top;width:320px;height:105px;o
 #content {float:left;width:100%;}
 
 .border_box {background:#000;padding:1px;
+	box-shadow:#000 0 0 5px;
+	-o-box-shadow:#000 0 0 5px;
 	-moz-box-shadow:#000 0 0 5px;
+	-webkit-box-shadow:#000 0 0 5px;
 	margin:0 0 10px 0;
 	width:800px;
 	height:300px;
@@ -83,17 +86,24 @@ background:url(../images/logo.png) no-repeat left top;width:320px;height:105px;o
 #styles_navigation ul li a:hover {background:#aaa;border:1px solid #777;}
 #styles_navigation ul li a.selected {background:#333; font-weight:normal; color:#fff; border:1px solid #000; }
 
-span.new {position:absolute;top:-5px;right:-10px;font:bold 11px arial,tahoma;color:#fff;padding:2px 5px;border:1px solid #000; background:#cc0000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; }
+span.new {position:absolute;top:-5px;right:-10px;font:bold 11px arial,tahoma;color:#fff;padding:2px 5px;border:1px solid #000; background:#cc0000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; z-index:1; }
 
 span.update {position:absolute;top:-5px;right:-25px;font:bold 11px arial,tahoma;color:#fff;padding:2px 5px;border:1px solid #000; background:#006600; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px; }
 
 #updatelog {background:#fff;padding:0 10px 10px 10px ;border-top:5px solid #333;}
 #updatelog dl dt {border-bottom:1px solid #ccc;font-weight:bold;font-size:18px;margin:10px 0 5px 0;}
-#updatelog dl dd {font-weight:normal;font-size:14px;}
+#updatelog dl dt {font-weight:normal;font-size:14px;}
+#updatelog dl dt.through {text-decoration:line-through;color:#555;}
 
 .highlight *, .code {font-family:Consolas,arial,tahoma !important;}
 
 #box_share {}
+
+#donate-banner {position:absolute;bottom:270px;left:679px;width:336px;height:310px;background:#ddd;border-radius:5px;box-shadow:#333 0 0 3px;padding:10px;
+	background:-moz-linear-gradient(-90deg, #ddd, #f1f1f1);
+	background:-webkit-linear-gradient(-90deg, #ddd, #f1f1f1);
+}
+#donate-banner h3 {font-size:18px;font-weight:bold;margin-bottom:5px;font-style:italic;text-shadow:#fff 1px 1px 0;}
 
 /** Footer
  ********************************************************** */
