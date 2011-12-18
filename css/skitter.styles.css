@@ -36,6 +36,8 @@
 .label_skitter p {padding:10px;margin:0;font:normal 22px arial,tahoma;letter-spacing:-1px;}
 .info_slide * {font-family:Consolas,arial,tahoma !important;}
 
+.box_skitter .progressbar { background:#000; position:absolute; top:5px;left:15px;height:5px; width: 200px; z-index:99; border-radius:20px; }
+
 /* =Preview slide
 ----------------------------------------------- */
 #preview_slide { display:none; position:absolute; z-index:152; bottom:30px; left:-40px; width:100px; height:100px; background:#fff; border:1px solid #222; -moz-box-shadow:rgba(0,0,0,0.7) 2px 2px 5px; -webkit-box-shadow:rgba(0,0,0,0.7) 2px 2px 5px; box-shadow:rgba(0,0,0,0.7) 2px 2px 5px; overflow:hidden; }

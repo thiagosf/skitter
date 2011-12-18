@@ -125,9 +125,12 @@
 				<a href="?animation=cubeJelly" class="">cubeJelly</a>
 				<a href="?animation=glassCube" class="">glassCube</a>
 				<a href="?animation=glassBlock" class="">glassBlock</a>
-				<a href="?animation=circles" class="">circles<span class="new_animation">new!</span></a>
-				<a href="?animation=circlesInside" class="">circlesInside<span class="new_animation">new!</span></a>
-				<a href="?animation=circlesRotate" class="">circlesRotate<span class="new_animation">new!</span></a>
+				<a href="?animation=circles" class="">circles</a>
+				<a href="?animation=circlesInside" class="">circlesInside</a>
+				<a href="?animation=circlesRotate" class="">circlesRotate</a>
+				<a href="?animation=cubeShow" class="">cubeShow<span class="new_animation">new!</span></a>
+				<a href="?animation=upBars" class="">upBars<span class="new_animation">new!</span></a>
+				<a href="?animation=downBars" class="">downBars<span class="new_animation">new!</span></a>
 				<a href="?animation=random" class="">random</a>
 				<a href="?animation=randomSmart" class="">randomSmart</a>
 			</div>
@@ -213,6 +216,15 @@
 		<h2>Updatelog</h2>
 		<div id="updatelog">
 			<dl>
+				<dt>18/12/2011</dt>
+					<dd>- Added progress bar</dd>
+					<dd>- Option does not stop the slideshow go over.</dd>
+					<dd>- Modifications to existing animations.</dd>
+					<dd>- New animations: cubeShow, upBars, downBars</dd>
+					<dd>- Bug fixed: stop slideshow to blur window.</dd>
+				<dt>08/12/2011</dt>
+					<dd>- Controls: <a href="?controls=center">option play/pause manually.</a></dd>
+					<dd>- <a href="?focus=center">Focus slideshow</a></dd>
 				<dt>05/11/2011</dt>
 					<dd>- New option: <a href="index.php?type_navigation=dots_preview">preview to go over the points</a> .</dd>
 					<dd>- Bug fixed: problem of memory consumption to blur the window with skitter working. <strong>Hint of <a href="http://thiagosf.net/projects/jquery/skitter/#comment-355473307">Dan Partac</a></strong></dd>
@@ -494,12 +506,33 @@ $(function(){
 						<td>false</td> 
 						<td><span class="code">$('.box_skitter_large').skitter({dots: true, preview: true});</span></td> 
 					</tr>
+					<tr> 
+						<td>focus</td> 
+						<td>Focus slideshow</td> 
+						<td>false</td> 
+						<td><span class="code">$('.box_skitter_large').skitter({focus: true});</span></td> 
+					</tr>
+					<tr> 
+						<td>focus_position</td> 
+						<td>Position of button focus slideshow</td> 
+						<td>center</td> 
+						<td><span class="code">$('.box_skitter_large').skitter({focus_position: 'leftTop'});</span></td> 
+					</tr>
+					<tr> 
+						<td>controls</td> 
+						<td>Option play/pause manually</td> 
+						<td>false</td> 
+						<td><span class="code">$('.box_skitter_large').skitter({controls: true});</span></td> 
+					</tr>
+					<tr> 
+						<td>controls_position</td> 
+						<td>Position of button controls</td> 
+						<td>center</td> 
+						<td><span class="code">$('.box_skitter_large').skitter({controls_position: 'rightBottom'});</span></td> 
+					</tr>
 				</tbody> 
 			</table>
-			
 		</div>
-		
-		
 	</div>
 	
 	<div id="footer">

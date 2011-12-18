@@ -3,7 +3,7 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.6
+ * @version 3.7
  * @date August 04, 2010
  * @update October 28, 2011
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
@@ -38,6 +38,7 @@
 		image_atual: 			null,
 		link_atual: 			null,
 		label_atual: 			null,
+		target_atual: 			'_self',
 		width_skitter: 			null,
 		height_skitter: 		null,
 		image_i: 				1,
@@ -67,7 +68,14 @@
 		focus_position:			'center',
 		controls:				false,
 		controls_position:		'center',
-		_is_paused:				false,
+		progressbar:			false,
+		progressbar_css:		{},
+		is_paused:				false,
+		is_blur:				false,
+		is_paused_time:			false,
+		timeStart:				0,
+		elapsedTime:			0,
+		stop_over:				true,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -147,8 +155,8 @@
 			this.settings.images_links = new Array();
 			
 			// Add image, link, animation type and label
-			var addImageLink = function (link, src, animation_type, label) {
-				self.settings.images_links.push([src, link, animation_type, label]);
+			var addImageLink = function (link, src, animation_type, label, target) {
+				self.settings.images_links.push([src, link, animation_type, label, target]);
 				if (self.settings.thumbs) {
 					var dimension_thumb = '';
 					if (self.settings.width_skitter > self.settings.height_skitter) {
@@ -186,7 +194,8 @@
 							var src 			= $(this).find('image').text();
 							var animation_type 	= $(this).find('image').attr('type');
 							var label 			= $(this).find('label').text();
-							addImageLink(link, src, animation_type, label);
+							var target 			= ($(this).find('target').text()) ? $(this).find('target').text() : '_self';
+							addImageLink(link, src, animation_type, label, target);
 						});
 					}
 				});
@@ -203,7 +212,8 @@
 					var src 			= $(this).find('img').attr('src');
 					var animation_type 	= $(this).find('img').attr('class');
 					var label 			= $(this).find('.label_text').html();
-					addImageLink(link, src, animation_type, label);
+					var target 			= ($(this).find('a').length && $(this).find('a').attr('target')) ? $(this).find('a').attr('target') : '_self';
+					addImageLink(link, src, animation_type, label, target);
 				});
 			}
 			
@@ -335,6 +345,7 @@
 			this.settings.image_atual 	= this.settings.images_links[0][0];
 			this.settings.link_atual 	= this.settings.images_links[0][1];
 			this.settings.label_atual 	= this.settings.images_links[0][3];
+			this.settings.target_atual 	= this.settings.images_links[0][4];
 			
 			if (this.settings.images_links.length > 1) 
 			{
@@ -435,6 +446,11 @@
 				this.setControls();
 			}
 			
+			// Progressbar
+			if (self.settings.progressbar) {
+				self.addProgressBar();
+			}
+			
 			this.loadImages();
 		},
 		
@@ -478,27 +494,31 @@
 		start: function()
 		{
 			var self = this;
-			self.windowFocusOut();
 			
-			this.setLinkAtual();
-			this.box_skitter.find('.image a img').attr({'src': this.settings.image_atual});
-			img_link = this.box_skitter.find('.image a');
-			img_link = this.resizeImage(img_link);
+			self.startTime();
+			self.windowFocusOut();
+			self.setLinkAtual();
+			
+			self.box_skitter.find('.image a img').attr({'src': self.settings.image_atual});
+			img_link = self.box_skitter.find('.image a');
+			img_link = self.resizeImage(img_link);
 			img_link.find('img').fadeIn(1500);
 			
-			this.setValueBoxText();
-			this.showBoxText();
-			this.stopOnMouseOver();
+			self.setValueBoxText();
+			self.showBoxText();
+			
+			//if (self.settings.stop_over) 
+			self.stopOnMouseOver();
 			
 			// Start slideshow
-			if (this.settings.images_links.length > 1) {
-				this.timer = setTimeout(function() { self.nextImage(); }, this.settings.interval);
+			if (self.settings.images_links.length > 1) {
+				self.timer = setTimeout(function() { self.nextImage(); }, self.settings.interval);
 			} 
 			else {
-				this.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
+				self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
 			}
 			
-			if ($.isFunction(this.settings.onLoad)) this.settings.onLoad();
+			if ($.isFunction(self.settings.onLoad)) self.settings.onLoad();
 		},
 		
 		/**
@@ -507,6 +527,7 @@
 		jumpToImage: function(imageNumber) 
 		{
 			if (this.settings.is_animating == false) {
+				this.settings.elapsedTime = 0;
 				this.box_skitter.find('.box_clone').stop();
 				this.clearTimer(true);
 				this.settings.image_i = Math.floor(imageNumber);
@@ -524,6 +545,8 @@
 		 */
 		nextImage: function() 
 		{
+			var self = this;
+			
 			animations_functions = [
 				'cube', 
 				'cubeRandom', 
@@ -551,8 +574,13 @@
 				'glassBlock',
 				'circles',
 				'circlesInside',
-				'circlesRotate'
+				'circlesRotate',
+				'cubeShow',
+				'upBars', 
+				'downBars' 
 			];
+			
+			if (self.settings.progressbar) self.hideProgressBar();
 			
 			animation_type = (this.settings.animation == '' && this.settings.images_links[this.settings.image_i][2]) ? 
 				this.settings.images_links[this.settings.image_i][2] : (this.settings.animation == '' ? 'default' : this.settings.animation);
@@ -661,6 +689,15 @@
 				case 'circlesRotate' : 
 					this.animationCirclesRotate();
 					break;
+				case 'cubeShow' : 
+					this.animationCubeShow();
+					break;
+				case 'upBars' : 
+					this.animationDirectionBars({direction: 'top'});
+					break;
+				case 'downBars' : 
+					this.animationDirectionBars({direction: 'bottom'});
+					break;
 				default : 
 					this.animationTube();
 					break;
@@ -674,7 +711,7 @@
 			var options = $.extend({}, {random: false}, options || {});
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutBack' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
 			var time_animate = 700 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -697,8 +734,10 @@
 				init_top 			= (i % 2 == 0) ? init_top : -init_top;
 				init_left 			= (i % 2 == 0) ? init_left : -init_left;
 
-				var _vtop 			= init_top + (height_box * col_t) + (col_t * 50);
-				var _vleft 			= (init_left + (width_box * col)) + (col * 50);
+				var _vtop 			= init_top + (height_box * col_t) + (col_t * 150);
+				var _vleft 			= -self.settings.width_skitter;
+				//var _vleft 			= (init_left + (width_box * col)) + (col * 50);
+				
 				var _vtop_image 	= -(height_box * col_t);
 				
 				var _vleft_image 	= -(width_box * col);
@@ -708,21 +747,34 @@
 				var box_clone 		= this.getBoxClone();
 				box_clone.hide();
 				
+				var delay_time = 50 * (i);
+				
 				if (options.random) {
+					delay_time = 40 * (col);
 					box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
 				} 
 				else {
-					box_clone.css({left:(this.settings.width_skitter / 2), top:this.settings.height_skitter + 50, width:width_box, height:height_box});
+					time_animate = 500;
+					//box_clone.css({left:(this.settings.width_skitter / 2), top:this.settings.height_skitter + 50, width:width_box, height:height_box});
+					box_clone.css({left:(this.settings.width_skitter) + (width_box * i), top:this.settings.height_skitter + (height_box * i), width:width_box, height:height_box});
 				}
 				
-				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
+				//box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
+				//box_clone.find('img').css({left:_vleft_image+100, top:_vtop_image});
 				
 				this.addBoxClone(box_clone);
 				
-				var delay_time = 40 * (col);
-				
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
 				box_clone.show().delay(delay_time).animate({top:_btop+'px', left:_bleft+'px'}, time_animate, easing, callback);
+				
+				if (options.random) {
+					box_clone.find('img').css({left:_vleft_image+100, top:_vtop_image+50});
+					box_clone.find('img').delay(delay_time+(time_animate/2)).animate({left:_vleft_image, top:_vtop_image}, 1000, 'easeOutBack');
+				}
+				else {
+					box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
+					box_clone.find('img').delay(delay_time+(time_animate/2)).fadeTo(100, 0.5).fadeTo(300, 1);
+				}
 				
 				col_t++;
 				if (col_t == division_h) {
@@ -737,12 +789,12 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			this.setActualLevel();
 			
-			var total 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+			var total 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 15));
 			var width_box 	= Math.ceil(this.settings.width_skitter / total);
 			var height_box 	= (this.settings.height_skitter);
 			
@@ -752,14 +804,17 @@
 				var _btop = 0;
 				
 				var box_clone = this.getBoxClone();
-				box_clone.css({left: this.settings.width_skitter, top:0, width:width_box, height:height_box});
-				box_clone.find('img').css({left:-(width_box * i), top:0});
+				box_clone.css({left: this.settings.width_skitter + 100, top:0, width:width_box, height:height_box});
+				box_clone.find('img').css({left:-(width_box * i)});
 				
 				this.addBoxClone(box_clone);
 				
 				var delay_time = 80 * (i);
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
-				box_clone.delay(delay_time).animate({top:_btop, left:_bleft, opacity:'show'}, time_animate, easing, callback);
+				//box_clone.delay(delay_time).animate({top:_btop, left:_bleft, opacity:'show'}, time_animate, easing, callback);
+				
+				box_clone.show().delay(delay_time).animate({top:_btop, left:_bleft}, time_animate, easing);
+				box_clone.find('img').hide().delay(delay_time+100).animate({opacity:'show'}, time_animate+300, easing, callback);
 			}
 			
 		},
@@ -771,8 +826,8 @@
 			var options = $.extend({}, {random: false}, options || {});
 
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutBack' : this.settings.easing_default;
-			var time_animate = 800 / this.settings.velocity;
+			var easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
+			var time_animate = 300 / this.settings.velocity;
 
 			var image_old = this.box_skitter.find('.image_main').attr('src');
 
@@ -814,7 +869,7 @@
 				this.addBoxClone(box_clone);
 				box_clone.show();
 
-				var delay_time = 30 * i;
+				var delay_time = 50 * i;
 
 				if (options.random) {
 					time_animate = 1000 / this.settings.velocity;
@@ -839,7 +894,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			var image_old = this.box_skitter.find('.image_main').attr('src');
@@ -902,7 +957,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeInBack' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeInBack' : this.settings.easing_default;
 			var time_animate = 300 / this.settings.velocity;
 			
 			var image_old = this.box_skitter.find('.image_main').attr('src');
@@ -978,7 +1033,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeInOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeInOutQuad' : this.settings.easing_default;
 			var time_animate = 600 / this.settings.velocity;
 			
 			var image_old = this.box_skitter.find('.image_main').attr('src');
@@ -1042,7 +1097,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
 			var time_animate = 700 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1062,7 +1117,7 @@
 				
 				this.addBoxClone(box_clone);
 				
-				var delay_time = 70 * i;
+				var delay_time = 90 * i;
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
 				box_clone.delay(delay_time).animate({opacity:'show', top:_btop, left:0}, time_animate, easing, callback);
 			}
@@ -1075,7 +1130,7 @@
 			var options = $.extend({}, {random: false}, options || {});
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 400 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1119,7 +1174,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutElastic' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutElastic' : this.settings.easing_default;
 			var time_animate = 600 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1141,7 +1196,7 @@
 				this.addBoxClone(box_clone);
 				
 				var random = this.getRandom(total);
-				var delay_time = 40 * random;
+				var delay_time = 30 * random;
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
 				box_clone.show().delay(delay_time).animate({top:_btop}, time_animate, easing, callback);
 			}
@@ -1152,7 +1207,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 800 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1179,7 +1234,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1218,7 +1273,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutCirc' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 400 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1249,8 +1304,8 @@
 				delay_time = delay_time / 2.5;
 				
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
-				box_clone.show().delay(delay_time).animate({
-					top:_btop+'px', left:_bleft+'px'
+				box_clone.delay(delay_time).animate({
+					top:_btop+'px', left:_bleft+'px', opacity: 'show'
 				}, time_animate, easing, callback);
 			}
 			
@@ -1263,7 +1318,7 @@
 			var options = $.extend({}, {height: false}, options || {});
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 400 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1314,7 +1369,7 @@
 				}
 				else {
 					time_animate = time_animate + (i * 2);
-					easing = 'easeOutQuad';
+					var easing = 'easeOutQuad';
 					box_clone.delay(delay_time).animate({
 						opacity:'show',top:_btop+'px', left:_bleft+'px', height:'show'
 					}, time_animate, easing, callback);
@@ -1330,7 +1385,7 @@
 			var options = $.extend({}, {height: true, time_animate: 500, delay: 100}, options || {});
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = options.time_animate / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1360,7 +1415,7 @@
 					}, time_animate, easing, callback);
 				}
 				else {
-					easing = 'easeOutQuad';
+					var easing = 'easeOutQuad';
 					box_clone.delay(delay_time).animate({
 						opacity:'show',top:_btop+'px', left:_bleft+'px', height:'show'
 					}, time_animate, easing, callback);
@@ -1376,7 +1431,7 @@
 			var options = $.extend({}, {direction: 'top', delay_type: 'sequence', total: 7}, options || {});
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeInOutExpo' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeInOutExpo' : this.settings.easing_default;
 			var time_animate = 1200 / this.settings.velocity;
 			
 			var image_old = this.box_skitter.find('.image_main').attr('src');
@@ -1511,7 +1566,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeInOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 700 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1600,7 +1655,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1647,7 +1702,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutExpo' : this.settings.easing_default;
 			var time_animate = 700 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1690,7 +1745,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			this.setActualLevel();
@@ -1730,7 +1785,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			var image_old = this.box_skitter.find('.image_main').attr('src');
@@ -1776,7 +1831,7 @@
 			var self = this;
 			
 			this.settings.is_animating = true;
-			easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
 			var time_animate = 500 / this.settings.velocity;
 			
 			var image_old = this.box_skitter.find('.image_main').attr('src');
@@ -1817,6 +1872,96 @@
 			}
 		},
 		
+		animationCubeShow: function(options)
+		{
+			var self = this;
+			
+			this.settings.is_animating = true;
+			var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+			var time_animate = 400 / this.settings.velocity;
+			
+			this.setActualLevel();
+			
+			var division_w 		= Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
+			var division_h 		= Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / 4));
+			var total			= division_w * division_h;
+			
+			var width_box 		= Math.ceil(this.settings.width_skitter / division_w);
+			var height_box 		= Math.ceil(this.settings.height_skitter / division_h);
+			
+			var last 			= false;
+			
+			var _btop 			= 0;
+			var _bleft 			= 0;
+			var line			= 0;
+			var col				= 0;
+			
+			for (i = 0; i < total; i++) {
+				
+				_btop = height_box * line;
+				_bleft = width_box * col;
+				
+				var delay_time = 30 * (i);
+				
+				var box_clone 		= this.getBoxClone();
+				box_clone.css({left:_bleft, top:_btop, width:width_box, height:height_box}).hide();
+				box_clone.find('img').css({left:-_bleft, top:-_btop});
+				this.addBoxClone(box_clone);
+				
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				box_clone.delay(delay_time).animate({width:'show', height:'show'}, time_animate, easing, callback);
+				
+				line++;
+				if (line == division_h) {
+					line = 0;
+					col++;
+				}
+			}
+		},
+		
+		animationDirectionBars: function(options)
+		{
+			var self = this;
+			
+			var options = $.extend({}, {direction: 'top'}, options || {});
+			
+			this.settings.is_animating = true;
+			var easing = (this.settings.easing_default == '') ? 'easeInOutQuad' : this.settings.easing_default;
+			var time_animate = 400 / this.settings.velocity;
+			
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+			
+			this.setActualLevel();
+			
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+			
+			var total		= 12;
+			var width_box 	= Math.ceil(this.settings.width_skitter / total);
+			var height_box 	= this.settings.height_skitter;
+			var _ftop		= (options.direction == 'top') ? -height_box : height_box;
+			
+			for (i = 0; i < total; i++) {
+				var _vtop 			= 0;
+				var _vleft 			= (width_box * i);
+				var _vtop_image 	= 0;
+				var _vleft_image 	= -(width_box * i);
+				
+				var box_clone = this.getBoxCloneImgOld(image_old);
+				box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
+				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
+				
+				this.addBoxClone(box_clone);
+				box_clone.show();
+				
+				var delay_time = 70 * i;
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				
+				box_clone.delay(delay_time).animate({top:_ftop}, time_animate, easing, callback);
+			}
+			
+		},
+		
 		// End animations ----------------------
 		
 		// Finish animation
@@ -1828,9 +1973,12 @@
 			this.settings.is_animating = false;
 			this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
 			this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
-			if (!this.settings.is_hover_box_skitter) {
+			
+			if (!this.settings.is_hover_box_skitter && !this.settings.is_paused && !this.settings.is_blur) {
 				this.timer = setTimeout(function() { self.completeMove(); }, this.settings.interval);
 			}
+			
+			self.startTime();
 		},
 
 		// Complete move
@@ -1838,7 +1986,7 @@
 		{
 			this.clearTimer(true);
 			this.box_skitter.find('.box_clone').remove();
-			if (!this.settings._is_paused) this.nextImage();
+			if (!this.settings.is_paused && !this.settings.is_blur) this.nextImage();
 		},
 
 		// Actual config for animation
@@ -1856,10 +2004,12 @@
 			var name_image = this.settings.images_links[this.settings.image_i][0];
 			var link_image = this.settings.images_links[this.settings.image_i][1];
 			var label_image = this.settings.images_links[this.settings.image_i][3];
+			var target_link = this.settings.images_links[this.settings.image_i][4];
 			
 			this.settings.image_atual = name_image;
 			this.settings.link_atual = link_image;
 			this.settings.label_atual = label_image;
+			this.settings.target_atual = target_link;
 		},
 
 		// Add class for number
@@ -1989,6 +2139,12 @@
 			var interval_out_elements = self.settings.interval_out_elements;
 			
 			self.box_skitter.hover(function() {
+			
+				if (self.settings.stop_over) self.settings.is_hover_box_skitter = true;
+				
+				if (!self.settings.is_paused_time) {
+					self.pauseTime();
+				}
 				
 				if (self.settings.hideTools) {
 					if (self.settings.numbers) {
@@ -2014,7 +2170,6 @@
 				}
 				
 				self.clearTimer(true);
-				self.settings.is_hover_box_skitter = true;
 				
 				if (self.settings.focus && !self.settings.foucs_active) {
 					self.box_skitter.find('.focus_button').stop().animate({opacity:1}, 200);
@@ -2023,7 +2178,15 @@
 				if (self.settings.controls) self.box_skitter.find('.play_pause_button').stop().animate({opacity:1}, 200);
 				
 			}, function() {
-			
+				if (self.settings.stop_over) self.settings.is_hover_box_skitter = false;
+				
+				if (self.settings.elapsedTime == 0 && !self.settings.is_animating && !self.settings.is_paused) {
+					self.startTime();
+				}
+				else if (!self.settings.is_paused) {
+					self.resumeTime();
+				}
+				
 				if (self.settings.hideTools) {
 					if (self.settings.numbers) {
 						self.box_skitter
@@ -2052,22 +2215,19 @@
 				}
 				
 				self.clearTimer(true);
-				if (!self.settings.is_animating && self.settings.images_links.length > 1) {
-					self.timer = setTimeout(function() {
-						self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval);
-						self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
-						self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
-						
-					}, self.settings.interval);
-				}
 				
-				self.settings.is_hover_box_skitter = false;
+				if (!self.settings.is_animating && self.settings.images_links.length > 1) {
+					self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
+					self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
+					self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
+				}
 				
 				if (self.settings.focus && !self.settings.foucs_active) {
 					self.box_skitter.find('.focus_button').stop().animate({opacity:0.3}, 200);
 				}
 				
 				if (self.settings.controls) self.box_skitter.find('.play_pause_button').stop().animate({opacity:0.3}, 200);
+				
 			});
 		}, 
 		
@@ -2080,7 +2240,7 @@
 		// Set link atual
 		setLinkAtual: function() {
 			if (this.settings.link_atual != '#') {
-				this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+				this.box_skitter.find('.image a').attr({'href': this.settings.link_atual, 'target': this.settings.target_atual});
 			}
 			else {
 				this.box_skitter.find('.image a').removeAttr('href');
@@ -2140,9 +2300,7 @@
 			self.box_skitter.find('.focus_button').click(function() {
 				self.settings.foucs_active = true;
 				
-				$(this)
-					.stop()
-					.animate({opacity:0}, self.settings.interval_out_elements);
+				$(this).stop().animate({opacity:0}, self.settings.interval_out_elements);
 				
 				var div = $('<div id="overlay_skitter"></div>')
 					.height( $(document).height() )
@@ -2221,23 +2379,162 @@
 				.animate({opacity:0.3}, self.settings.interval_in_elements);
 			
 			play_pause_button.click(function() {
-				if (!self.settings._is_paused) {
+				if (!self.settings.is_paused) {
 					$(this).html('play');
 					$(this).fadeTo(100, 0.5).fadeTo(100, 1);
-					self.settings._is_paused = true;
+					
 					$(this).addClass('play_button');
+					self.pauseTime();
+					self.settings.is_paused = true;
 					self.clearTimer(true);
 				}
 				else {
+					if (!self.settings.is_animating && !self.box_skitter.find('.progressbar').is(':visible')) {
+						self.settings.elapsedTime = 0;
+					}
+					else {
+						self.resumeTime();
+					}
+					
+					if (!self.settings.progressbar) self.resumeTime();
+					
+					self.settings.is_paused = false;
+					
 					$(this).html('pause');
 					$(this).fadeTo(100, 0.5).fadeTo(100, 1);
-					self.settings._is_paused = false;
 					$(this).removeClass('play_button');
+					
+					if (!self.settings.stop_over) { 
+						self.clearTimer(true);
+						if (!self.settings.is_animating && self.settings.images_links.length > 1) {
+							self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
+							self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
+							self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
+						}
+					}
 				}
 				
 				return false;
 			});
 		},
+		
+		/**
+		 * Object size
+		 */
+		objectSize: function(obj) {
+			var size = 0, key;
+			for (key in obj) { if (obj.hasOwnProperty(key)) size++; }
+			return size;
+		},
+		
+		/**
+		 * Add progress bar
+		 */
+		addProgressBar: function() {
+			var self = this;
+			
+			var progressbar = $('<div class="progressbar"></div>');
+			self.box_skitter.append(progressbar);
+			
+			if (self.objectSize(self.settings.progressbar_css) == 0)  {
+				if (parseInt(progressbar.css('width')) > 0) {
+					self.settings.progressbar_css.width = parseInt(progressbar.css('width'));
+				}
+				else {
+					self.settings.progressbar_css = {width: self.settings.width_skitter, height:5};
+				}
+			}
+			if (self.objectSize(self.settings.progressbar_css) > 0 && self.settings.progressbar_css.width == undefined) {
+				self.settings.progressbar_css.width = self.settings.width_skitter;
+			}
+			
+			progressbar.css(self.settings.progressbar_css).hide();
+		},
+		
+		/**
+		 * Start progress bar
+		 */
+		startProgressBar: function() {
+			var self = this;
+			if (self.settings.is_hover_box_skitter || self.settings.is_paused || self.settings.is_blur || !self.settings.progressbar) return false;
+			self.box_skitter.find('.progressbar')
+				.hide()
+				.dequeue()
+				.width(self.settings.progressbar_css.width)
+				.animate({width:'show'}, self.settings.interval, 'linear');
+		},
+		
+		/**
+		 * Pause progress bar
+		 */
+		pauseProgressBar: function() {
+			var self = this;
+			if (!self.settings.is_animating) {
+				self.box_skitter.find('.progressbar').stop();
+			}
+		},
+		
+		/**
+		 * Resume progress bar
+		 */
+		resumeProgressBar: function() {
+			var self = this;
+			
+			if (self.settings.is_hover_box_skitter || self.settings.is_paused || !self.settings.progressbar) return false;
+			
+			self.box_skitter.find('.progressbar').dequeue().animate({width: self.settings.progressbar_css.width}, (self.settings.interval - self.settings.elapsedTime), 'linear');
+		},
+		
+		/**
+		 * Hide progress bar
+		 */
+		hideProgressBar: function() {
+			var self = this;
+			
+			if (!self.settings.progressbar) return false;
+			
+			self.box_skitter.find('.progressbar').stop().fadeOut(300, function() {
+				$(this).width(self.settings.progressbar_css.width);
+			});
+		},
+		
+		startTime: function() {
+			var self = this;
+			
+			self.settings.is_paused_time = false;
+			
+			var date = new Date();
+			self.settings.elapsedTime = 0;
+			self.settings.timeStart = date.getTime();
+			
+			// Start progress bar
+			self.startProgressBar();
+		}, 
+		
+		pauseTime: function() {
+			var self = this;
+			
+			if (self.settings.is_paused_time) return false;
+			self.settings.is_paused_time = true;
+			
+			var date = new Date();
+			self.settings.elapsedTime += date.getTime() - self.settings.timeStart;
+			
+			// Pause progress bar
+			self.pauseProgressBar();
+		}, 
+		
+		resumeTime: function() {
+			var self = this;
+			
+			self.settings.is_paused_time = false;
+			
+			var date = new Date();
+			self.settings.timeStart = date.getTime();
+			
+			// Resume progress bar
+			self.resumeProgressBar();
+		}, 
 		
 		/**
 		 * Shuffle array
@@ -2272,15 +2569,26 @@
 		windowFocusOut: function () {
 			var self = this;
 			$(window).bind('blur', function(){
+				self.settings.is_blur = true;
+				self.pauseTime();
 				self.clearTimer(true);
 			});
 			$(window).bind('focus', function(){
 				if ( self.settings.images_links.length > 1 ) {
-					self.timer = setTimeout(function() {
-						self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval);
+					self.settings.is_blur = false;	
+					
+					if  (self.settings.elapsedTime == 0) {
+						self.startTime();
+					}
+					else {
+						self.resumeTime();
+					}
+					
+					if (self.settings.elapsedTime <= self.settings.interval) {
+						self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
 						self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
 						self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
-					}, self.settings.interval);
+					}
 				}
 			});
 		}
