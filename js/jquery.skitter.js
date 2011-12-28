@@ -76,6 +76,7 @@
 		timeStart:				0,
 		elapsedTime:			0,
 		stop_over:				true,
+		enable_navigation_keys:	false,
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -111,13 +112,14 @@
 		setup: function() 
 		{
 			var self = this;
-			
+
 			// Fullscreen
 			if (this.settings.fullscreen) {
 				var width = $(window).width();
 				var height = $(window).height();
 				this.box_skitter.width(width).height(height);
 				this.box_skitter.css({'position':'absolute', 'top':0, 'left':0, 'z-index':1000});
+				this.settings.stop_over = false;
 				$('body').css({'overflown':'hidden'});
 			}
 			
@@ -134,7 +136,7 @@
 			
 			// Settings
 			this.settings.easing_default 	= this.getEasing(this.settings.easing);
-			
+						
 			if (this.settings.velocity >= 2) this.settings.velocity = 1.3;
 			if (this.settings.velocity <= 0) this.settings.velocity = 1;
 			
@@ -431,24 +433,29 @@
 				}
 			}
 			
-			// hideTools
-			if (this.settings.hideTools) {
-				this.hideTools();
-			}
-			
 			// Focus
-			if (this.settings.focus) {
-				this.focusSkitter();
+			if (self.settings.focus) {
+				self.focusSkitter();
 			}
 			
 			// Constrols
 			if (self.settings.controls) {
-				this.setControls();
+				self.setControls();
 			}
 			
 			// Progressbar
 			if (self.settings.progressbar) {
 				self.addProgressBar();
+			}
+
+			// hideTools
+			if (self.settings.hideTools) {
+				self.hideTools();
+			}
+
+			// Navigation keys
+			if (self.settings.enable_navigation_keys) {
+				self.enableNavigationKeys();
 			}
 			
 			this.loadImages();
@@ -507,7 +514,6 @@
 			self.setValueBoxText();
 			self.showBoxText();
 			
-			//if (self.settings.stop_over) 
 			self.stopOnMouseOver();
 			
 			// Start slideshow
@@ -2167,15 +2173,39 @@
 							.show().css({opacity:0})
 							.animate({opacity: opacity_elements}, interval_in_elements);
 					}
+
+					if (self.settings.focus && !self.settings.foucs_active) {
+						self.box_skitter
+							.find('.focus_button')
+							.stop()
+							.show().css({opacity:0})
+							.animate({opacity:opacity_elements}, 200);
+					}
+					
+					if (self.settings.controls) {
+						self.box_skitter
+						.find('.play_pause_button')
+						.stop()
+						.show().css({opacity:0})
+						.animate({opacity:opacity_elements}, 200);
+					}
 				}
 				
 				self.clearTimer(true);
 				
-				if (self.settings.focus && !self.settings.foucs_active) {
-					self.box_skitter.find('.focus_button').stop().animate({opacity:1}, 200);
+				if (self.settings.focus && !self.settings.foucs_active && !self.settings.hideTools) {
+					self.box_skitter
+						.find('.focus_button')
+						.stop()
+						.animate({opacity:1}, 200);
 				}
 				
-				if (self.settings.controls) self.box_skitter.find('.play_pause_button').stop().animate({opacity:1}, 200);
+				if (self.settings.controls && !self.settings.hideTools) {
+					self.box_skitter
+						.find('.play_pause_button')
+						.stop()
+						.animate({opacity:1}, 200);
+				}
 				
 			}, function() {
 				if (self.settings.stop_over) self.settings.is_hover_box_skitter = false;
@@ -2212,6 +2242,23 @@
 							.css({opacity: opacity_elements})
 							.animate({opacity:0}, interval_out_elements);
 					}
+
+
+					if (self.settings.focus && !self.settings.foucs_active) {
+						self.box_skitter
+							.find('.focus_button')
+							.stop()
+							.css({opacity: opacity_elements})
+							.animate({opacity:0}, 200);
+					}
+
+					if (self.settings.controls) {
+						self.box_skitter
+							.find('.play_pause_button')
+							.stop()
+							.css({opacity: opacity_elements})
+							.animate({opacity:0}, 200);
+					}
 				}
 				
 				self.clearTimer(true);
@@ -2222,11 +2269,19 @@
 					self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
 				}
 				
-				if (self.settings.focus && !self.settings.foucs_active) {
-					self.box_skitter.find('.focus_button').stop().animate({opacity:0.3}, 200);
+				if (self.settings.focus && !self.settings.foucs_active && !self.settings.hideTools) {
+					self.box_skitter
+						.find('.focus_button')
+						.stop()
+						.animate({opacity:0.3}, 200);
 				}
 				
-				if (self.settings.controls) self.box_skitter.find('.play_pause_button').stop().animate({opacity:0.3}, 200);
+				if (self.settings.controls && !self.settings.hideTools) {
+					self.box_skitter
+						.find('.play_pause_button')
+						.stop()
+						.animate({opacity:0.3}, 200);
+				}
 				
 			});
 		}, 
@@ -2253,6 +2308,8 @@
 			this.box_skitter.find('.prev_button').hide();
 			this.box_skitter.find('.next_button').hide();
 			this.box_skitter.find('.label_skitter').hide();
+			this.box_skitter.find('.focus_button').hide();
+			this.box_skitter.find('.play_pause_button').hide();
 		}, 
 		
 		// Animation mouse over
@@ -2333,7 +2390,7 @@
 					
 					$('#mark_position').before($('.box_skitter'));
 					
-					self.box_skitter.find('.focus_button').animate({opacity:0.3}, 200);
+					if (!self.settings.hideTools) self.box_skitter.find('.focus_button').animate({opacity:0.3}, 200);
 					
 					self.box_skitter
 						.stop()
@@ -2353,7 +2410,10 @@
 			});
 		},
 		
-		// Controls: play and stop
+
+		/**
+		 * Controls: play and stop
+		 */
 		setControls: function() {
 			var self = this;
 			
@@ -2417,7 +2477,7 @@
 				return false;
 			});
 		},
-		
+				
 		/**
 		 * Object size
 		 */
@@ -2497,7 +2557,10 @@
 				$(this).width(self.settings.progressbar_css.width);
 			});
 		},
-		
+
+		/**
+		 * Start time
+		 */
 		startTime: function() {
 			var self = this;
 			
@@ -2511,6 +2574,9 @@
 			self.startProgressBar();
 		}, 
 		
+		/**
+		 * Pause time
+		 */
 		pauseTime: function() {
 			var self = this;
 			
@@ -2524,6 +2590,9 @@
 			self.pauseProgressBar();
 		}, 
 		
+		/**
+		 * Resume time
+		 */
 		resumeTime: function() {
 			var self = this;
 			
@@ -2535,7 +2604,24 @@
 			// Resume progress bar
 			self.resumeProgressBar();
 		}, 
-		
+
+		/**
+		 * Enable navigation keys
+		 */
+		enableNavigationKeys: function() {
+			var self = this;
+			$(window).keydown(function(e) {
+				// Next
+				if (e.keyCode == 39 || e.keyCode == 40) {
+					self.box_skitter.find('.next_button').trigger('click');
+				}
+				// Prev
+				else if (e.keyCode == 37 || e.keyCode == 38) {
+					self.box_skitter.find('.prev_button').trigger('click');
+				}
+			});
+		},
+
 		/**
 		 * Shuffle array
 		 * @author Daniel Castro Machado <daniel@cdt.unb.br>

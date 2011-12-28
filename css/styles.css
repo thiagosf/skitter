@@ -99,7 +99,7 @@ span.update {position:absolute;top:-5px;right:-25px;font:bold 11px arial,tahoma;
 
 #box_share {}
 
-#donate-banner {position:absolute;bottom:270px;left:679px;width:336px;height:310px;background:#ddd;border-radius:5px;box-shadow:#333 0 0 3px;padding:10px;
+#donate-banner {position:absolute;bottom:400px;left:679px;width:336px;height:310px;background:#ddd;border-radius:5px;box-shadow:#333 0 0 3px;padding:10px;
 	background:-moz-linear-gradient(-90deg, #ddd, #f1f1f1);
 	background:-webkit-linear-gradient(-90deg, #ddd, #f1f1f1);
 }
