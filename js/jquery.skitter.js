@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.7
+ * @version 3.8
  * @date August 04, 2010
- * @update October 28, 2011
+ * @update February 01, 2011
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -220,7 +220,7 @@
 			}
 			
 			// Thumbs
-			if (self.settings.thumbs) 
+			if (self.settings.thumbs && !self.settings.fullscreen) 
 			{
 				// New animation
 				self.settings.animateNumberOut = {opacity:0.2, width:'70px'};
@@ -501,6 +501,7 @@
 		start: function()
 		{
 			var self = this;
+			var init_pause = false;
 			
 			self.startTime();
 			self.windowFocusOut();
@@ -515,9 +516,20 @@
 			self.showBoxText();
 			
 			self.stopOnMouseOver();
+
+			var mouseOverInit = function() {
+				if (self.settings.stop_over) {
+					init_pause = true;
+					self.settings.is_hover_box_skitter = true;
+					self.clearTimer(true);
+					self.pauseProgressBar();
+				}
+			};
+
+			self.box_skitter.mouseover(mouseOverInit);
+			self.box_skitter.find('.next_button').mouseover(mouseOverInit);
 			
-			// Start slideshow
-			if (self.settings.images_links.length > 1) {
+			if (self.settings.images_links.length > 1 && !init_pause) {
 				self.timer = setTimeout(function() { self.nextImage(); }, self.settings.interval);
 			} 
 			else {
@@ -583,7 +595,10 @@
 				'circlesRotate',
 				'cubeShow',
 				'upBars', 
-				'downBars' 
+				'downBars', 
+				'hideBars', 
+				'swapBars', 
+				'swapBarsBack'
 			];
 			
 			if (self.settings.progressbar) self.hideProgressBar();
@@ -703,6 +718,15 @@
 					break;
 				case 'downBars' : 
 					this.animationDirectionBars({direction: 'bottom'});
+					break;
+				case 'hideBars' : 
+					this.animationHideBars();
+					break;
+				case 'swapBars' : 
+					this.animationSwapBars();
+					break;
+				case 'swapBarsBack' : 
+					this.animationSwapBars({easing: 'easeOutBack'});
 					break;
 				default : 
 					this.animationTube();
@@ -1768,12 +1792,37 @@
 				
 				var _fleft = _ileft; 
 				var _ftop = _itop; 
+				var box_clone = null;
+
+				// if ($.browser.mozilla) {
+				// 	box_clone = this.getBoxClone();
+				// 	box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+				// 		'border-radius': radius+'px'
+				// 	});
+				// 	box_clone.find('img').css({left: -_ileft, top: -_itop});
+				// }
+				// else {
+					box_clone = this.getBoxCloneBackground({
+						image: 		self.settings.image_atual,
+						left: 		_ileft, 
+						top: 		_itop, 
+						width: 		size_box, 
+						height: 	size_box,
+						position: {
+							top:  	-_itop, 
+							left:  	-_ileft
+						}
+					}).css3({
+						'border-radius': radius+'px'
+					});
+				// }
 				
-				var box_clone = this.getBoxClone();
-				box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
-					'border-radius': radius+'px'
-				});
-				box_clone.find('img').css({left: -_ileft, top: -_itop});
+
+				// var box_clone = this.getBoxClone();
+				// box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+				// 	'border-radius': radius+'px'
+				// });
+				// box_clone.find('img').css({left: -_ileft, top: -_itop});
 				
 				size_box += 100;
 				
@@ -1831,7 +1880,7 @@
 				
 			}
 		},
-		
+
 		animationCirclesRotate: function(options)
 		{
 			var self = this;
@@ -1859,12 +1908,30 @@
 				
 				var _fleft = _ileft; 
 				var _ftop = _itop; 
-				
-				var box_clone = this.getBoxCloneImgOld(image_old);
-				box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
-					'border-radius': radius+'px'
-				});
-				box_clone.find('img').css({left: -_ileft, top: -_itop});
+				var box_clone = null;
+
+				if ($.browser.mozilla) {
+					box_clone = this.getBoxCloneImgOld(image_old);
+					box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+						'border-radius': radius+'px'
+					});
+					box_clone.find('img').css({left: -_ileft, top: -_itop});
+				}
+				else {
+					box_clone = this.getBoxCloneBackground({
+						image: 		image_old,
+						left: 		_ileft, 
+						top: 		_itop, 
+						width: 		size_box, 
+						height: 	size_box,
+						position: {
+							top:  	-_itop, 
+							left:  	-_ileft
+						}
+					}).css3({
+						'border-radius': radius+'px'
+					});
+				}
 				
 				size_box -= 100;
 				
@@ -1966,6 +2033,134 @@
 				box_clone.delay(delay_time).animate({top:_ftop}, time_animate, easing, callback);
 			}
 			
+		},
+
+		animationHideBars: function(options)
+		{
+			var self = this;
+
+			var options = $.extend({}, {random: false}, options || {});
+
+			this.settings.is_animating = true;
+			var easing = (this.settings.easing_default == '') ? 'easeOutCirc' : this.settings.easing_default;
+			var time_animate = 700 / this.settings.velocity;
+
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+
+			this.setActualLevel();
+
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+
+			var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+			var total = division_w;
+
+			var width_box = Math.ceil(this.settings.width_skitter / division_w);
+			var height_box = this.settings.height_skitter;
+
+			for (i = 0; i < total; i++) {
+				var _vtop = 0;
+				var _vleft = width_box * i;
+
+				var _vtop_image = 0;
+				var _vleft_image = -(width_box * i);
+
+				var _fleft = '+='+width_box;
+
+				var box_clone = this.getBoxCloneImgOld(image_old);
+				box_clone.css({left:0, top:0, width:width_box, height:height_box});
+				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
+
+				var box_clone_main = this.getBoxCloneImgOld(image_old);
+				box_clone_main.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
+				box_clone_main.html(box_clone);
+
+				this.addBoxClone(box_clone_main);
+				box_clone.show();
+				box_clone_main.show();
+
+				var delay_time = 50 * i;
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+				
+				box_clone.delay(delay_time).animate({left:_fleft}, time_animate, easing, callback);
+			}
+		},
+
+		animationSwapBars: function(options)
+		{
+			var self = this;
+			
+			var options = $.extend({}, {direction: 'top', delay_type: 'sequence', total: 7, easing: 'easeOutCirc'}, options || {});
+			
+			this.settings.is_animating = true;
+			var easing = (this.settings.easing_default == '') ? options.easing : this.settings.easing_default;
+			var time_animate = 500 / this.settings.velocity;
+			
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+			
+			this.setActualLevel();
+			
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+			this.box_skitter.find('.image_main').hide();
+			
+			var total 		= options.total;
+			
+			for (i = 0; i < total; i++) {
+
+				var width_box 		= Math.ceil(this.settings.width_skitter / total);
+				var height_box 		= this.settings.height_skitter;
+				
+				var _itopc 			= 0;
+				var _ileftc 		= (width_box * i);
+				var _ftopc 			= -height_box;
+				var _fleftc 		= _ileftc + width_box ;
+				
+				var _itopn			= height_box;
+				var _ileftn			= _ileftc;
+				var _ftopn			= 0;
+				var _fleftn			= _ileftc;
+				
+				var _vtop_image 	= 0;
+				var _vleft_image 	= -_ileftc;
+				
+				switch (options.delay_type) 
+				{
+					case 'zebra' : default : var delay_time = (i % 2 == 0) ? 0 : 150; break;
+					case 'random' : var delay_time = 30 * (Math.random() * 30); break;
+					case 'sequence' : var delay_time = i * 100; break;
+				}
+
+				// Old image
+				var box_clone = this.getBoxCloneImgOld(image_old);
+				box_clone.find('img').css({left:_vleft_image, top:0});
+				box_clone.css({top:0, left:0, width:width_box, height:height_box});
+
+				// Next image
+				var box_clone_next = this.getBoxClone();
+				box_clone_next.find('img').css({left:_vleft_image, top:0});
+				box_clone_next.css({top:0, left:-width_box, width:width_box, height:height_box});
+				
+				// Container box images
+				var box_clone_container = this.getBoxClone();
+				box_clone_container.html('').append(box_clone).append(box_clone_next);
+				box_clone_container.css({top:0, left:_ileftc, width:width_box, height:height_box});
+				
+				// Add containuer
+				this.addBoxClone(box_clone_container);
+
+				// Show boxes
+				box_clone_container.show();
+				box_clone.show();
+				box_clone_next.show();
+				
+				// Callback
+				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+
+				// Animations
+				box_clone.delay(delay_time).animate({ left: width_box }, time_animate, easing);
+				box_clone_next.delay(delay_time).animate({ left:0 }, time_animate, easing, callback);
+			}
 		},
 		
 		// End animations ----------------------
@@ -2143,9 +2338,10 @@
 			var opacity_elements = self.settings.opacity_elements;
 			var interval_in_elements = self.settings.interval_in_elements;
 			var interval_out_elements = self.settings.interval_out_elements;
+
 			
 			self.box_skitter.hover(function() {
-			
+				
 				if (self.settings.stop_over) self.settings.is_hover_box_skitter = true;
 				
 				if (!self.settings.is_paused_time) {
@@ -2621,6 +2817,25 @@
 				}
 			});
 		},
+		
+		/**
+		 * Get box clone with background image
+		 */
+		getBoxCloneBackground: function(options)
+		{
+			var box_clone = $('<div class="box_clone"></div>');
+
+			box_clone.css({
+				'left': 				options.left, 
+				'top': 					options.top, 
+				'width': 				options.width, 
+				'height': 				options.height,
+				'background-image': 	'url('+options.image+')', 
+				'background-position': 	options.position.left+'px '+options.position.top+'px'
+			});
+
+			return box_clone;
+		}, 
 
 		/**
 		 * Shuffle array
