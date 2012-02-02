@@ -5,7 +5,7 @@
  * @author Thiago Silva Ferreira - http://thiagosf.net
  * @version 3.8
  * @date August 04, 2010
- * @update February 01, 2011
+ * @update February 02, 2011
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -1862,12 +1862,36 @@
 				
 				var _fleft = _ileft; 
 				var _ftop = _itop; 
+				var box_clone = null;
+
+				// if ($.browser.mozilla) {
+				// 	box_clone = this.getBoxCloneImgOld(image_old);
+				// 	box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+				// 		'border-radius': radius+'px'
+				// 	});
+				// 	box_clone.find('img').css({left: -_ileft, top: -_itop});
+				// }
+				// else {
+					box_clone = this.getBoxCloneBackground({
+						image: 		image_old,
+						left: 		_ileft, 
+						top: 		_itop, 
+						width: 		size_box, 
+						height: 	size_box,
+						position: {
+							top:  	-_itop, 
+							left:  	-_ileft
+						}
+					}).css3({
+						'border-radius': radius+'px'
+					});
+				// }
 				
-				var box_clone = this.getBoxCloneImgOld(image_old);
-				box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
-					'border-radius': radius+'px'
-				});
-				box_clone.find('img').css({left: -_ileft, top: -_itop});
+				// var box_clone = this.getBoxCloneImgOld(image_old);
+				// box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+				// 	'border-radius': radius+'px'
+				// });
+				// box_clone.find('img').css({left: -_ileft, top: -_itop});
 				
 				size_box -= 100;
 				
