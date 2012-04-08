@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.8
+ * @version 3.9
  * @date August 04, 2010
- * @update February 02, 2011
+ * @update April 07, 2012
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -77,6 +77,10 @@
 		elapsedTime:			0,
 		stop_over:				true,
 		enable_navigation_keys:	false,
+		with_animations:		[],
+		mouseOverButton: 		function() { $(this).stop().animate({opacity:0.5}, 200); }, 
+		mouseOutButton: 		function() { $(this).stop().animate({opacity:1}, 200); }, 
+		auto_play: 				true, 
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -140,13 +144,11 @@
 			if (this.settings.velocity >= 2) this.settings.velocity = 1.3;
 			if (this.settings.velocity <= 0) this.settings.velocity = 1;
 			
-			if (!this.settings.numbers && !this.settings.thumbs && !this.settings.dots) this.box_skitter.find('.info_slide').hide();
-			if (!this.settings.label) this.box_skitter.find('.label_skitter').hide();
-			if (!this.settings.navigation) {
-				this.box_skitter.find('.prev_button').hide();
-				this.box_skitter.find('.next_button').hide();
-			}
-			
+			this.box_skitter.find('.info_slide').hide();
+			this.box_skitter.find('.label_skitter').hide();
+			this.box_skitter.find('.prev_button').hide();
+			this.box_skitter.find('.next_button').hide();
+						
 			this.box_skitter.find('.container_skitter').width(this.settings.width_skitter);
 			this.box_skitter.find('.container_skitter').height(this.settings.height_skitter);
 			
@@ -223,22 +225,20 @@
 			if (self.settings.thumbs && !self.settings.fullscreen) 
 			{
 				// New animation
-				self.settings.animateNumberOut = {opacity:0.2, width:'70px'};
-				self.settings.animateNumberOver = {opacity:0.5, width:'70px'};
-				self.settings.animateNumberActive = {opacity:1.0, width:'70px'};
+				self.settings.animateNumberOut = {opacity:0.3};
+				self.settings.animateNumberOver = {opacity:0.5};
+				self.settings.animateNumberActive = {opacity:1};
 				
 				self.box_skitter.find('.info_slide').addClass('info_slide_thumb');
-				var width_info_slide = u * 55 + 75;
+				var width_info_slide = (u + 1) * self.box_skitter.find('.info_slide_thumb .image_number').width();
 				self.box_skitter.find('.info_slide_thumb').width(width_info_slide);
-				self.box_skitter.css({height:self.box_skitter.height() + self.box_skitter.find('.info_slide').height() + 5});
-				self.settings.label = false;
+				self.box_skitter.css({height:self.box_skitter.height() + self.box_skitter.find('.info_slide').height()});
 				
 				self.box_skitter.append('<div class="container_thumbs"></div>');
 				var copy_info_slide = self.box_skitter.find('.info_slide').clone();
 				self.box_skitter.find('.info_slide').remove();
 				self.box_skitter.find('.container_thumbs')
 					.width(self.settings.width_skitter)
-					.height(50)
 					.append(copy_info_slide);
 				
 				// Scrolling with mouse movement
@@ -251,18 +251,14 @@
 					y_value = self.box_skitter.offset().top;
 					
 				info_slide_thumb.find('.image_number').each(function(){
-					width_image += $(this).width() 
-								+ parseInt($(this).css('marginLeft')) 
-								+ parseInt($(this).css('marginRight')) 
-								+ parseInt($(this).css('paddingLeft')) 
-								+ parseInt($(this).css('paddingRight'));
+					width_image += $(this).outerWidth();
 				});
 				
 				info_slide_thumb.width(width_image+'px');
 				w_info_slide_thumb = info_slide_thumb.width();
-				width_valor = this.settings.width_skitter;
+				width_value = this.settings.width_skitter;
 				
-				width_valor = width_skitter - 100;
+				width_value = width_skitter - 100;
 				
 				if (width_info_slide > self.settings.width_skitter) {
 					self.box_skitter.mousemove(function(e){
@@ -272,11 +268,11 @@
 						
 						x = x - x_value;
 						y = y - y_value;
-						novo_width = w_info_slide_thumb - width_valor;
-						new_x = -((novo_width * x) / width_valor);
+						novo_width = w_info_slide_thumb - width_value;
+						new_x = -((novo_width * x) / width_value);
 						
 						if (new_x > 0) new_x = 0;
-						if (new_x < -(w_info_slide_thumb - width_skitter - 5)) new_x = -(w_info_slide_thumb - width_skitter - 5);
+						if (new_x < -(w_info_slide_thumb - width_skitter)) new_x = -(w_info_slide_thumb - width_skitter);
 						
 						if (y > height_skitter) {
 							info_slide_thumb.css({left: new_x});
@@ -373,8 +369,8 @@
 					return false;
 				});
 				
-				self.box_skitter.find('.next_button, .prev_button').bind('mouseover', self.mouseOverButton);
-				self.box_skitter.find('.next_button, .prev_button').bind('mouseleave', self.mouseOutButton);
+				self.box_skitter.find('.next_button, .prev_button').bind('mouseover', self.settings.mouseOverButton);
+				self.box_skitter.find('.next_button, .prev_button').bind('mouseleave', self.settings.mouseOutButton);
 				
 				this.box_skitter.find('.image_number').hover(function() {
 					if ($(this).attr('class') != 'image_number image_number_select') {
@@ -397,10 +393,10 @@
 				this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
 				this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
 				
-				// Preview
+				// Preview with dots
 				if (self.settings.preview && self.settings.dots) 
 				{
-					var preview = $('<div id="preview_slide"><ul></ul></div>');
+					var preview = $('<div class="preview_slide"><ul></ul></div>');
 					
 					for (var i = 0; i < this.settings.images_links.length; i++) {
 						var li = $('<li></li>');
@@ -420,15 +416,15 @@
 						var _left_preview = (_left_image - _left_info) - 43;
 						
 						var rel = parseInt($(this).attr('rel'));
-						var image_current_preview = self.box_skitter.find('#preview_slide_current img').attr('src');
+						var image_current_preview = self.box_skitter.find('.preview_slide_current img').attr('src');
 						var _left_ul = -(rel * 100);
 						
-						self.box_skitter.find('#preview_slide').find('ul').animate({left: _left_ul}, {duration:200, queue: false, easing: 'easeOutSine'});
-						self.box_skitter.find('#preview_slide').fadeTo(1,1).animate({left: _left_preview}, {duration:200, queue: false});
+						self.box_skitter.find('.preview_slide').find('ul').animate({left: _left_ul}, {duration:200, queue: false, easing: 'easeOutSine'});
+						self.box_skitter.find('.preview_slide').fadeTo(1,1).animate({left: _left_preview}, {duration:200, queue: false});
 					});
 					
 					self.box_skitter.find(class_info).mouseleave(function() {
-						$('#preview_slide').animate({opacity: 'hide'}, {duration: 200, queue: false});
+						$('.preview_slide').animate({opacity: 'hide'}, {duration: 200, queue: false});
 					});
 				}
 			}
@@ -444,7 +440,7 @@
 			}
 			
 			// Progressbar
-			if (self.settings.progressbar) {
+			if (self.settings.progressbar && self.settings.auto_play) {
 				self.addProgressBar();
 			}
 
@@ -502,6 +498,14 @@
 		{
 			var self = this;
 			var init_pause = false;
+
+			if (this.settings.numbers || this.settings.thumbs) this.box_skitter.find('.info_slide').fadeIn(500);
+			if (this.settings.dots) this.box_skitter.find('.info_slide_dots').fadeIn(500);
+			if (this.settings.label) this.box_skitter.find('.label_skitter').show();
+			if (this.settings.navigation) {
+				this.box_skitter.find('.prev_button').fadeIn(500);
+				this.box_skitter.find('.next_button').fadeIn(500);
+			}
 			
 			self.startTime();
 			self.windowFocusOut();
@@ -515,7 +519,9 @@
 			self.setValueBoxText();
 			self.showBoxText();
 			
-			self.stopOnMouseOver();
+			if (self.settings.auto_play) {
+				self.stopOnMouseOver();
+			}
 
 			var mouseOverInit = function() {
 				if (self.settings.stop_over) {
@@ -530,7 +536,9 @@
 			self.box_skitter.find('.next_button').mouseover(mouseOverInit);
 			
 			if (self.settings.images_links.length > 1 && !init_pause) {
-				self.timer = setTimeout(function() { self.nextImage(); }, self.settings.interval);
+				if (self.settings.auto_play) {
+					self.timer = setTimeout(function() { self.nextImage(); }, self.settings.interval);
+				}
 			} 
 			else {
 				self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
@@ -600,7 +608,7 @@
 				'swapBars', 
 				'swapBarsBack'
 			];
-			
+						
 			if (self.settings.progressbar) self.hideProgressBar();
 			
 			animation_type = (this.settings.animation == '' && this.settings.images_links[this.settings.image_i][2]) ? 
@@ -622,6 +630,17 @@
 			{
 				var random_id = parseInt(Math.random() * animations_functions.length);
 				animation_type = animations_functions[random_id];
+			}
+			// Specific animations
+			else if (self.settings.with_animations.length > 0)
+			{
+				var total_with_animations = self.settings.with_animations.length;
+				if (this.settings._i_animation == undefined) {
+					this.settings._i_animation = 0;
+				}
+				animation_type = self.settings.with_animations[this.settings._i_animation];
+				++this.settings._i_animation;
+				if (this.settings._i_animation >= total_with_animations) this.settings._i_animation = 0;
 			}
 			
 			switch (animation_type) 
@@ -2043,7 +2062,7 @@
 				var _vleft 			= (width_box * i);
 				var _vtop_image 	= 0;
 				var _vleft_image 	= -(width_box * i);
-				
+
 				var box_clone = this.getBoxCloneImgOld(image_old);
 				box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
 				box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
@@ -2531,17 +2550,7 @@
 			this.box_skitter.find('.focus_button').hide();
 			this.box_skitter.find('.play_pause_button').hide();
 		}, 
-		
-		// Animation mouse over
-		mouseOverButton: function() {
-			$(this).stop().animate({opacity:0.5}, 200);
-		}, 
-		
-		// Animation mouse out
-		mouseOutButton: function() {
-			$(this).stop().animate({opacity:1}, 200);
-		}, 
-		
+				
 		// Focus Skitter
 		focusSkitter: function() {
 			var self = this;
