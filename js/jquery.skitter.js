@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 3.9
+ * @version 4.0
  * @date August 04, 2010
- * @update April 07, 2012
+ * @update April 19, 2012
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -507,7 +507,10 @@
 				this.box_skitter.find('.next_button').fadeIn(500);
 			}
 			
-			self.startTime();
+			if (self.settings.auto_play) {
+				self.startTime();
+			}
+
 			self.windowFocusOut();
 			self.setLinkAtual();
 			
@@ -544,7 +547,7 @@
 				self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
 			}
 			
-			if ($.isFunction(self.settings.onLoad)) self.settings.onLoad();
+			if ($.isFunction(self.settings.onLoad)) self.settings.onLoad(self);
 		},
 		
 		/**
@@ -606,7 +609,9 @@
 				'downBars', 
 				'hideBars', 
 				'swapBars', 
-				'swapBarsBack'
+				'swapBarsBack', 
+				'swapBlocks',
+				'cut'
 			];
 						
 			if (self.settings.progressbar) self.hideProgressBar();
@@ -746,6 +751,12 @@
 					break;
 				case 'swapBarsBack' : 
 					this.animationSwapBars({easing: 'easeOutBack'});
+					break;
+				case 'swapBlocks' : 
+					this.animationSwapBlocks();
+					break;
+				case 'cut' : 
+					this.animationCut();
 					break;
 				default : 
 					this.animationTube();
@@ -921,10 +932,15 @@
 				var delay_time = 50 * i;
 
 				if (options.random) {
-					time_animate = 1000 / this.settings.velocity;
+					time_animate = (400 * (self.getRandom(2) + 1)) / this.settings.velocity;
 					_btop = _vtop;
 					_bleft = _vleft;
-					delay_time = 30 * (Math.random() * 30);
+					delay_time = Math.ceil( 30 * self.getRandom(30) );
+				}
+				
+				if (options.random && i == (total - 1)) {
+					time_animate = 400 * 3;
+					delay_time = 30 * 30;
 				}
 
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
@@ -2205,6 +2221,138 @@
 				box_clone_next.delay(delay_time).animate({ left:0 }, time_animate, easing, callback);
 			}
 		},
+
+		animationSwapBlocks: function(options)
+		{
+			var self = this;
+			
+			var options = $.extend({}, {easing_old: 'easeInOutQuad', easing_new: 'easeOutQuad'}, options || {});
+			
+			this.settings.is_animating = true;
+			var easing_old = (this.settings.easing_default == '') ? options.easing_old : this.settings.easing_default;
+			var easing_new = (this.settings.easing_default == '') ? options.easing_new : this.settings.easing_default;
+			var time_animate = 800 / this.settings.velocity;
+			
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+			
+			this.setActualLevel();
+			
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+			this.box_skitter.find('.image_main').hide();
+			
+			var total 			= 2;
+			var width_box 		= this.settings.width_skitter;
+			var height_box 		= Math.ceil(this.settings.height_skitter / total);
+
+			// Old image
+			var box_clone1 = this.getBoxCloneImgOld(image_old), box_clone2 = this.getBoxCloneImgOld(image_old);
+			box_clone1.find('img').css({left:0, top:0});
+			box_clone1.css({top:0, left:0, width:width_box, height:height_box});
+
+			box_clone2.find('img').css({left:0, top:-height_box});
+			box_clone2.css({top:height_box, left:0, width:width_box, height:height_box});
+
+			// Next image
+			var box_clone_next1 = this.getBoxClone(), box_clone_next2 = this.getBoxClone();
+			box_clone_next1.find('img').css({left:0, top:height_box});
+			box_clone_next1.css({top:0, left:0, width:width_box, height:height_box});
+
+			box_clone_next2.find('img').css({left:0, top: -(height_box * total) });
+			box_clone_next2.css({top:height_box, left:0, width:width_box, height:height_box});
+
+			// Add boxes
+			this.addBoxClone(box_clone_next1);
+			this.addBoxClone(box_clone_next2);
+			this.addBoxClone(box_clone1);
+			this.addBoxClone(box_clone2);
+
+			// Show boxes
+			box_clone1.show();
+			box_clone2.show();
+			box_clone_next1.show();
+			box_clone_next2.show();
+
+			// Callback
+			var callback = function() { self.finishAnimation(); };
+
+			// Animations
+			box_clone1.find('img').animate({ top: height_box }, time_animate, easing_old, function() {
+				box_clone1.remove();
+			});
+			box_clone2.find('img').animate({ top: -(height_box * total) }, time_animate, easing_old, function() {
+				box_clone2.remove();
+			});
+			box_clone_next1.find('img').animate({ top: 0 }, time_animate, easing_new);
+			box_clone_next2.find('img').animate({ top: -height_box }, time_animate, easing_new, callback);
+		},
+
+		animationCut: function(options)
+		{
+			var self = this;
+			
+			var options = $.extend({}, {easing_old: 'easeInOutExpo', easing_new: 'easeInOutExpo'}, options || {});
+			
+			this.settings.is_animating = true;
+			var easing_old = (this.settings.easing_default == '') ? options.easing_old : this.settings.easing_default;
+			var easing_new = (this.settings.easing_default == '') ? options.easing_new : this.settings.easing_default;
+			var time_animate = 900 / this.settings.velocity;
+			
+			var image_old = this.box_skitter.find('.image_main').attr('src');
+			
+			this.setActualLevel();
+			
+			this.setLinkAtual();
+			this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+			this.box_skitter.find('.image_main').hide();
+			
+			var total 			= 2;
+			var width_box 		= this.settings.width_skitter;
+			var height_box 		= Math.ceil(this.settings.height_skitter / total);
+
+			// Old image
+			var box_clone1 = this.getBoxCloneImgOld(image_old), box_clone2 = this.getBoxCloneImgOld(image_old);
+			box_clone1.find('img').css({left:0, top:0});
+			box_clone1.css({top:0, left:0, width:width_box, height:height_box});
+
+			box_clone2.find('img').css({left:0, top:-height_box});
+			box_clone2.css({top:height_box, left:0, width:width_box, height:height_box});
+
+			// Next image
+			var box_clone_next1 = this.getBoxClone(), box_clone_next2 = this.getBoxClone();
+			//box_clone_next1.find('img').css({left:0, top:height_box});
+			box_clone_next1.find('img').css({left:0, top:0});
+			box_clone_next1.css({top:0, left:width_box, width:width_box, height:height_box});
+
+			//box_clone_next2.find('img').css({left:0, top: -(height_box * total) });
+			box_clone_next2.find('img').css({left:0, top: -height_box });
+			box_clone_next2.css({top:height_box, left:-width_box, width:width_box, height:height_box});
+
+			// Add boxes
+			this.addBoxClone(box_clone_next1);
+			this.addBoxClone(box_clone_next2);
+			this.addBoxClone(box_clone1);
+			this.addBoxClone(box_clone2);
+
+			// Show boxes
+			box_clone1.show();
+			box_clone2.show();
+			box_clone_next1.show();
+			box_clone_next2.show();
+
+			// Callback
+			var callback = function() { self.finishAnimation(); };
+
+			// Animations
+			box_clone1.animate({ left: -width_box }, time_animate, easing_old, function() {
+				box_clone1.remove();
+			});
+			box_clone2.animate({ left: width_box }, time_animate, easing_old, function() {
+				box_clone2.remove();
+			});
+			box_clone_next1.animate({ left: 0 }, time_animate, easing_new);
+			box_clone_next2.animate({ left: 0 }, time_animate, easing_new, callback);
+		},
 		
 		// End animations ----------------------
 		
@@ -2919,6 +3067,7 @@
 					}
 					
 					if (self.settings.elapsedTime <= self.settings.interval) {
+						self.clearTimer(true); // Fix bug IE: double next
 						self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
 						self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
 						self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
@@ -2936,16 +3085,13 @@
 	$.fn.css3 = function(props) {
 		var css = {};
 		var prefixes = ['moz', 'ms', 'o', 'webkit'];
-		
 		for(var prop in props) {
 			// Add the vendor specific versions
 			for(var i=0; i<prefixes.length; i++)
 				css['-'+prefixes[i]+'-'+prop] = props[prop];
-			
 			// Add the actual version	
 			css[prop] = props[prop];
 		}
-		
 		this.css(css);
 		return this;
 	};
@@ -2958,7 +3104,6 @@
     
     $.fn.rotate = function (val) {
         var style = $(this).css('transform') || 'none';
-        
         if (typeof val == 'undefined') {
             if (style) {
                 var m = style.match(/rotate\(([^)]+)\)/);
@@ -2968,9 +3113,7 @@
             }
             return 0;
         }
-        
         var m = val.toString().match(/^(-?\d+(\.\d+)?)(.+)?$/);
-		
         if (m) {
             if (m[3]) rotateUnits = m[3];
             $(this).css('transform',
@@ -2984,7 +3127,6 @@
     // Note that scale is unitless.
     $.fn.scale = function (val, duration, options) {
         var style = $(this).css('transform');
-        
         if (typeof val == 'undefined') {
             if (style) {
                 var m = style.match(/scale\(([^)]+)\)/);
@@ -2994,11 +3136,9 @@
             }
             return 1;
         }
-		
         $(this).css('transform',
             style.replace(/none|scale\([^)]*\)/, '') + 'scale(' + val + ')'
         );
-        
         return this;
     };
 
@@ -3066,7 +3206,6 @@
                 _propsObj = {};
             }
         }
-		
         if
         (
             typeof _propsObj['transform'] == 'undefined'
@@ -3082,7 +3221,6 @@
         ) {
             _propsObj['transform'] = getTransformProperty(this.get(0));
         }
-		
         if (_propsObj['transform'] != 'transform') {
             // Call in form of css('transform' ...)
             if (arg == 'transform') {
@@ -3091,7 +3229,6 @@
                     return jQuery.style(this.get(0), arg);
                 }
             }
-			
             // Call in form of css({'transform': ...})
             else if
             (
@@ -3102,7 +3239,6 @@
                 delete arg['transform'];
             }
         }
-        
         return proxied.apply(this, arguments);
     };
 
