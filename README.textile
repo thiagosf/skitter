@@ -1,5 +1,46 @@
 h1. Skitter - Slideshow for anytime!
 
-With 30 different animations, two types of navigation and many options to customize!
+With 38 different animations, two types of navigation and many options to customize!
 
-License: Dual licensed under the MIT or GPL Version 2 licenses
+License: Dual licensed under the MIT or GPL Version 2 
+
+h2. Animations
+
+* cube
+* cubeRandom
+* block
+* cubeStop
+* cubeHide
+* cubeSize
+* horizontal
+* showBars
+* showBarsRandom
+* tube
+* fade
+* fadeFour
+* paralell
+* blind
+* blindHeight
+* blindWidth
+* directionTop
+* directionBottom
+* directionRight
+* directionLeft
+* cubeStopRandom
+* cubeSpread
+* cubeJelly
+* glassCube
+* glassBlock
+* circles
+* circlesInside
+* circlesRotate
+* cubeShow
+* upBars
+* downBars
+* hideBars
+* swapBars
+* swapBarsBack
+* swapBlocks
+* cut
+* random
+* randomSmart
