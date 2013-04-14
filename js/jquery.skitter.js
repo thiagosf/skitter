@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 4.1
+ * @version 4.2
  * @date August 04, 2010
- * @update April 07, 2013
+ * @update April 14, 2013
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -18,70 +18,192 @@
 	
 	$.fn.skitter = function(options) {
 		return this.each(function() {
-			$(this).data('skitter_number', number_skitter);
-			skitters.push(new $sk(this, options, number_skitter));
-			++number_skitter;
+			if ( $(this).data('skitter_number') == undefined ) {
+				$(this).data('skitter_number', number_skitter);
+				skitters.push(new $sk(this, options, number_skitter));
+				++number_skitter;
+			}
 		});
 	};
 	
 	var defaults = {
+		// Animation velocity
 		velocity: 				1,
+
+		// Interval between transitions
 		interval: 				2500, 
+
+		// Default animation
 		animation: 				'',
+
+		// Numbers display
 		numbers: 				true,
+
+		// Navigation display
 		navigation:			 	true,
+
+		// Label display
 		label:					true,
+
+		// Easing default
 		easing_default: 		'',
+
+		// The skitters box (internal)
 		box_skitter: 			null,
+
+		// @deprecated
 		time_interval: 			null,
+
+		// Image link (internal)
 		images_links: 			null,
+
+		// Actual image (internal)
 		image_atual: 			null,
+
+		// Actual link (internal)
 		link_atual: 			null,
+
+		// Actual label (internal)
 		label_atual: 			null,
+
+		// Actual target (internal)
 		target_atual: 			'_self',
+
+		// Skitter width (internal)
 		width_skitter: 			null,
+
+		// Skitter height (internal)
 		height_skitter: 		null,
+
+		// Image number loop (internal)
 		image_i: 				1,
+
+		// Is animating (internal)
 		is_animating:  			false,
+
+		// Is hover box_skitter (internal)
 		is_hover_box_skitter: 	false,
+
+		// Smart randomly (internal)
 		random_ia: 				null,
+
+		// Randomly sliders
 		show_randomly: 			false,
+
+		// Navigation with thumbs
 		thumbs: 				false,
-		animateNumberOut: 		{backgroundColor:'#333', color:'#fff'},
-		animateNumberOver: 		{backgroundColor:'#fff', color:'#000'},
-		animateNumberActive: 	{backgroundColor:'#cc3333', color:'#fff'},
+
+		// Animation/style number/dot
+		animateNumberOut: 		false,
+
+		// Animation/style hover number/dot
+		animateNumberOver: 		false,
+
+		// Animation/style active number/dot
+		animateNumberActive: 	false,
+
+		// Hide numbers and navigation
 		hideTools: 				false,
+
+		// Fullscreen mode
 		fullscreen: 			false,
+
+		// Loading data from XML file
 		xml: 					false,
+
+		// Navigation with dots
 		dots: 					false,
+
+		// Width label
 		width_label: 			null,
-		opacity_elements:		0.75, // Final opacity of elements in hideTools
-		interval_in_elements:	300, // Interval animation hover elements hideTools
-		interval_out_elements:	500, // Interval animation out elements hideTools
+
+		// Final opacity of elements in hideTools
+		opacity_elements:		0.75,
+
+		// Interval animation hover elements hideTools 
+		interval_in_elements:	300, 
+
+		// Interval animation out elements hideTools
+		interval_out_elements:	500, 
+
+		// Onload Callback
 		onLoad:					null,
+
+		// Function call to change image
 		imageSwitched:			null,
+
+		// @deprecated
 		max_number_height: 		20,
+
+		// Alignment of numbers/dots/thumbs
 		numbers_align:			'left',
+
+		// Preview with dots
 		preview:				false,
+
+		// Focus slideshow
 		focus:					false,
+
+		// Focus active (internal)
 		foucs_active:			false,
+
+		// Position of button focus slideshow
 		focus_position:			'center',
+
+		// Option play/pause manually
 		controls:				false,
+
+		// Position of button controls
 		controls_position:		'center',
+
+		// Displays progress bar
 		progressbar:			false,
+
+		// CSS progress bar
 		progressbar_css:		{},
+
+		// Is paused (internal)
 		is_paused:				false,
+
+		// Is blur (internal)
 		is_blur:				false,
+
+		// Is paused time (internal)
 		is_paused_time:			false,
+
+		// Time start (internal)
 		timeStart:				0,
+
+		// Elapsed time (internal)
 		elapsedTime:			0,
+
+		// Stop animation to move mouse over it.
 		stop_over:				true,
+
+		// Enable navigation keys
 		enable_navigation_keys:	false,
+
+		// Specific animations
 		with_animations:		[],
-		mouseOverButton: 		function() { $(this).stop().animate({opacity:0.5}, 200); }, 
-		mouseOutButton: 		function() { $(this).stop().animate({opacity:1}, 200); }, 
+
+		// Function call to go over the navigation buttons
+		// mouseOverButton: 		function() { $(this).stop().animate({opacity:0.5}, 200); }, 
+		mouseOverButton: 		null, 
+
+		// Function call to go out the navigation buttons
+		// mouseOutButton: 		function() { $(this).stop().animate({opacity:1}, 200); }, 
+		mouseOutButton: 		null, 
+
+		// Sets whether the slideshow will start automatically
 		auto_play: 				true, 
+
+		// Label animation type
 		labelAnimation: 		'slideUp', 
+
+		// Theme
+		theme: null, 
+
+		// Structure (internal)
 		structure: 	 			  '<a href="#" class="prev_button">prev</a>'
 								+ '<a href="#" class="next_button">next</a>'
 								+ '<span class="info_slide"></span>'
@@ -134,6 +256,11 @@
 			if (!this.settings.width_skitter || !this.settings.height_skitter) {
 				console.warn('Width or height size is null! - Skitter Slideshow');
 				return false;
+			}
+
+			// Theme
+			if ( this.settings.theme ) {
+				this.box_skitter.addClass('skitter-' + this.settings.theme);
 			}
 			
 			// Structure html
@@ -375,11 +502,17 @@
 				
 				this.box_skitter.find('.image_number').hover(function() {
 					if ($(this).attr('class') != 'image_number image_number_select') {
-						$(this).stop().animate(self.settings.animateNumberOver, 300);
+						if ( self.settings.animateNumberOver ) {
+							$(this).stop().animate(self.settings.animateNumberOver, 300);
+						}
+						// $(this).stop().animate(self.settings.animateNumberOver, 300);
 					}
 				}, function(){
 					if ($(this).attr('class') != 'image_number image_number_select') {
-						$(this).stop().animate(self.settings.animateNumberOut, 500);
+						if ( self.settings.animateNumberOut ) {
+							$(this).stop().animate(self.settings.animateNumberOut, 500);
+						}
+						// $(this).stop().animate(self.settings.animateNumberOut, 500);
 					}
 				});
 				
@@ -391,8 +524,16 @@
 					return false;
 				});
 				
-				this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
-				this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
+				if ( self.settings.animateNumberOut ) {
+					this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
+				}
+
+				if ( self.settings.animateNumberActive ) {
+					this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
+				}
+
+				// this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
+				// this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
 				
 				// Preview with dots
 				if (self.settings.preview && self.settings.dots) 
@@ -2409,8 +2550,10 @@
 		addClassNumber: function () 
 		{
 			var self = this;
-			this.box_skitter.find('.image_number_select').animate(self.settings.animateNumberOut, 500).removeClass('image_number_select');
-			$('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).animate(self.settings.animateNumberActive, 700).addClass('image_number_select');
+			// this.box_skitter.find('.image_number_select').animate(self.settings.animateNumberOut, 500).removeClass('image_number_select');
+			// $('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).animate(self.settings.animateNumberActive, 700).addClass('image_number_select');
+			this.box_skitter.find('.image_number_select').removeClass('image_number_select');
+			$('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).addClass('image_number_select');
 		},
 
 		// Increment image_i
@@ -2427,6 +2570,7 @@
 		{
 			if (this.settings.link_atual != '#') {
 				var img_clone = $('<a href="'+this.settings.link_atual+'"><img src="'+this.settings.image_atual+'" /></a>');
+				img_clone.attr({ 'target': this.settings.target_atual });
 			} 
 			else {
 				var img_clone = $('<img src="'+this.settings.image_atual+'" />');
@@ -2443,6 +2587,7 @@
 		{
 			if (this.settings.link_atual != '#') {
 				var img_clone = $('<a href="'+this.settings.link_atual+'"><img src="'+image_old+'" /></a>');
+				img_clone.attr({ 'target': this.settings.target_atual });
 			} 
 			else {
 				var img_clone = $('<img src="'+image_old+'" />');
@@ -2785,8 +2930,12 @@
 				var code = (e.keyCode ? e.keyCode : e.which);
 				if (code == 27) $('#overlay_skitter').trigger('click');
 			});
+
+			var _top = $('.box_skitter').offset().top;
+			var _left = $('.box_skitter').offset().left;
 			
 			self.box_skitter.find('.focus_button').click(function() {
+				if ( self.settings.foucs_active ) return false;
 				self.settings.foucs_active = true;
 				
 				$(this).stop().animate({opacity:0}, self.settings.interval_out_elements);
@@ -2796,8 +2945,6 @@
 					.hide()
 					.fadeTo(self.settings.interval_in_elements, 0.98);
 					
-				var _top = $('.box_skitter').offset().top;
-				var _left = $('.box_skitter').offset().left;
 				var _topFinal = (($(window).height() - $('.box_skitter').height()) / 2) + $(document).scrollTop();
 				var _leftFinal = ($(window).width() - $('.box_skitter').width()) / 2;
 				
@@ -2814,35 +2961,33 @@
 					.css({'background':'none'})
 					.fadeTo(300,0.3);
 				
-				$('#overlay_skitter').click(function() {
-					if ($(this).hasClass('finish_overlay_skitter')) return false;
-					
-					self.settings.foucs_active = false;
-					$(this).addClass('finish_overlay_skitter');
-					
-					$('#mark_position').before($('.box_skitter'));
-					
-					if (!self.settings.hideTools) self.box_skitter.find('.focus_button').animate({opacity:0.3}, 200);
-					
-					self.box_skitter
-						.stop()
-						.animate({'top':_top, 'left':_left}, 300, 'easeOutExpo', function() {
-							$(this).css({'position':'relative', 'top':0, 'left': 0});
-							$('#mark_position').remove();
-						});
-					
-					$('#overlay_skitter').fadeTo(self.settings.interval_out_elements, 0, function() {
-						$(this).remove();
+				return false;
+			});
+
+			$('#overlay_skitter').live('click', function() {
+				if ( $(this).hasClass('finish_overlay_skitter') ) return false;
+				
+				self.settings.foucs_active = false;
+				$(this).addClass('finish_overlay_skitter');
+				
+				if (!self.settings.hideTools) self.box_skitter.find('.focus_button').animate({opacity:0.3}, 200);
+				
+				self.box_skitter
+					.stop()
+					.animate({'top':_top, 'left':_left}, 200, 'easeOutExpo', function() {
+						$('#mark_position').before(self.box_skitter);
+						$(this).css({'position':'relative', 'top':0, 'left': 0});
+						$('#mark_position').remove();
 					});
-					
-					return false;
+				
+				$('#overlay_skitter').fadeTo(self.settings.interval_out_elements, 0, function() {
+					$(this).remove();
 				});
 				
 				return false;
 			});
 		},
 		
-
 		/**
 		 * Controls: play and stop
 		 */
