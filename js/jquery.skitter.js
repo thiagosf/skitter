@@ -3,15 +3,14 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 4.2
+ * @version 4.2.1
  * @date August 04, 2010
- * @update April 14, 2013
+ * @update April 25, 2013
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
  */
-
-(function($) {
+;(function($) {
 	
 	var number_skitter = 0,
 		skitters = [];
@@ -121,10 +120,10 @@
 		opacity_elements:		0.75,
 
 		// Interval animation hover elements hideTools 
-		interval_in_elements:	300, 
+		interval_in_elements:	200, 
 
 		// Interval animation out elements hideTools
-		interval_out_elements:	500, 
+		interval_out_elements:	300, 
 
 		// Onload Callback
 		onLoad:					null,
@@ -2704,9 +2703,6 @@
 		stopOnMouseOver: function () 
 		{
 			var self = this;
-			var opacity_elements = self.settings.opacity_elements;
-			var interval_in_elements = self.settings.interval_in_elements;
-			var interval_out_elements = self.settings.interval_out_elements;
 
 			if ( self.settings.stop_over ) 
 			{
@@ -2770,14 +2766,9 @@
 					
 					if (self.settings.navigation) {
 						self.box_skitter
-							.find('.prev_button')
+							.find('.prev_button, .next_button')
 							.show()
 							.css({opacity:0})
-							.animate({opacity: opacity_elements}, interval_in_elements);
-							
-						self.box_skitter
-							.find('.next_button')
-							.show().css({opacity:0})
 							.animate({opacity: opacity_elements}, interval_in_elements);
 					}
 
@@ -2786,7 +2777,7 @@
 							.find('.focus_button')
 							.stop()
 							.show().css({opacity:0})
-							.animate({opacity:opacity_elements}, 200);
+							.animate({opacity:opacity_elements}, interval_in_elements);
 					}
 					
 					if (self.settings.controls) {
@@ -2794,7 +2785,7 @@
 						.find('.play_pause_button')
 						.stop()
 						.show().css({opacity:0})
-						.animate({opacity:opacity_elements}, 200);
+						.animate({opacity:opacity_elements}, interval_in_elements);
 					}
 				}
 
@@ -2802,14 +2793,14 @@
 					self.box_skitter
 						.find('.focus_button')
 						.stop()
-						.animate({opacity:1}, 200);
+						.animate({opacity:1}, interval_in_elements);
 				}
 				
 				if (self.settings.controls && !self.settings.hideTools) {
 					self.box_skitter
 						.find('.play_pause_button')
 						.stop()
-						.animate({opacity:1}, 200);
+						.animate({opacity:1}, interval_in_elements);
 				}
 			}
 			else {
@@ -2825,27 +2816,19 @@
 					
 					if (self.settings.navigation) {
 						self.box_skitter
-							.find('.prev_button')
-							.queue("fx", [])
-							.show()
-							.css({opacity: opacity_elements})
-							.animate({opacity:0}, interval_out_elements);
-							
-						self.box_skitter
-							.find('.next_button')
+							.find('.prev_button, .next_button')
 							.queue("fx", [])
 							.show()
 							.css({opacity: opacity_elements})
 							.animate({opacity:0}, interval_out_elements);
 					}
 
-
 					if (self.settings.focus && !self.settings.foucs_active) {
 						self.box_skitter
 							.find('.focus_button')
 							.stop()
 							.css({opacity: opacity_elements})
-							.animate({opacity:0}, 200);
+							.animate({opacity:0}, interval_out_elements);
 					}
 
 					if (self.settings.controls) {
@@ -2853,7 +2836,7 @@
 							.find('.play_pause_button')
 							.stop()
 							.css({opacity: opacity_elements})
-							.animate({opacity:0}, 200);
+							.animate({opacity:0}, interval_out_elements);
 					}
 				}
 				
@@ -2861,14 +2844,14 @@
 					self.box_skitter
 						.find('.focus_button')
 						.stop()
-						.animate({opacity:0.3}, 200);
+						.animate({opacity:0.3}, interval_out_elements);
 				}
 				
 				if (self.settings.controls && !self.settings.hideTools) {
 					self.box_skitter
 						.find('.play_pause_button')
 						.stop()
-						.animate({opacity:0.3}, 200);
+						.animate({opacity:0.3}, interval_out_elements);
 				}
 			}
 		},
@@ -2894,7 +2877,6 @@
 			this.box_skitter.find('.info_slide').fadeTo(0, 0);
 			this.box_skitter.find('.prev_button').fadeTo(0, 0);
 			this.box_skitter.find('.next_button').fadeTo(0, 0);
-			this.box_skitter.find('.label_skitter').fadeTo(0, 0);
 			this.box_skitter.find('.focus_button').fadeTo(0, 0);
 			this.box_skitter.find('.play_pause_button').fadeTo(0, 0);
 		}, 
