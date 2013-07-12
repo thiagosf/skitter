@@ -74,6 +74,9 @@
 		// Skitter height (internal)
 		height_skitter: 		null,
 
+		// Define dinamic size
+		dinamic_size:           false,
+
 		// Image number loop (internal)
 		image_i: 				1,
 
@@ -220,7 +223,12 @@
 		this.timer = null;
 		this.settings = $.extend({}, defaults, options || {});
 		this.number_skitter = number;
-		this.setup();
+		// is dinamic
+		if(this.settings.dinamic_size){
+			this.setupDinamic();
+		}else{
+			this.setup();
+		}
 	};
 	
 	// Shortcut
@@ -232,6 +240,23 @@
 	
 	$sk.fn.extend({
 		
+		/**
+		 * Init Dinamic
+		 * Calculates height of the first image, so call this.setup()
+		 */
+		setupDinamic: function(){
+			var imgs = this.box_skitter.find('img');
+			var self = this;
+
+			if( imgs.length ){
+				$(imgs[0]).load(function(){
+					self.settings.height_skitter = this.height;
+					self.setup();
+				});
+			}
+			
+		},
+
 		/**
 		 * Init
 		 */
@@ -248,9 +273,9 @@
 				this.settings.stop_over = false;
 				$('body').css({'overflown':'hidden'});
 			}
-			
-			this.settings.width_skitter 	= parseFloat(this.box_skitter.css('width'));
-			this.settings.height_skitter 	= parseFloat(this.box_skitter.css('height'));
+
+			this.settings.width_skitter	= parseFloat(this.box_skitter.css('width'));
+			this.settings.height_skitter = this.settings.height_skitter ? this.settings.height_skitter : parseFloat(this.box_skitter.css('height'));
 			
 			if (!this.settings.width_skitter || !this.settings.height_skitter) {
 				console.warn('Width or height size is null! - Skitter Slideshow');
