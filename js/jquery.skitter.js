@@ -2549,10 +2549,8 @@
 		addClassNumber: function () 
 		{
 			var self = this;
-			// this.box_skitter.find('.image_number_select').animate(self.settings.animateNumberOut, 500).removeClass('image_number_select');
-			// $('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).animate(self.settings.animateNumberActive, 700).addClass('image_number_select');
-			this.box_skitter.find('.image_number_select').removeClass('image_number_select');
-			$('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).addClass('image_number_select');
+			this.box_skitter.find('.image_number_select').animate(self.settings.animateNumberOut, 500).removeClass('image_number_select');
+			$('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).animate(self.settings.animateNumberActive, 700).addClass('image_number_select');
 		},
 
 		// Increment image_i
