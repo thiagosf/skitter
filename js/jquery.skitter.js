@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 4.2.1
+ * @version 4.2.2
  * @date August 04, 2010
- * @update April 25, 2013
+ * @update July 06, 2014
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -2945,8 +2945,8 @@
 				
 				return false;
 			});
-
-			$('#overlay_skitter').live('click', function() {
+			
+			$(document).on('click', '#overlay_skitter', function() {
 				if ( $(this).hasClass('finish_overlay_skitter') ) return false;
 				
 				self.settings.foucs_active = false;
