@@ -4,43 +4,38 @@ With 38 different animations, two types of navigation and many options to custom
 
 License: Dual licensed under the MIT or GPL Version 2 
 
-h2. Animations
+h2. How to install
 
-* cube
-* cubeRandom
-* block
-* cubeStop
-* cubeHide
-* cubeSize
-* horizontal
-* showBars
-* showBarsRandom
-* tube
-* fade
-* fadeFour
-* paralell
-* blind
-* blindHeight
-* blindWidth
-* directionTop
-* directionBottom
-* directionRight
-* directionLeft
-* cubeStopRandom
-* cubeSpread
-* cubeJelly
-* glassCube
-* glassBlock
-* circles
-* circlesInside
-* circlesRotate
-* cubeShow
-* upBars
-* downBars
-* hideBars
-* swapBars
-* swapBarsBack
-* swapBlocks
-* cut
-* random
-* randomSmart
+h3. Add the CSS and JS files inside <head>
+
+<pre><code><link type="text/css" href="css/skitter.styles.css" media="all" rel="stylesheet" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="js/jquery.skitter.min.js"></script></code></pre>
+
+h3. Init the Skitter
+
+<pre><code><script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		$(".box_skitter_large").skitter();
+	});
+</script></code></pre>
+
+h4. Add the images through the unordered list
+
+<pre><code><div class="box_skitter box_skitter_large">
+	<ul>
+		<li>
+			<a href="#cut"><img src="images/001.jpg" class="cut" /></a>
+			<div class="label_text"><p>cut</p></div>
+		</li>
+		<li>
+			<a href="#swapBlocks"><img src="images/002.jpg" class="swapBlocks" /></a>
+			<div class="label_text"><p>swapBlocks</p></div>
+		</li>
+		<li>
+			<a href="#swapBarsBack"><img src="images/003.jpg" class="swapBarsBack" /></a>
+			<div class="label_text"><p>swapBarsBack</p></div>
+		</li>
+	</ul>
+</div></code></pre>
