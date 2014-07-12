@@ -1,29 +1,32 @@
-h1. Skitter - Slideshow for anytime!
+# Skitter - Slideshow for anytime!
 
 With 38 different animations, two types of navigation and many options to customize!
 
 License: Dual licensed under the MIT or GPL Version 2 
 
-h2. How to install
+## How to install
 
-h3. Add the CSS and JS files inside <head>
+### Add the CSS and JS files inside <head>
 
-<pre><code><link type="text/css" href="css/skitter.styles.css" media="all" rel="stylesheet" />
+```html
+<link type="text/css" href="css/skitter.styles.css" media="all" rel="stylesheet" />
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="js/jquery.skitter.min.js"></script></code></pre>
+<script type="text/javascript" src="js/jquery.skitter.min.js"></script>
+```
 
-h3. Init the Skitter
+### Init the Skitter
 
-<pre><code><script type="text/javascript" language="javascript">
-	$(document).ready(function() {
-		$(".box_skitter_large").skitter();
-	});
-</script></code></pre>
+```javascript
+$(document).ready(function() {
+	$(".box_skitter_large").skitter();
+});
+```
 
-h4. Add the images through the unordered list
+### Add the images through the unordered list
 
-<pre><code><div class="box_skitter box_skitter_large">
+```html
+<div class="box_skitter box_skitter_large">
 	<ul>
 		<li>
 			<a href="#cut"><img src="images/001.jpg" class="cut" /></a>
@@ -38,4 +41,5 @@ h4. Add the images through the unordered list
 			<div class="label_text"><p>swapBarsBack</p></div>
 		</li>
 	</ul>
-</div></code></pre>
+</div>
+```
