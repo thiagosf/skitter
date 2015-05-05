@@ -5,7 +5,7 @@
  * @author Thiago Silva Ferreira - http://thiagosf.net
  * @version 4.2.3
  * @date August 04, 2010
- * @update July 12, 2014
+ * @update May 05, 2015
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -2079,39 +2079,21 @@
 				var _ftop = _itop; 
 				var box_clone = null;
 
-				box_clone = this.getBoxCloneBackground({
-					image: 		image_old,
-					left: 		_ileft, 
-					top: 		_itop, 
-					width: 		size_box, 
-					height: 	size_box,
-					position: {
-						top:  	-_itop, 
-						left:  	-_ileft
-					}
-				}).css3({
+				box_clone = this.getBoxCloneImgOld(image_old);
+				box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
 					'border-radius': radius+'px'
 				});
+				box_clone.find('img').css({left: -_ileft, top: -_itop});
 				
-				size_box -= 200;
+				size_box -= 100;
 				
 				this.addBoxClone(box_clone);
 				box_clone.show();
 				
 				var delay_time = 100 * i;
 				var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
-				var _rotate = (i % 2 == 0) ? 45 : -45;
-				// box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'hide', rotate: _rotate}, time_animate, easing, callback);
-
-				box_clone
-					.delay(delay_time)
-					.animate({
-						top: _ftop, 
-						left: _fleft,
-						opacity: 'hide'
-					}, time_animate, easing, callback);
-
-				box_clone.delay(delay_time).animateRotate(_rotate, time_animate + 600, 'easeInQuad');
+				var _rotate = (i % 2 == 0) ? '20deg' : '-20deg';
+				box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'hide', rotate: _rotate}, time_animate, easing, callback);
 			}
 		},
 		
@@ -2915,7 +2897,7 @@
 				
 				return false;
 			});
-			
+
 			$(document).on('click', '#overlay_skitter', function() {
 				if ( $(this).hasClass('finish_overlay_skitter') ) return false;
 				
@@ -3154,7 +3136,8 @@
 		/**
 		 * Get box clone with background image
 		 */
-		getBoxCloneBackground: function(options) {
+		getBoxCloneBackground: function(options)
+		{
 			var box_clone = $('<div class="box_clone"></div>');
 
 			box_clone.css({
@@ -3226,6 +3209,7 @@
 				}
 			});
 		}
+		
 	});
 	
 	/**
@@ -3246,21 +3230,150 @@
 		return this;
 	};
 	
-	/**
-	 * Helper function for rotate animation
-	 * @author yckart, user2360953, frenchie (stackoverflow)
-	 */
-	$.fn.animateRotate = function(angle, duration, easing, complete) {
-		var args = $.speed(duration, easing, complete);
-		var step = args.step;
-		return this.each(function(i, e) {
-			args.step = function(now) {
-				$.style(e, 'transform', 'rotate(' + now + 'deg)');
-				if (step) return step.apply(this, arguments);
-			};
+	// Monkey patch jQuery 1.3.1+ to add support for setting or animating CSS
+	// scale and rotation independently.
+	// 2009-2010 Zachary Johnson www.zachstronaut.com
+	// Updated 2010.11.06
+	var rotateUnits = 'deg';
+	
+	$.fn.rotate = function (val) {
+		var style = $(this).css('transform') || 'none';
+		if (typeof val == 'undefined') {
+			if (style) {
+				var m = style.match(/rotate\(([^)]+)\)/);
+				if (m && m[1]) {
+					return m[1];
+				}
+			}
+			return 0;
+		}
+		var m = val.toString().match(/^(-?\d+(\.\d+)?)(.+)?$/);
+		if (m) {
+			if (m[3]) rotateUnits = m[3];
+			$(this).css('transform',
+				style.replace(/none|rotate\([^)]*\)/, '') + 'rotate(' + m[1] + rotateUnits + ')'
+			);
+		}
+		
+		return this;
+	};
+	
+	// Note that scale is unitless.
+	$.fn.scale = function (val, duration, options) {
+		var style = $(this).css('transform');
+		if (typeof val == 'undefined') {
+			if (style) {
+				var m = style.match(/scale\(([^)]+)\)/);
+				if (m && m[1]) {
+					return m[1];
+				}
+			}
+			return 1;
+		}
+		$(this).css('transform',
+			style.replace(/none|scale\([^)]*\)/, '') + 'scale(' + val + ')'
+		);
+		return this;
+	};
 
-			$({deg: 0}).animate({deg: angle}, args);
-		});
+	// fx.cur() must be monkey patched because otherwise it would always
+	// return 0 for current rotate and scale values
+	var curProxied = $.fx.prototype.cur;
+	$.fx.prototype.cur = function () {
+		if (this.prop == 'rotate') {
+			return parseFloat($(this.elem).rotate());
+		}
+		else if (this.prop == 'scale') {
+			return parseFloat($(this.elem).scale());
+		}
+		return curProxied.apply(this, arguments);
+	};
+	
+	$.fx.step.rotate = function (fx) {
+		$(fx.elem).rotate(fx.now + rotateUnits);
+	};
+	
+	$.fx.step.scale = function (fx) {
+		$(fx.elem).scale(fx.now);
+	};
+	
+	var animateProxied = $.fn.animate;
+	$.fn.animate = function (prop) {
+		if (typeof prop['rotate'] != 'undefined') {
+			var m = prop['rotate'].toString().match(/^(([+-]=)?(-?\d+(\.\d+)?))(.+)?$/);
+			if (m && m[5]) {
+				rotateUnits = m[5];
+			}
+			prop['rotate'] = m[1];
+		}
+		
+		return animateProxied.apply(this, arguments);
+	};
+	
+	// Monkey patch jQuery 1.3.1+ css() method to support CSS 'transform'
+	// property uniformly across Safari/Chrome/Webkit, Firefox 3.5+, IE 9+, and Opera 11+.
+	// 2009-2011 Zachary Johnson www.zachstronaut.com
+	// Updated 2011.05.04 (May the fourth be with you!)
+	function getTransformProperty(element) {
+		var properties = ['transform', 'WebkitTransform', 'msTransform', 'MozTransform', 'OTransform'];
+		var p;
+		while (p = properties.shift()) {
+			if (typeof element.style[p] != 'undefined') {
+				return p;
+			}
+		}
+		return 'transform';
+	};
+	
+	var _propsObj = null;
+	
+	var proxied = $.fn.css;
+	$.fn.css = function (arg, val) {
+		if (_propsObj === null) {
+			if (typeof $.cssProps != 'undefined') {
+				_propsObj = $.cssProps;
+			}
+			else if (typeof $.props != 'undefined') {
+				_propsObj = $.props;
+			}
+			else {
+				_propsObj = {};
+			}
+		}
+		if
+		(
+			typeof _propsObj['transform'] == 'undefined'
+			&&
+			(
+				arg == 'transform'
+				||
+				(
+					typeof arg == 'object'
+					&& typeof arg['transform'] != 'undefined'
+				)
+			)
+		) {
+			_propsObj['transform'] = getTransformProperty(this.get(0));
+		}
+		if (_propsObj['transform'] != 'transform') {
+			// Call in form of css('transform' ...)
+			if (arg == 'transform') {
+				arg = _propsObj['transform'];
+				if (typeof val == 'undefined' && jQuery.style) {
+					return jQuery.style(this.get(0), arg);
+				}
+			}
+			// Call in form of css({'transform': ...})
+			else if
+			(
+				typeof arg == 'object'
+				&& typeof arg['transform'] != 'undefined'
+			) {
+				arg[_propsObj['transform']] = arg['transform'];
+				delete arg['transform'];
+			}
+		}
+		return proxied.apply(this, arguments);
 	};
 
 })(jQuery);
