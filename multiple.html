@@ -1,82 +1,82 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-	<title>Skitter - Slideshow for anytime!</title>
-	
-	<link href="css/styles.css" type="text/css" media="all" rel="stylesheet" />
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>Skitter - Slideshow for anytime!</title>
+  
+  <link href="css/styles.css" type="text/css" media="all" rel="stylesheet" />
 
-	<!-- Skitter Styles -->
-	<link href="css/skitter.styles.css" type="text/css" media="all" rel="stylesheet" />
-	
-	<!-- Skitter JS -->
-	<script type="text/javascript" language="javascript" src="js/jquery-1.6.3.min.js"></script>
-	<script type="text/javascript" language="javascript" src="js/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" language="javascript" src="js/jquery.animate-colors-min.js"></script>
-	<script type="text/javascript" language="javascript" src="js/jquery.skitter.min.js"></script>
-	
-	<!-- Init Skitter -->
-	<script type="text/javascript" language="javascript">
-		$(document).ready(function(){
-			$('.box_skitter_large').skitter({label: false, numbers: false, theme: 'square'});
-			$('.box_skitter_small').skitter({label: false, numbers: false, interval: 1000, theme: 'clean'});
-			$('.box_skitter_medium').css({width: 500, height: 200}).skitter({show_randomly: true, dots: true, interval: 4000, numbers_align: 'center', theme: 'round'});
-			$('.box_skitter_normal').css({width: 400, height: 300}).skitter({animation: 'blind', interval: 2000, hideTools: true, theme: 'minimalist'});
-		});
-	</script>
+  <!-- Skitter Styles -->
+  <link href="css/skitter.styles.min.css" type="text/css" media="all" rel="stylesheet" />
+  
+  <!-- Skitter JS -->
+  <script type="text/javascript" language="javascript" src="js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" language="javascript" src="js/jquery.easing.1.3.js"></script>
+  <script type="text/javascript" language="javascript" src="js/jquery.animate-colors-min.js"></script>
+  <script type="text/javascript" language="javascript" src="js/jquery.skitter.min.js"></script>
+  
+  <!-- Init Skitter -->
+  <script type="text/javascript" language="javascript">
+    $(document).ready(function(){
+      $('.box_skitter_large').skitter({label: false, numbers: false, theme: 'square'});
+      $('.box_skitter_small').skitter({label: false, numbers: false, interval: 1000, theme: 'clean'});
+      $('.box_skitter_medium').css({width: 500, height: 200}).skitter({show_randomly: true, dots: true, interval: 4000, numbers_align: 'center', theme: 'round'});
+      $('.box_skitter_normal').css({width: 400, height: 300}).skitter({animation: 'blind', interval: 2000, hideTools: true, theme: 'minimalist'});
+    });
+  </script>
 </head>
 <body>
-	<div id="page">
-		<h1>Skitter - Slideshow for anytime!</h1>
-		<div id="content">
-			<div class="border_box">
-				<div class="box_skitter box_skitter_large">
-					<ul>
-						<li><a href="#cubeRandom"><img src="images/example/001.jpg" class="cubeRandom" /></a><div class="label_text"><p>cubeRandom</p></div></li>
-						<li><a href="#block"><img src="images/example/002.jpg" class="block" /></a><div class="label_text"><p>block</p></div></li>
-						<li><a href="#cubeStop"><img src="images/example/003.jpg" class="cubeStop" /></a><div class="label_text"><p>cubeStop</p></div></li>
-					</ul>
-				</div>
-			</div>
-			<div style="clear:both;"></div>
-			<br />
-			<div class="border_box">
-				<div class="box_skitter box_skitter_small">
-					<ul>
-						<li><a href="#horizontal"><img src="images/example/001.jpg" class="horizontal" /></a><div class="label_text"><p>horizontal</p></div></li>
-						<li><a href="#showBars"><img src="images/example/002.jpg" class="showBars" /></a><div class="label_text"><p>showBars</p></div></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		
-		<div style="clear:both;"></div>
-		<br />
-		
-		<div class="border_box" style="margin-bottom:45px;">
-			<div class="box_skitter box_skitter_medium">
-				<ul>
-					<li><a href="#fadeFour"><img src="images/example/001.jpg" class="fadeFour" /></a><div class="label_text"><p>fadeFour</p></div></li>
-					<li><a href="#paralell"><img src="images/example/002.jpg" class="paralell" /></a><div class="label_text"><p>paralell</p></div></li>
-					<li><a href="#blind"><img src="images/example/003.jpg" class="blind" /></a><div class="label_text"><p>blind</p></div></li>
-				</ul>
-			</div>
-		</div>
-	
-		<div style="clear:both;"></div>
-		<br />
+  <div id="page">
+    <h1>Skitter - Slideshow for anytime!</h1>
+    <div id="content">
+      <div class="border_box">
+        <div class="box_skitter box_skitter_large">
+          <ul>
+            <li><a href="#cubeRandom"><img src="images/example/001.jpg" class="cubeRandom" /></a><div class="label_text"><p>cubeRandom</p></div></li>
+            <li><a href="#block"><img src="images/example/002.jpg" class="block" /></a><div class="label_text"><p>block</p></div></li>
+            <li><a href="#cubeStop"><img src="images/example/003.jpg" class="cubeStop" /></a><div class="label_text"><p>cubeStop</p></div></li>
+          </ul>
+        </div>
+      </div>
+      <div style="clear:both;"></div>
+      <br />
+      <div class="border_box">
+        <div class="box_skitter box_skitter_small">
+          <ul>
+            <li><a href="#horizontal"><img src="images/example/001.jpg" class="horizontal" /></a><div class="label_text"><p>horizontal</p></div></li>
+            <li><a href="#showBars"><img src="images/example/002.jpg" class="showBars" /></a><div class="label_text"><p>showBars</p></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div style="clear:both;"></div>
+    <br />
+    
+    <div class="border_box" style="margin-bottom:45px;">
+      <div class="box_skitter box_skitter_medium">
+        <ul>
+          <li><a href="#fadeFour"><img src="images/example/001.jpg" class="fadeFour" /></a><div class="label_text"><p>fadeFour</p></div></li>
+          <li><a href="#paralell"><img src="images/example/002.jpg" class="paralell" /></a><div class="label_text"><p>paralell</p></div></li>
+          <li><a href="#blind"><img src="images/example/003.jpg" class="blind" /></a><div class="label_text"><p>blind</p></div></li>
+        </ul>
+      </div>
+    </div>
+  
+    <div style="clear:both;"></div>
+    <br />
 
-		<div class="border_box">
-			<div class="box_skitter box_skitter_normal">
-				<ul>
-					<li><a href="#directionTop"><img src="images/example/001.jpg" class="directionTop" /></a><div class="label_text"><p>directionTop</p></div></li>
-					<li><a href="#directionBottom"><img src="images/example/002.jpg" class="directionBottom" /></a><div class="label_text"><p>directionBottom</p></div></li>
-					<li><a href="#directionRight"><img src="images/example/003.jpg" class="directionRight" /></a><div class="label_text"><p>directionRight</p></div></li>>
-				</ul>
-			</div>
-		</div>
+    <div class="border_box">
+      <div class="box_skitter box_skitter_normal">
+        <ul>
+          <li><a href="#directionTop"><img src="images/example/001.jpg" class="directionTop" /></a><div class="label_text"><p>directionTop</p></div></li>
+          <li><a href="#directionBottom"><img src="images/example/002.jpg" class="directionBottom" /></a><div class="label_text"><p>directionBottom</p></div></li>
+          <li><a href="#directionRight"><img src="images/example/003.jpg" class="directionRight" /></a><div class="label_text"><p>directionRight</p></div></li>>
+        </ul>
+      </div>
+    </div>
 
-		<div style="clear:both;"></div>
-	</div>
+    <div style="clear:both;"></div>
+  </div>
 </body>
 </html>
