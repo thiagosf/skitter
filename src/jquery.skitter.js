@@ -672,8 +672,8 @@
       self.windowFocusOut();
       self.setLinkAtual();
       
-      self.box_skitter.find('.image a img').attr({'src': self.getCurrentImage()});
-      img_link = self.box_skitter.find('.image a');
+      self.box_skitter.find('.image > a img').attr({'src': self.getCurrentImage()});
+      img_link = self.box_skitter.find('.image > a');
       img_link = self.resizeImage(img_link);
       img_link.find('img').fadeIn(1500);
       
@@ -721,7 +721,7 @@
         this.clearTimer(true);
         this.settings.image_i = Math.floor(imageNumber);
         
-        this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+        this.box_skitter.find('.image > a').attr({'href': this.settings.link_atual});
         this.box_skitter.find('.image_main').attr({'src': this.getCurrentImage()});
         this.box_skitter.find('.box_clone').remove();
 
@@ -1051,7 +1051,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
       var time_animate = 300 / this.settings.velocity;
 
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
 
       this.setActualLevel();
 
@@ -1126,7 +1126,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
       var time_animate = 500 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -1190,7 +1190,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeInBack' : this.settings.easing_default;
       var time_animate = 300 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -1267,7 +1267,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeInOutQuad' : this.settings.easing_default;
       var time_animate = 600 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -1672,7 +1672,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeInOutExpo' : this.settings.easing_default;
       var time_animate = 1200 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -1993,7 +1993,7 @@
       this.setActualLevel();
       
       var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
-      var size_box  = 100;
+      var size_box  = this.settings.height_skitter;
       
       var radius    = Math.sqrt(Math.pow((this.settings.width_skitter), 2) + Math.pow((this.settings.height_skitter), 2));
       var radius    = Math.ceil(radius);
@@ -2020,7 +2020,7 @@
           'border-radius': radius+'px'
         });
         
-        size_box += 100;
+        size_box += 200;
         
         this.addBoxClone(box_clone);
         
@@ -2039,7 +2039,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
       var time_animate = 500 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -2074,7 +2074,7 @@
           'border-radius': radius+'px'
         });
         
-        size_box -= 100;
+        size_box -= 200;
         
         this.addBoxClone(box_clone);
         box_clone.show();
@@ -2091,10 +2091,10 @@
       var self = this;
       
       this.settings.is_animating = true;
-      var easing = (this.settings.easing_default == '') ? 'easeOutQuad' : this.settings.easing_default;
+      var easing = (this.settings.easing_default == '') ? 'easeInQuad' : this.settings.easing_default;
       var time_animate = 500 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -2121,14 +2121,14 @@
         });
         box_clone.find('img').css({left: -_ileft, top: -_itop});
         
-        size_box -= 100;
+        size_box -= 300;
         
         this.addBoxClone(box_clone);
         box_clone.show();
         
-        var delay_time = 100 * i;
+        var delay_time = 200 * i;
         var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
-        var _rotate = (i % 2 == 0) ? '20deg' : '-20deg';
+        var _rotate = (i % 2 == 0) ? '+=2deg' : '+=2deg';
         box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'hide', rotate: _rotate}, time_animate, easing, callback);
       }
     },
@@ -2193,7 +2193,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeInOutQuad' : this.settings.easing_default;
       var time_animate = 400 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -2237,7 +2237,7 @@
       var easing = (this.settings.easing_default == '') ? 'easeOutCirc' : this.settings.easing_default;
       var time_animate = 700 / this.settings.velocity;
 
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
 
       this.setActualLevel();
 
@@ -2290,7 +2290,7 @@
       var easing = (this.settings.easing_default == '') ? options.easing : this.settings.easing_default;
       var time_animate = 500 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -2368,7 +2368,7 @@
       var easing_new = (this.settings.easing_default == '') ? options.easing_new : this.settings.easing_default;
       var time_animate = 800 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -2433,7 +2433,7 @@
       var easing_new = (this.settings.easing_default == '') ? options.easing_new : this.settings.easing_default;
       var time_animate = 900 / this.settings.velocity;
       
-      var image_old = this.box_skitter.find('.image_main').attr('src');
+      var image_old = this.getOldImage();
       
       this.setActualLevel();
       
@@ -2499,7 +2499,7 @@
       this.showBoxText();
       this.settings.is_animating = false;
       this.box_skitter.find('.image_main').attr({'src': this.getCurrentImage()});
-      this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
+      this.box_skitter.find('.image > a').attr({'href': this.settings.link_atual});
       
       if (!this.settings.is_hover_box_skitter && !this.settings.is_paused && !this.settings.is_blur) {
         this.timer = setTimeout(function() { self.completeMove(); }, this.settings.interval);
@@ -2729,7 +2729,7 @@
           if (!self.settings.is_animating && self.settings.images_links.length > 1) {
             self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
             self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
-            self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
+            self.box_skitter.find('.image > a').attr({'href': self.settings.link_atual});
           }
         });
       }
@@ -2861,10 +2861,10 @@
     // Set link atual
     setLinkAtual: function() {
       if (this.settings.link_atual != '#' && this.settings.link_atual != '') {
-        this.box_skitter.find('.image a').attr({'href': this.settings.link_atual, 'target': this.settings.target_atual});
+        this.box_skitter.find('.image > a').attr({'href': this.settings.link_atual, 'target': this.settings.target_atual});
       }
       else {
-        this.box_skitter.find('.image a').removeAttr('href');
+        this.box_skitter.find('.image > a').removeAttr('href');
       }
     },
     
@@ -3024,7 +3024,7 @@
             if (!self.settings.is_animating && self.settings.images_links.length > 1) {
               self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
               self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
-              self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
+              self.box_skitter.find('.image > a').attr({'href': self.settings.link_atual});
             }
           }
         }
@@ -3183,13 +3183,15 @@
     getBoxCloneBackground: function(options)
     {
       var box_clone = $('<div class="box_clone"></div>');
+      var background_size = this.settings.width_skitter + 'px ' + this.settings.height_skitter + 'px';
 
       box_clone.css({
-        'left':         options.left, 
-        'top':          options.top, 
-        'width':        options.width, 
-        'height':         options.height,
-        'background-image':   'url('+options.image+')', 
+        'left':                options.left, 
+        'top':                 options.top, 
+        'width':               options.width, 
+        'height':              options.height,
+        'background-image':    'url('+options.image+')', 
+        'background-size':     background_size, 
         'background-position':  options.position.left+'px '+options.position.top+'px'
       });
 
@@ -3248,7 +3250,7 @@
             self.clearTimer(true); // Fix bug IE: double next
             self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
             self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
-            self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
+            self.box_skitter.find('.image > a').attr({'href': self.settings.link_atual});
           }
         }
       });
@@ -3266,7 +3268,7 @@
           timeout = setTimeout(function() {
             self.setDimensions();
           }, 200);
-        });
+        }).trigger('resize');
       }
     }, 
 
@@ -3338,13 +3340,28 @@
      */
     getCurrentImage: function() {
       var image = this.settings.image_atual;
+      return this.getImageName(image);
+    },
+
+    /**
+     * Get old image
+     */
+    getOldImage: function() {
+      var image = this.box_skitter.find('.image_main').attr('src');
+      return image;
+    },
+
+    /**
+     * Get image name for responsive (if enabled)
+     */
+    getImageName: function(image) {
       var window_width = $(window).width();
       if (this.settings.responsive) {
         for (var name in this.settings.responsive) {
           var item = this.settings.responsive[name];
           if (window_width < item.max_width) {
-            image = image.replace('.jpg', item.suffix + '.jpg');
-            console.log(image);
+            var extension = image.split('.').reverse()[0];
+            image = image.replace('.' + extension, item.suffix + '.' + extension);
             break;
           }
         }
