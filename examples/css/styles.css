@@ -1,3 +1,6 @@
+/* ------------------------------------------
+  You main styles
+---------------------------------------------*/
 * {
   margin: 0;
   padding: 0;
@@ -7,10 +10,11 @@ body {
   font-family: Arial, Tahoma;
   color: #333;
   background: white;
+  font-size: 80%;
 }
 #page {
   margin: 0 auto;
-  max-width: 800px;
+  // max-width: 800px;
   padding: 40px;
 }
 #page h1 {
@@ -35,11 +39,9 @@ body {
 }
 .btn {
   transition: background 300ms;
-  background: #009688;
   border-radius: 2px;
   padding: 10px 20px;
   display: inline-block;
-  color: white;
   text-decoration: none;
   font-size: 12px;
   line-height: 1;
@@ -47,10 +49,30 @@ body {
   text-transform: uppercase;
   font-weight: bold;
 }
-.btn:hover {
+.btn.btn-green {
+  color: white;
+  background: #009688;
+}
+.btn.btn-green:hover {
   background: #00695c;
 }
+.btn.btn-yellow {
+  color: black;
+  background: #fdd835;
+}
+.btn.btn-yellow:hover {
+  background: #fbc02d;
+}
+.btn.btn-small {
+  padding: 3px 7px;
+  font-size: 11px;
+}
+
+/* ------------------------------------------
+  Custom skitter
+---------------------------------------------*/
 .box_skitter_large {
-  max-width: 800px;
+  max-width: 100%;
+  width: 100%;
   height: 300px;
 }

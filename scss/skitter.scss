@@ -12,10 +12,14 @@
   .container_skitter {
     overflow: hidden;
     position: relative;
+    .image_main {
+      width: 100%;
+    }
   }
   .image {
     overflow: hidden;
     img {
+      width: 100%;
       display: none;
     }
   }
@@ -219,78 +223,74 @@
 /* =Label
 -------------------------------------------------------------- */
 
-.box_skitter {
-  .label_skitter {
-    z-index: 150;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    display: none;
-    z-index: 150;
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
+.label_skitter {
+  z-index: 150;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  display: none;
+  z-index: 150;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  display: none;
+  background: linear-gradient(rgba(0,0,0,0), black);
+  width: 100%;
+  p {
     color: #fff;
-    display: none;
-    opacity: 0.8;
-    background: #000;
-    width: 100%;
-    p {
-      padding: 10px;
-      margin: 0;
-      font: normal 22px arial,tahoma;
-      letter-spacing: -1px;
-    }
+    padding: 10px;
+    margin: 0;
+    font-size: 14px;
   }
-  .progressbar {
-    background: #000;
-    position: absolute;
-    top: 5px;
-    left: 15px;
-    height: 5px;
-    width: 200px;
-    z-index: 99;
-    border-radius: 20px;
-  }
-  .preview_slide {
-    display: none;
-    position: absolute;
-    z-index: 152;
-    bottom: 30px;
-    left: -40px;
-    width: 100px;
-    height: 100px;
-    background: #fff;
-    border: 1px solid #222;
-    -moz-box-shadow: rgba(0, 0, 0, 0.7) 2px 2px 5px;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.7) 2px 2px 5px;
-    box-shadow: rgba(0, 0, 0, 0.7) 2px 2px 5px;
-    overflow: hidden;
-    ul {
+}
+.progressbar {
+  background: #000;
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  height: 5px;
+  width: 200px;
+  z-index: 99;
+  border-radius: 20px;
+}
+.preview_slide {
+  display: none;
+  position: absolute;
+  z-index: 152;
+  bottom: 30px;
+  left: -40px;
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  border: 1px solid #222;
+  -moz-box-shadow: rgba(0, 0, 0, 0.7) 2px 2px 5px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.7) 2px 2px 5px;
+  box-shadow: rgba(0, 0, 0, 0.7) 2px 2px 5px;
+  overflow: hidden;
+  ul {
+    height: 100px !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    list-style: none !important;
+    display: block !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    li {
+      width: 100px !important;
       height: 100px !important;
       overflow: hidden !important;
+      float: left !important;
       margin: 0 !important;
-      list-style: none !important;
+      padding: 0 !important;
+      position: relative !important;
       display: block !important;
-      position: absolute !important;
-      top: 0;
-      left: 0;
-      li {
-        width: 100px !important;
-        height: 100px !important;
-        overflow: hidden !important;
-        float: left !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        position: relative !important;
-        display: block !important;
-        img {
-          position: absolute !important;
-          top: 0 !important;
-          left: 0 !important;
-          height: 150px !important;
-          width: auto !important;
-        }
+      img {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        height: 150px !important;
+        width: auto !important;
       }
     }
   }
@@ -348,3 +348,5 @@
 }
 
 @import "themes/all";
+@import "base/all";
+

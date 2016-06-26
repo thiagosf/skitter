@@ -210,8 +210,19 @@
                     + '<a href=""><img class="image_main" /></a>'
                     + '<div class="label_skitter"></div>'
                   + '</div>'
-                + '</div>'
+                + '</div>',
     
+    // Responsive
+    responsive: {
+      small: {
+        max_width: 768,
+        suffix: '-small'
+      },
+      medium: {
+        max_width: 1024,
+        suffix: '-medium'
+      }
+    }
   };
   
   $.skitter = function(obj, options, number) {
@@ -661,7 +672,7 @@
       self.windowFocusOut();
       self.setLinkAtual();
       
-      self.box_skitter.find('.image a img').attr({'src': self.settings.image_atual});
+      self.box_skitter.find('.image a img').attr({'src': self.getCurrentImage()});
       img_link = self.box_skitter.find('.image a');
       img_link = self.resizeImage(img_link);
       img_link.find('img').fadeIn(1500);
@@ -695,6 +706,8 @@
       }
       
       if ($.isFunction(self.settings.onLoad)) self.settings.onLoad(self);
+
+      this.setDimensions();
     },
     
     /**
@@ -709,7 +722,7 @@
         this.settings.image_i = Math.floor(imageNumber);
         
         this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
-        this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
+        this.box_skitter.find('.image_main').attr({'src': this.getCurrentImage()});
         this.box_skitter.find('.box_clone').remove();
 
         this.nextImage();
@@ -1043,7 +1056,7 @@
       this.setActualLevel();
 
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
 
       var max_w = self.getMaxW(8);
       var max_h = self.getMaxH(8);
@@ -1118,7 +1131,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(8);
       var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -1182,7 +1195,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(8);
       var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -1259,7 +1272,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(8);
       var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -1664,7 +1677,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       this.box_skitter.find('.image_main').hide();
       
       var total     = options.total;
@@ -1994,7 +2007,7 @@
         var box_clone = null;
 
         box_clone = this.getBoxCloneBackground({
-          image:    self.settings.image_atual,
+          image:    self.getCurrentImage(),
           left:     _ileft, 
           top:    _itop, 
           width:    size_box, 
@@ -2031,7 +2044,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
       
@@ -2086,7 +2099,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
       
@@ -2185,7 +2198,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(12);
       var total       = max_w;
@@ -2229,7 +2242,7 @@
       this.setActualLevel();
 
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
 
       var max_w      = self.getMaxW(10);
       var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -2282,7 +2295,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       this.box_skitter.find('.image_main').hide();
       
       var total     = options.total;
@@ -2360,7 +2373,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       this.box_skitter.find('.image_main').hide();
       
       var total       = 2;
@@ -2425,7 +2438,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
       this.box_skitter.find('.image_main').hide();
       
       var total       = 2;
@@ -2485,7 +2498,7 @@
       this.box_skitter.find('.image_main').show();
       this.showBoxText();
       this.settings.is_animating = false;
-      this.box_skitter.find('.image_main').attr({'src': this.settings.image_atual});
+      this.box_skitter.find('.image_main').attr({'src': this.getCurrentImage()});
       this.box_skitter.find('.image a').attr({'href': this.settings.link_atual});
       
       if (!this.settings.is_hover_box_skitter && !this.settings.is_paused && !this.settings.is_blur) {
@@ -2549,11 +2562,11 @@
     getBoxClone: function()
     {
       if (this.settings.link_atual != '#') {
-        var img_clone = $('<a href="'+this.settings.link_atual+'"><img src="'+this.settings.image_atual+'" /></a>');
+        var img_clone = $('<a href="'+this.settings.link_atual+'"><img src="'+this.getCurrentImage()+'" /></a>');
         img_clone.attr({ 'target': this.settings.target_atual });
       } 
       else {
-        var img_clone = $('<img src="'+this.settings.image_atual+'" />');
+        var img_clone = $('<img src="'+this.getCurrentImage()+'" />');
       }
       
       img_clone = this.resizeImage(img_clone);
@@ -2582,9 +2595,11 @@
     // Redimensiona imagem
     resizeImage: function(img_clone) 
     {
-      if (this.settings.fullscreen) {
-        img_clone.find('img').height(this.settings.height_skitter);
-      }
+      // if (this.settings.fullscreen) {
+      //   img_clone.find('img').height(this.settings.height_skitter);
+      // }
+      img_clone.find('img').width(this.settings.width_skitter);
+      img_clone.find('img').height(this.settings.height_skitter);
       return img_clone;
     }, 
 
@@ -2713,7 +2728,7 @@
           
           if (!self.settings.is_animating && self.settings.images_links.length > 1) {
             self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
-            self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
+            self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
             self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
           }
         });
@@ -2964,14 +2979,14 @@
       
       if (self.settings.focus) _left += 25;
       
-      var cssPosition = {left: _left};
+      var cssPosition = {left: '50%', 'transform': 'translateX(-50%)'};
       
       switch (self.settings.controls_position)
       {
-        case 'leftTop'    : cssPosition = {left: 5, top: 30}; break;
-        case 'rightTop'   : cssPosition = {right: 5, top: 30}; break;
-        case 'leftBottom'   : cssPosition = {left: 5, bottom: 5, top: 'auto'}; break;
-        case 'rightBottom'  : cssPosition = {right: 5, bottom: 5, top: 'auto'}; break;
+        case 'leftTop' : cssPosition = {left: 5, top: 30, transform: null}; break;
+        case 'rightTop' : cssPosition = {right: 5, top: 30, transform: null}; break;
+        case 'leftBottom' : cssPosition = {left: 5, bottom: 5, top: 'auto', transform: null}; break;
+        case 'rightBottom' : cssPosition = {right: 5, bottom: 5, top: 'auto', transform: null}; break;
       }
       
       play_pause_button
@@ -3008,7 +3023,7 @@
             self.clearTimer(true);
             if (!self.settings.is_animating && self.settings.images_links.length > 1) {
               self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
-              self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
+              self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
               self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
             }
           }
@@ -3232,7 +3247,7 @@
           if (self.settings.elapsedTime <= self.settings.interval) {
             self.clearTimer(true); // Fix bug IE: double next
             self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
-            self.box_skitter.find('.image_main').attr({'src': self.settings.image_atual});
+            self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
             self.box_skitter.find('.image a').attr({'href': self.settings.link_atual});
           }
         }
@@ -3243,33 +3258,45 @@
      * Responsive
      */
     setResponsive: function() {
-      var self = this;
-      var timeout = null;
-      $(window).on('resize', function() {
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-          var options = {
-            width: self.box_skitter.css('width', '100%').width(),
-            height: self.box_skitter.height()
-          };
-          self.setDimensions(options);
-        }, 200);
-      });
+      if (this.settings.responsive) {
+        var self = this;
+        var timeout = null;
+        $(window).on('resize', function() {
+          clearTimeout(timeout);
+          timeout = setTimeout(function() {
+            self.setDimensions();
+          }, 200);
+        });
+      }
     }, 
 
     /**
      * Set skitter dimensions 
      */
-    setDimensions: function(options) {
-      this.settings.width_skitter = options.width;
-      this.settings.height_skitter = options.height;
+    setDimensions: function() {
+      this.box_skitter.css('width', '100%');
+      this.box_skitter.find('.image_main').attr({ src: this.getCurrentImage() }).css({ 'width': '100%', 'height': 'auto' });
+
+      var image = this.box_skitter.find('.image_main');
+      var width_box = this.box_skitter.width();
+      var height_box = this.box_skitter.height();
+      var width_image = image.width();
+      var height_image = image.height();
+      var width = width_box;
+      var height = (height_image * width_box) / width_image;
+
+      this.settings.width_skitter = width;
+      this.settings.height_skitter = height;
       this.box_skitter
-        .width(options.width)
-        .height(options.height)
+        .width(width)
+        .height(height)
         .find('.container_skitter')
-          .width(options.width)
-          .height(options.height);
-    },
+          .width(width)
+          .height(height)
+        .find('img')
+          .width(width)
+          .height(height);
+    }, 
 
     /**
      * Check is large device
@@ -3286,13 +3313,15 @@
       // x == 768px
       // y == 480px
       // z == 320px
-      var window_width = $(window).width();
-      if (window_width <= 320) {
-        max_w = parseInt(max_w / 4);
-      } else if (window_width <= 480) {
-        max_w = parseInt(max_w / 3);
-      } else if (window_width <= 768) {
-        max_w = parseInt(max_w / 1.5);
+      if (this.settings.responsive) {
+        var window_width = $(window).width();
+        if (window_width <= 320) {
+          max_w = parseInt(max_w / 4);
+        } else if (window_width <= 480) {
+          max_w = parseInt(max_w / 3);
+        } else if (window_width <= 768) {
+          max_w = parseInt(max_w / 1.5);
+        }
       }
       return max_w;
     },
@@ -3302,6 +3331,25 @@
      */
     getMaxH: function(max_h) {
       return this.getMaxW(max_h);
+    },
+
+    /**
+     * Get current image
+     */
+    getCurrentImage: function() {
+      var image = this.settings.image_atual;
+      var window_width = $(window).width();
+      if (this.settings.responsive) {
+        for (var name in this.settings.responsive) {
+          var item = this.settings.responsive[name];
+          if (window_width < item.max_width) {
+            image = image.replace('.jpg', item.suffix + '.jpg');
+            console.log(image);
+            break;
+          }
+        }
+      }
+      return image;
     }
   });
   
