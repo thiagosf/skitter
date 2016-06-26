@@ -279,7 +279,8 @@
       this.box_skitter.find('.container_skitter').height(this.settings.height_skitter);
       
       var width_label = this.settings.width_label ? this.settings.width_label : this.settings.width_skitter;
-      this.box_skitter.find('.label_skitter').width(width_label);
+      // this.box_skitter.find('.label_skitter').width(width_label);
+      // this.box_skitter.find('.label_skitter').width(width_label);
       
       var initial_select_class = ' image_number_select', u = 0;
       this.settings.images_links = new Array();
@@ -416,7 +417,8 @@
           switch (self.settings.numbers_align) {
             case 'center' : 
               var _vleft = (self.settings.width_skitter - self.box_skitter.find(class_info).width()) / 2;
-              self.box_skitter.find(class_info).css({'left':_vleft});
+              // self.box_skitter.find(class_info).css({'left':_vleft});
+              self.box_skitter.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
               break;
               
             case 'right' : 
@@ -442,7 +444,8 @@
         switch (self.settings.numbers_align) {
           case 'center' : 
             var _vleft = (self.settings.width_skitter - self.box_skitter.find(class_info).width()) / 2;
-            self.box_skitter.find(class_info).css({'left':_vleft});
+            // self.box_skitter.find(class_info).css({'left':_vleft});
+            self.box_skitter.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
             break;
             
           case 'right' : 
@@ -503,14 +506,12 @@
             if ( self.settings.animateNumberOver ) {
               $(this).stop().animate(self.settings.animateNumberOver, 300);
             }
-            // $(this).stop().animate(self.settings.animateNumberOver, 300);
           }
         }, function(){
           if ($(this).attr('class') != 'image_number image_number_select') {
             if ( self.settings.animateNumberOut ) {
               $(this).stop().animate(self.settings.animateNumberOut, 500);
             }
-            // $(this).stop().animate(self.settings.animateNumberOut, 500);
           }
         });
         
@@ -551,20 +552,24 @@
           $(class_info).append(preview);
           
           self.box_skitter.find(class_info).find('.image_number').mouseenter(function() {
-            var _left_info = parseFloat(self.box_skitter.find(class_info).offset().left);
-            var _left_image = parseFloat($(this).offset().left);
-            var _left_preview = (_left_image - _left_info) - 43;
-            
-            var rel = parseInt($(this).attr('rel'));
-            var image_current_preview = self.box_skitter.find('.preview_slide_current img').attr('src');
-            var _left_ul = -(rel * 100);
-            
-            self.box_skitter.find('.preview_slide').find('ul').animate({left: _left_ul}, {duration:200, queue: false, easing: 'easeOutSine'});
-            self.box_skitter.find('.preview_slide').fadeTo(1,1).animate({left: _left_preview}, {duration:200, queue: false});
+            if (self.isLargeDevice()) {
+              var _left_info = parseFloat(self.box_skitter.find(class_info).offset().left);
+              var _left_image = parseFloat($(this).offset().left);
+              var _left_preview = (_left_image - _left_info) - 43;
+              
+              var rel = parseInt($(this).attr('rel'));
+              var image_current_preview = self.box_skitter.find('.preview_slide_current img').attr('src');
+              var _left_ul = -(rel * 100);
+              
+              self.box_skitter.find('.preview_slide').find('ul').animate({left: _left_ul}, {duration:200, queue: false, easing: 'easeOutSine'});
+              self.box_skitter.find('.preview_slide').fadeTo(1,1).animate({left: _left_preview}, {duration:200, queue: false});
+            }
           });
           
           self.box_skitter.find(class_info).mouseleave(function() {
-            $('.preview_slide').animate({opacity: 'hide'}, {duration: 200, queue: false});
+            if (self.isLargeDevice()) {
+              $('.preview_slide').animate({opacity: 'hide'}, {duration: 200, queue: false});
+            }
           });
         }
       }
@@ -917,8 +922,9 @@
       var time_animate = 700 / this.settings.velocity;
       
       this.setActualLevel();
-      
-      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
+
+      var max_w = self.getMaxW(8);
+      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var division_h  = Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / 3));
       var total   = division_w * division_h;
       
@@ -996,7 +1002,8 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 15));
+      var max_w       = self.getMaxW(15);
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = (this.settings.height_skitter);
       
@@ -1038,8 +1045,10 @@
       this.setLinkAtual();
       this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
 
-      var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
-      var division_h = Math.ceil(this.settings.height_skitter / (this.settings.width_skitter / 8));
+      var max_w = self.getMaxW(8);
+      var max_h = self.getMaxH(8);
+      var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
+      var division_h = Math.ceil(this.settings.height_skitter / (this.settings.width_skitter / max_h));
       var total = division_w * division_h;
 
       var width_box = Math.ceil(this.settings.width_skitter / division_w);
@@ -1111,31 +1120,32 @@
       this.setLinkAtual();
       this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
       
-      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
+      var max_w       = self.getMaxW(8);
+      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var division_h  = Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / 3));
-      var total   = division_w * division_h;
+      var total       = division_w * division_h;
       
       var width_box   = Math.ceil(this.settings.width_skitter / division_w);
       var height_box  = Math.ceil(this.settings.height_skitter / division_h);
       
-      var init_top  = 0;
+      var init_top    = 0;
       var init_left   = 0;
       
-      var col_t     = 0;
-      var col     = 0;
+      var col_t       = 0;
+      var col         = 0;
       
       for (i = 0; i < total; i++) {
         
-        init_top      = (i % 2 == 0) ? init_top : -init_top;
-        init_left       = (i % 2 == 0) ? init_left : -init_left;
+        init_top          = (i % 2 == 0) ? init_top : -init_top;
+        init_left         = (i % 2 == 0) ? init_left : -init_left;
 
-        var _vtop       = init_top + (height_box * col_t);
-        var _vleft      = (init_left + (width_box * col));
+        var _vtop         = init_top + (height_box * col_t);
+        var _vleft        = (init_left + (width_box * col));
         var _vtop_image   = -(height_box * col_t);
         
         var _vleft_image  = -(width_box * col);
-        var _btop       = _vtop - 50;
-        var _bleft      = _vleft - 50;
+        var _btop         = _vtop - 50;
+        var _bleft        = _vleft - 50;
         
         var box_clone = this.getBoxCloneImgOld(image_old);
         box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
@@ -1174,19 +1184,20 @@
       this.setLinkAtual();
       this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
       
-      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
+      var max_w       = self.getMaxW(8);
+      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var division_h  = Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / 3));
-      var total   = division_w * division_h;
+      var total       = division_w * division_h;
       
       var width_box   = Math.ceil(this.settings.width_skitter / division_w);
       var height_box  = Math.ceil(this.settings.height_skitter / division_h);
       
-      var init_top  = 0;
+      var init_top    = 0;
       var init_left   = 0;
       
-      var col_t     = 0;
-      var col     = 0;
-      var u     = -1;
+      var col_t       = 0;
+      var col         = 0;
+      var u           = -1;
       
       for (i = 0; i < total; i++) {
       
@@ -1203,16 +1214,16 @@
           u++;
         }
       
-        init_top      = (i % 2 == 0) ? init_top : -init_top;
-        init_left       = (i % 2 == 0) ? init_left : -init_left;
+        init_top         = (i % 2 == 0) ? init_top : -init_top;
+        init_left        = (i % 2 == 0) ? init_left : -init_left;
 
-        var _vtop       = init_top + (height_box * col_t);
-        var _vleft      = (init_left + (width_box * col));
-        var _vtop_image   = -(height_box * col_t);
+        var _vtop        = init_top + (height_box * col_t);
+        var _vleft       = (init_left + (width_box * col));
+        var _vtop_image  = -(height_box * col_t);
         
-        var _vleft_image  = -(width_box * col);
-        var _btop       = _vtop - 50;
-        var _bleft      = _vleft - 50;
+        var _vleft_image = -(width_box * col);
+        var _btop        = _vtop - 50;
+        var _bleft       = _vleft - 50;
         
         var box_clone = this.getBoxCloneImgOld(image_old);
         box_clone.css({left:_vleft+'px', top:_vtop+'px', width:width_box, height:height_box});
@@ -1250,32 +1261,33 @@
       this.setLinkAtual();
       this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
       
-      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
+      var max_w       = self.getMaxW(8);
+      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var division_h  = Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / 3));
-      var total   = division_w * division_h;
+      var total       = division_w * division_h;
       
       var width_box   = Math.ceil(this.settings.width_skitter / division_w);
       var height_box  = Math.ceil(this.settings.height_skitter / division_h);
       
-      var init_top  = 0;
+      var init_top    = 0;
       var init_left   = 0;
       
-      var col_t     = 0;
-      var col     = 0;
-      var _ftop   = Math.ceil(this.settings.width_skitter / 6);
+      var col_t       = 0;
+      var col         = 0;
+      var _ftop       = Math.ceil(this.settings.width_skitter / 6);
       
       for (i = 0; i < total; i++) {
         
-        init_top      = (i % 2 == 0) ? init_top : -init_top;
-        init_left       = (i % 2 == 0) ? init_left : -init_left;
+        init_top          = (i % 2 == 0) ? init_top : -init_top;
+        init_left         = (i % 2 == 0) ? init_left : -init_left;
 
-        var _vtop       = init_top + (height_box * col_t);
-        var _vleft      = (init_left + (width_box * col));
+        var _vtop         = init_top + (height_box * col_t);
+        var _vleft        = (init_left + (width_box * col));
         var _vtop_image   = -(height_box * col_t);
         
         var _vleft_image  = -(width_box * col);
-        var _btop       = _vtop - _ftop;
-        var _bleft      = _vleft - _ftop;
+        var _btop         = _vtop - _ftop;
+        var _bleft        = _vleft - _ftop;
         
         var box_clone = this.getBoxCloneImgOld(image_old);
         box_clone.css({left:_vleft, top:_vtop, width:width_box, height:height_box});
@@ -1309,7 +1321,7 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 7));
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 7));
       var width_box   = (this.settings.width_skitter);
       var height_box  = Math.ceil(this.settings.height_skitter / total);
       
@@ -1342,7 +1354,8 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+      var max_w       = self.getMaxW(10);
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = (this.settings.height_skitter);
       
@@ -1386,7 +1399,8 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+      var max_w       = self.getMaxW(10);
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = this.settings.height_skitter;
       
@@ -1485,7 +1499,8 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 16));
+      var max_w       = 16; //self.getMaxW(16); // @todo complex
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = this.settings.height_skitter;
       
@@ -1530,7 +1545,8 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 16));
+      var max_w       = 16; // self.getMaxW(16); // @todo complex
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = this.settings.height_skitter;
       
@@ -1597,7 +1613,8 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 16));
+      var max_w       = self.getMaxW(16);
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = this.settings.height_skitter;
       
@@ -1635,7 +1652,8 @@
     {
       var self = this;
       
-      var options = $.extend({}, {direction: 'top', delay_type: 'sequence', total: 7}, options || {});
+      var max_w   = self.getMaxW(7);
+      var options = $.extend({}, {direction: 'top', delay_type: 'sequence', total: max_w}, options || {});
       
       this.settings.is_animating = true;
       var easing = (this.settings.easing_default == '') ? 'easeInOutExpo' : this.settings.easing_default;
@@ -1778,20 +1796,22 @@
       
       this.setActualLevel();
       
-      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
-      var division_h  = Math.ceil(this.settings.height_skitter / (this.settings.width_skitter / 8));
-      var total   = division_w * division_h;
+      var max_w       = self.getMaxW(8);
+      var max_h       = self.getMaxH(8);
+      var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
+      var division_h  = Math.ceil(this.settings.height_skitter / (this.settings.width_skitter / max_h));
+      var total       = division_w * division_h;
       
       var width_box   = Math.ceil(this.settings.width_skitter / division_w);
       var height_box  = Math.ceil(this.settings.height_skitter / division_h);
       
-      var init_top  = 0;
+      var init_top    = 0;
       var init_left   = 0;
       
-      var col_t     = 0;
-      var col     = 0;
-      var order     = new Array;
-      var spread    = new Array;
+      var col_t       = 0;
+      var col         = 0;
+      var order       = new Array;
+      var spread      = new Array;
       
       // Make order
       for (i = 0; i < total; i++) {
@@ -1867,10 +1887,11 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10)) * 2;
+      var max_w       = self.getMaxW(10);
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w)) * 2;
       var width_box   = Math.ceil(this.settings.width_skitter / total) * 2;
       var height_box  = (this.settings.height_skitter) / 2;
-      var col     = 0;
+      var col         = 0;
       
       for (i = 0; i < total; i++) {
         mod = (i % 2) == 0 ? true : false;
@@ -1914,7 +1935,8 @@
       
       this.setActualLevel();
       
-      var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
+      var max_w       = self.getMaxW(10);
+      var total       = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = (this.settings.height_skitter);
       
@@ -2107,20 +2129,23 @@
       var time_animate = 400 / this.settings.velocity;
       
       this.setActualLevel();
+
+      var max_w         = self.getMaxW(8);
+      var max_h         = 4;
       
-      var division_w    = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 8));
-      var division_h    = Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / 4));
-      var total     = division_w * division_h;
+      var division_w    = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
+      var division_h    = Math.ceil(this.settings.height_skitter / (this.settings.height_skitter / max_h));
+      var total         = division_w * division_h;
       
       var width_box     = Math.ceil(this.settings.width_skitter / division_w);
       var height_box    = Math.ceil(this.settings.height_skitter / division_h);
       
-      var last      = false;
+      var last          = false;
       
-      var _btop       = 0;
-      var _bleft      = 0;
-      var line      = 0;
-      var col       = 0;
+      var _btop         = 0;
+      var _bleft        = 0;
+      var line          = 0;
+      var col           = 0;
       
       for (i = 0; i < total; i++) {
         
@@ -2162,14 +2187,15 @@
       this.setLinkAtual();
       this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
       
-      var total   = 12;
+      var max_w       = self.getMaxW(12);
+      var total       = max_w;
       var width_box   = Math.ceil(this.settings.width_skitter / total);
       var height_box  = this.settings.height_skitter;
-      var _ftop   = (options.direction == 'top') ? -height_box : height_box;
+      var _ftop       = (options.direction == 'top') ? -height_box : height_box;
       
       for (i = 0; i < total; i++) {
-        var _vtop       = 0;
-        var _vleft      = (width_box * i);
+        var _vtop         = 0;
+        var _vleft        = (width_box * i);
         var _vtop_image   = 0;
         var _vleft_image  = -(width_box * i);
 
@@ -2205,8 +2231,9 @@
       this.setLinkAtual();
       this.box_skitter.find('.image_main').attr({'src':this.settings.image_atual});
 
-      var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
-      var total = division_w;
+      var max_w      = self.getMaxW(10);
+      var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
+      var total      = division_w;
 
       var width_box = Math.ceil(this.settings.width_skitter / division_w);
       var height_box = this.settings.height_skitter;
@@ -2243,7 +2270,8 @@
     {
       var self = this;
       
-      var options = $.extend({}, {direction: 'top', delay_type: 'sequence', total: 7, easing: 'easeOutCirc'}, options || {});
+      var max_w  = self.getMaxW(7);
+      var options = $.extend({}, {direction: 'top', delay_type: 'sequence', total: max_w, easing: 'easeOutCirc'}, options || {});
       
       this.settings.is_animating = true;
       var easing = (this.settings.easing_default == '') ? options.easing : this.settings.easing_default;
@@ -3215,7 +3243,65 @@
      * Responsive
      */
     setResponsive: function() {
-      console.log("setResponsive here...");
+      var self = this;
+      var timeout = null;
+      $(window).on('resize', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+          var options = {
+            width: self.box_skitter.css('width', '100%').width(),
+            height: self.box_skitter.height()
+          };
+          self.setDimensions(options);
+        }, 200);
+      });
+    }, 
+
+    /**
+     * Set skitter dimensions 
+     */
+    setDimensions: function(options) {
+      this.settings.width_skitter = options.width;
+      this.settings.height_skitter = options.height;
+      this.box_skitter
+        .width(options.width)
+        .height(options.height)
+        .find('.container_skitter')
+          .width(options.width)
+          .height(options.height);
+    },
+
+    /**
+     * Check is large device
+     */
+    isLargeDevice: function() {
+      return $(window).width() >= 1024;
+    },
+
+    /**
+     * Max width splits (responsive friendly)
+     */
+    getMaxW: function(max_w) {
+      // 8 == 1024px
+      // x == 768px
+      // y == 480px
+      // z == 320px
+      var window_width = $(window).width();
+      if (window_width <= 320) {
+        max_w = parseInt(max_w / 4);
+      } else if (window_width <= 480) {
+        max_w = parseInt(max_w / 3);
+      } else if (window_width <= 768) {
+        max_w = parseInt(max_w / 1.5);
+      }
+      return max_w;
+    },
+
+    /**
+     * Max height splits (responsive friendly)
+     */
+    getMaxH: function(max_h) {
+      return this.getMaxW(max_h);
     }
   });
   

@@ -29,15 +29,9 @@ body {
   color: #999;
   letter-spacing: -1px;
 }
-#page h2 {
-  font-weight: normal;
-  font-size: 22px;
-  font-style: italic;
-  margin: 40px 0 20px 0;
-  font-family: serif;
-}
-.text-right {
+.see-documentation-p {
   text-align: right;
+  margin-top: 30px;
 }
 .btn {
   transition: background 300ms;
