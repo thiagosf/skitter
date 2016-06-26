@@ -1,9 +1,0 @@
-* { margin:0; padding: 0; list-style: none; }
-body { font-family: Arial,Tahoma; color:#333; background: #eee; }
-
-#page { margin: 0 auto; width: 800px; background: #fff; padding:40px; margin-top: 20px; margin-bottom: 20px; border: 1px solid #777; box-shadow: #999 1px 1px 3px; }
-#page h1 { font-weight: normal; font-size: 32px; letter-spacing: -2px; margin:0 0 20px 0; border-bottom: 1px solid #ddd; padding:0 0 10px 0; }
-#page h2 { font-weight: bold; font-size: 22px; letter-spacing: -1px; font-style: italic; margin:40px 0 0 0; }
-#page h3 { float: right; }
-#page h3 a { font-weight: normal; font-size: 16px; color:#004499; }
-#page h3 a:hover { color:#333; }

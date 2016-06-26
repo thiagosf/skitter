@@ -1,0 +1,88 @@
+/* =Round theme
+-------------------------------------------------------------- */
+
+.skitter-round {
+  .prev_button, .next_button, .play_pause_button, .focus_button {
+    display: block;
+    background: url('images/sprite-round.png') no-repeat;
+  }
+  .prev_button {
+    background-position: -0px -0px;
+    width: 23px;
+    height: 47px;
+    left: -23px;
+  }
+  .next_button {
+    background-position: -23px -0px;
+    width: 23px;
+    height: 47px;
+    right: -23px;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  .prev_button:hover {
+    opacity: 1;
+  }
+  .play_pause_button {
+    background-position: -0px -70px;
+    width: 47px;
+    height: 23px;
+    top: 24px;
+    left: 24px !important;
+    &.play_button {
+      background-position: -0px -47px;
+      width: 47px;
+      height: 23px;
+      top: 24px;
+    }
+  }
+  .focus_button {
+    background-position: -0px -93px;
+    width: 47px;
+    height: 23px;
+    top: 24px;
+    left: 82px !important;
+  }
+  .info_slide {
+    background: transparent;
+    .image_number {
+      background: #999;
+      box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+      font-size: 12px;
+      font-weight: normal;
+      &:hover {
+        background: #333;
+      }
+    }
+    .image_number_select {
+      background: #111;
+      &:hover {
+        background: #111;
+      }
+    }
+  }
+  .info_slide_dots {
+    .image_number {
+      width: 14px;
+      height: 14px;
+      box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+      background: #999;
+      &:hover {
+        background: #333;
+      }
+    }
+    .image_number_select {
+      background: #111;
+      &:hover {
+        background: #111;
+      }
+    }
+  }
+  .progressbar {
+    top: -10px;
+    left: 0px;
+    background: #333;
+    box-shadow: rgba(255, 255, 255, 0.3) 1px 1px 0;
+  }
+}

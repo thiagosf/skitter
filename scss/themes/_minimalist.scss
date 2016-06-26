@@ -1,0 +1,59 @@
+/* =Minimalist theme
+-------------------------------------------------------------- */
+
+.skitter-minimalist {
+  .prev_button, .next_button, .play_pause_button, .focus_button {
+    display: block;
+    background: url('images/sprite-minimalist.png') no-repeat !important;
+  }
+  .prev_button {
+    background-position: -0px -0px !important;
+    width: 24px !important;
+    height: 28px !important;
+    left: -45px !important;
+  }
+  .next_button {
+    background-position: -0px -28px !important;
+    width: 24px !important;
+    height: 28px !important;
+    right: -45px !important;
+  }
+  .play_pause_button {
+    background-position: -0px -74px !important;
+    width: 18px !important;
+    height: 18px !important;
+    &.play_button {
+      background-position: -0px -56px !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
+  }
+  .focus_button {
+    background-position: -0px -92px !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+  .info_slide {
+    background: transparent;
+    .image_number {
+      background: #000;
+      box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+      font-size: 12px;
+      font-weight: normal;
+      &:hover {
+        background: #111;
+      }
+    }
+    .image_number_select {
+      background: #cc3333;
+      &:hover {
+        background: #cc3333;
+      }
+    }
+  }
+  .info_slide_dots .image_number {
+    width: 14px;
+    height: 14px;
+    box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+  }
+}

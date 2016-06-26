@@ -1,0 +1,33 @@
+{
+  "name": "SkitterSlideshow",
+  "version": "4.5.0",
+  "description": "Slideshow for anytime",
+  "main": "src/skitter.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thiagosf/SkitterSlideshow.git"
+  },
+  "keywords": [
+    "slider",
+    "slideshow",
+    "transition",
+    "animation"
+  ],
+  "author": "Thiago Silva Ferreira <thiago@thiagosf.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thiagosf/SkitterSlideshow/issues"
+  },
+  "devDependencies": {
+    "gulp": "~3.9.1",
+    "gulp-webserver": "~0.9.1",
+    "gulp-minify": "0.0.12",
+    "gulp-sass": "~2.3.2"
+  }
+}

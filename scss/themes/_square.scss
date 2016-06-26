@@ -1,0 +1,98 @@
+/* =Square theme
+-------------------------------------------------------------- */
+
+.skitter-square {
+  .play_pause_button, .next_button, .focus_button, .prev_button {
+    display: block;
+    background: url('images/sprite-square.png') no-repeat;
+  }
+  .play_pause_button {
+    background-position: -55px -0px;
+    width: 55px;
+    height: 55px;
+    top: 10px !important;
+    left: 10px !important;
+    bottom: auto !important;
+    right: auto !important;
+    margin-top: 0;
+    &.play_button {
+      background-position: -0px -0px;
+      width: 55px;
+      height: 55px;
+    }
+  }
+  .focus_button {
+    background-position: -55px -55px;
+    width: 55px;
+    height: 55px;
+    top: 10px !important;
+    left: 65px !important;
+    bottom: auto !important;
+    right: auto !important;
+    margin-top: 0;
+  }
+  .next_button {
+    background-position: -0px -55px;
+    width: 55px;
+    height: 55px;
+    top: auto;
+    left: auto;
+    bottom: 10px;
+    right: 10px;
+  }
+  .prev_button {
+    background-position: -0px -110px;
+    width: 55px;
+    height: 55px;
+    top: auto;
+    left: auto;
+    bottom: 10px;
+    right: 65px;
+  }
+  .info_slide {
+    background: transparent;
+    .image_number {
+      background: #fff;
+      box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 0;
+      font-size: 12px;
+      font-weight: normal;
+      color: #333;
+      &:hover {
+        background: #ccc;
+      }
+    }
+    .image_number_select {
+      background: #111;
+      color: #fff;
+      &:hover {
+        background: #111;
+        color: #fff;
+      }
+    }
+  }
+  .info_slide_dots {
+    .image_number {
+      width: 14px;
+      height: 14px;
+      box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+      background: #ccc;
+      &:hover {
+        background: #999;
+      }
+    }
+    .image_number_select {
+      background: #555;
+      &:hover {
+        background: #555;
+      }
+    }
+  }
+  .progressbar {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100%;
+    background: #fff;
+    border-radius: 0;
+    height: 2px;
+  }
+}

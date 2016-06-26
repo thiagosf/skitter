@@ -1,0 +1,34 @@
+/* =Default theme
+-------------------------------------------------------------- */
+
+.box_skitter {
+  .focus_button, .next_button, .prev_button, .play_pause_button {
+    display: block;
+    background: url('../images/sprite-default.png') no-repeat;
+  }
+  .next_button {
+    background-position: -0px -42px;
+    width: 42px;
+    height: 42px;
+  }
+  .prev_button {
+    background-position: -42px -42px;
+    width: 42px;
+    height: 42px;
+  }
+  .play_pause_button {
+    background-position: -0px -0px;
+    width: 42px;
+    height: 42px;
+    &.play_button {
+      background-position: -0px -84px;
+      width: 42px;
+      height: 42px;
+    }
+  }
+  .focus_button {
+    background-position: -42px -0px;
+    width: 42px;
+    height: 42px;
+  }
+}

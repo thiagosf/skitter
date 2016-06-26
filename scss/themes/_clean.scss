@@ -1,0 +1,80 @@
+/* =Clean theme
+-------------------------------------------------------------- */
+
+.skitter-clean {
+  .prev_button, .next_button, .play_pause_button, .focus_button {
+    display: block;
+    background: url('images/sprite-clean.png') no-repeat;
+  }
+  .prev_button {
+    background-position: 0px 0px;
+    width: 47px;
+    height: 46px;
+  }
+  .next_button {
+    background-position: 0px -46px;
+    width: 47px;
+    height: 46px;
+  }
+  .play_pause_button {
+    background-position: -0px -133px;
+    width: 41px;
+    height: 41px;
+    &.play_button {
+      background-position: -0px -92px;
+      width: 41px;
+      height: 41px;
+    }
+  }
+  .focus_button {
+    background-position: -0px -174px;
+    width: 41px;
+    height: 41px;
+  }
+  .info_slide {
+    background: transparent;
+    .image_number {
+      background: #fff;
+      box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 0;
+      font-size: 12px;
+      font-weight: normal;
+      color: #333;
+      &:hover {
+        background: #ccc;
+      }
+    }
+    .image_number_select {
+      background: #111;
+      color: #fff;
+      &:hover {
+        background: #111;
+        color: #fff;
+      }
+    }
+  }
+  .info_slide_dots {
+    bottom: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 0;
+    .image_number {
+      width: 14px;
+      height: 14px;
+      background: #999;
+      &:hover {
+        background: #333;
+      }
+    }
+    .image_number_select {
+      background: #111;
+      &:hover {
+        background: #111;
+      }
+    }
+  }
+  .progressbar {
+    top: 5px;
+    left: 5px;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0;
+  }
+}
