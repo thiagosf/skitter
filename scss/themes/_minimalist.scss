@@ -34,20 +34,20 @@
     height: 18px !important;
   }
   .info_slide {
-    background: transparent;
+    background-color: transparent;
     .image_number {
-      background: #000;
+      background-color: #000;
       box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
       font-size: 12px;
       font-weight: normal;
       &:hover {
-        background: #111;
+        background-color: #111;
       }
     }
     .image_number_select {
-      background: #cc3333;
+      background-color: #cc3333;
       &:hover {
-        background: #cc3333;
+        background-color: #cc3333;
       }
     }
   }

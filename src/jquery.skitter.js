@@ -308,9 +308,7 @@
             dimension_thumb = 'width="100"';
           }
           self.box_skitter.find('.info_slide').append(
-            '<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'">'
-              +'<img src="'+src+'" '+dimension_thumb+' />'
-              +'</span> '
+            '<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'" style="background-image: url(' + src + ');"></span> '
           );
         }
         else {
@@ -512,19 +510,19 @@
         self.box_skitter.find('.next_button, .prev_button').bind('mouseover', self.settings.mouseOverButton);
         self.box_skitter.find('.next_button, .prev_button').bind('mouseleave', self.settings.mouseOutButton);
         
-        this.box_skitter.find('.image_number').hover(function() {
-          if ($(this).attr('class') != 'image_number image_number_select') {
-            if ( self.settings.animateNumberOver ) {
-              $(this).stop().animate(self.settings.animateNumberOver, 300);
-            }
-          }
-        }, function(){
-          if ($(this).attr('class') != 'image_number image_number_select') {
-            if ( self.settings.animateNumberOut ) {
-              $(this).stop().animate(self.settings.animateNumberOut, 500);
-            }
-          }
-        });
+        // this.box_skitter.find('.image_number').hover(function() {
+        //   if ($(this).attr('class') != 'image_number image_number_select') {
+        //     if ( self.settings.animateNumberOver ) {
+        //       $(this).stop().animate(self.settings.animateNumberOver, 300);
+        //     }
+        //   }
+        // }, function(){
+        //   if ($(this).attr('class') != 'image_number image_number_select') {
+        //     if ( self.settings.animateNumberOut ) {
+        //       $(this).stop().animate(self.settings.animateNumberOut, 500);
+        //     }
+        //   }
+        // });
         
         this.box_skitter.find('.image_number').click(function(){
           if ($(this).attr('class') != 'image_number image_number_select') {
@@ -535,11 +533,11 @@
         });
         
         if ( self.settings.animateNumberOut ) {
-          this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
+          // this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
         }
 
         if ( self.settings.animateNumberActive ) {
-          this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
+          // this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
         }
 
         // this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
@@ -3270,35 +3268,56 @@
           }, 200);
         }).trigger('resize');
       }
-    }, 
+    },
 
     /**
      * Set skitter dimensions 
      */
     setDimensions: function() {
+      var self = this;
+      var was_set = false;
+
       this.box_skitter.css('width', '100%');
-      this.box_skitter.find('.image_main').attr({ src: this.getCurrentImage() }).css({ 'width': '100%', 'height': 'auto' });
+      this.box_skitter.find('.image_main')
+        .attr({ src: this.getCurrentImage() })
+        .css({ 'width': '100%', 'height': 'auto' })
+        .on('load', function() {
+          if (!was_set) {
+            was_set = true;
+            _setDimensions();
+          }
+        });
 
-      var image = this.box_skitter.find('.image_main');
-      var width_box = this.box_skitter.width();
-      var height_box = this.box_skitter.height();
-      var width_image = image.width();
-      var height_image = image.height();
-      var width = width_box;
-      var height = (height_image * width_box) / width_image;
+      // fallback
+      setTimeout(function() {
+        if (!was_set) {
+          was_set = true;
+          _setDimensions();
+        }
+      }, 3000);
 
-      this.settings.width_skitter = width;
-      this.settings.height_skitter = height;
-      this.box_skitter
-        .width(width)
-        .height(height)
-        .find('.container_skitter')
+      var _setDimensions = function() {
+        var image = self.box_skitter.find('.image_main');
+        var width_box = self.box_skitter.width();
+        var height_box = self.box_skitter.height();
+        var width_image = image.width();
+        var height_image = image.height();
+        var width = width_box;
+        var height = (height_image * width_box) / width_image;
+
+        self.settings.width_skitter = width;
+        self.settings.height_skitter = height;
+        self.box_skitter
           .width(width)
           .height(height)
-        .find('img')
-          .width(width)
-          .height(height);
-    }, 
+          .find('.container_skitter')
+            .width(width)
+            .height(height)
+          .find('img')
+            .width(width)
+            .height(height);
+      };
+    },
 
     /**
      * Check is large device

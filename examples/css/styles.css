@@ -67,6 +67,19 @@ body {
   padding: 3px 7px;
   font-size: 11px;
 }
+.skitter-themes { text-align: center; margin-bottom: 10px; }
+.skitter-themes ul { }
+.skitter-themes ul li { display: inline-block; }
+.skitter-themes ul li a { padding: 10px; display: inline-block; color: black; text-decoration: none; font-size: 14px; font-weight: bold; text-transform: uppercase; border-radius: 2px; border: 2px solid; margin: 0 5px 10px 5px; }
+.skitter-themes ul li a.current { color: #999; }
+
+@media (max-width: 767px) {
+  .skitter-themes ul li a { 
+    margin: 0 2px 5px 2px;
+    padding: 5px;
+    font-size: 12px;
+  }
+}
 
 /* ------------------------------------------
   Custom skitter

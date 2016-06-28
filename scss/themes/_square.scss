@@ -50,22 +50,22 @@
     right: 65px;
   }
   .info_slide {
-    background: transparent;
+    background-color: transparent;
     .image_number {
-      background: #fff;
+      background-color: #fff;
       box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 0;
       font-size: 12px;
       font-weight: normal;
       color: #333;
       &:hover {
-        background: #ccc;
+        background-color: #ccc;
       }
     }
     .image_number_select {
-      background: #111;
+      background-color: #111;
       color: #fff;
       &:hover {
-        background: #111;
+        background-color: #111;
         color: #fff;
       }
     }
@@ -75,15 +75,15 @@
       width: 14px;
       height: 14px;
       box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
-      background: #ccc;
+      background-color: #ccc;
       &:hover {
-        background: #999;
+        background-color: #999;
       }
     }
     .image_number_select {
-      background: #555;
+      background-color: #555;
       &:hover {
-        background: #555;
+        background-color: #555;
       }
     }
   }
@@ -91,7 +91,7 @@
     top: 0 !important;
     left: 0 !important;
     width: 100%;
-    background: #fff;
+    background-color: #fff;
     border-radius: 0;
     height: 2px;
   }

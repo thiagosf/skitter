@@ -45,20 +45,20 @@
     left: 82px !important;
   }
   .info_slide {
-    background: transparent;
+    background-color: transparent;
     .image_number {
-      background: #999;
+      background-color: #999;
       box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
       font-size: 12px;
       font-weight: normal;
       &:hover {
-        background: #333;
+        background-color: #333;
       }
     }
     .image_number_select {
-      background: #111;
+      background-color: #111;
       &:hover {
-        background: #111;
+        background-color: #111;
       }
     }
   }
@@ -67,22 +67,22 @@
       width: 14px;
       height: 14px;
       box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
-      background: #999;
+      background-color: #999;
       &:hover {
-        background: #333;
+        background-color: #333;
       }
     }
     .image_number_select {
-      background: #111;
+      background-color: #111;
       &:hover {
-        background: #111;
+        background-color: #111;
       }
     }
   }
   .progressbar {
     top: -10px;
     left: 0px;
-    background: #333;
+    background-color: #333;
     box-shadow: rgba(255, 255, 255, 0.3) 1px 1px 0;
   }
 }

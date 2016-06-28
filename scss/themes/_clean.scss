@@ -32,22 +32,22 @@
     height: 41px;
   }
   .info_slide {
-    background: transparent;
+    background-color: transparent;
     .image_number {
-      background: #fff;
+      background-color: #fff;
       box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 0;
       font-size: 12px;
       font-weight: normal;
       color: #333;
       &:hover {
-        background: #ccc;
+        background-color: #ccc;
       }
     }
     .image_number_select {
-      background: #111;
+      background-color: #111;
       color: #fff;
       &:hover {
-        background: #111;
+        background-color: #111;
         color: #fff;
       }
     }
@@ -59,22 +59,22 @@
     .image_number {
       width: 14px;
       height: 14px;
-      background: #999;
+      background-color: #999;
       &:hover {
-        background: #333;
+        background-color: #333;
       }
     }
     .image_number_select {
-      background: #111;
+      background-color: #111;
       &:hover {
-        background: #111;
+        background-color: #111;
       }
     }
   }
   .progressbar {
     top: 5px;
     left: 5px;
-    background: #fff;
+    background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0;
   }
 }

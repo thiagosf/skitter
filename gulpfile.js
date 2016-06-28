@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var webserver = require('gulp-webserver');
 var minify = require('gulp-minify');
 var sass = require('gulp-sass');
+var babel = require('gulp-babel');
 
 // Scripts
 gulp.task('scripts', ['compress']);

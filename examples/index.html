@@ -18,14 +18,18 @@
     $(document).ready(function() {
       $('.box_skitter_large').skitter({
         theme: 'clean',
-        numbers_align: 'center',
-        progressbar: true, 
-        numbers: true, 
-        controls: true,
-        preview: true,
-        animation: 'circlesInside',
-        // animation: 'randomSmart',
+        thumbs: true
       });
+
+      var currentTheme = 'skitter-clean';
+      $('#change-theme').on('click', 'a', function(e) {
+        e.preventDefault();
+        var theme = 'skitter-' +  $(this).data('theme')
+        $('#change-theme a').removeClass('current');
+        $(this).addClass('current');
+        $('.box_skitter').removeClass(currentTheme).addClass(theme);
+        currentTheme = theme;
+      })
     });
   </script>
 
@@ -37,6 +41,15 @@
       Skitter
       <small>Slideshow for anytime!</small>
     </h1>
+    <nav class="skitter-themes" id="change-theme">
+      <ul>
+        <li><a href="#" data-theme="">Default</a></li>
+        <li><a href="#" data-theme="square">Square</a></li>
+        <li><a href="#" data-theme="clean" class="current">Clean</a></li>
+        <li><a href="#" data-theme="minimalist">Minimalist</a></li>
+        <li><a href="#" data-theme="round">Round</a></li>
+      </ul>
+    </nav>
     <div id="content">
       <div class="border_box">
         <div class="box_skitter box_skitter_large">
@@ -53,3 +66,11 @@
   </div>
 </body>
 </html>
+<!-- 
+- [ ] numbers
+- [ ] dots
+- [ ] thumbs
+- [ ] multiple
+- [ ] fullscreen
+- [ ] themes (with change theme realtime)
+-->
