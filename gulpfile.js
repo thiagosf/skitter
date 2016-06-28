@@ -3,7 +3,7 @@ var gulp = require('gulp');
 var webserver = require('gulp-webserver');
 var minify = require('gulp-minify');
 var sass = require('gulp-sass');
-var babel = require('gulp-babel');
+var autoprefixer = require('gulp-autoprefixer');
 
 // Scripts
 gulp.task('scripts', ['compress']);
@@ -29,6 +29,7 @@ gulp.task('compress', function() {
 gulp.task('sass', function () {
   return gulp.src('./scss/**/*.scss')
     .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+    .pipe(autoprefixer())
     .pipe(gulp.dest('./dist'));
 });
 

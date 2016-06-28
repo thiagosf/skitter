@@ -1,5 +1,3 @@
-require('./test');
-
 /**
  * jQuery Skitter Slideshow
  * @name jquery.skitter.js
