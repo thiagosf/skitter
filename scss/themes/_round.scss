@@ -28,36 +28,34 @@
     background-position: -0px -70px;
     width: 47px;
     height: 23px;
-    top: 24px;
-    left: 24px !important;
+    top: 0;
+    left: 24px;
+    margin-top: 0;
     &.play_button {
       background-position: -0px -47px;
       width: 47px;
       height: 23px;
-      top: 24px;
     }
   }
   .focus_button {
     background-position: -0px -93px;
     width: 47px;
     height: 23px;
-    top: 24px;
-    left: 82px !important;
+    top: 0;
+    left: 82px;
+    margin-top: 0;
   }
   .info_slide {
     background-color: transparent;
     .image_number {
-      background-color: #999;
-      box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+      background-color: #777;
+      box-shadow: rgba(white, 0.2) 1px 1px 0;
       font-size: 12px;
       font-weight: normal;
       &:hover {
         background-color: #333;
       }
-    }
-    .image_number_select {
-      background-color: #111;
-      &:hover {
+      &.image_number_select {
         background-color: #111;
       }
     }
@@ -66,15 +64,12 @@
     .image_number {
       width: 14px;
       height: 14px;
-      box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
-      background-color: #999;
+      box-shadow: rgba(white, 0.2) 1px 1px 0;
+      background-color: #777;
       &:hover {
         background-color: #333;
       }
-    }
-    .image_number_select {
-      background-color: #111;
-      &:hover {
+      &.image_number_select {
         background-color: #111;
       }
     }
@@ -83,6 +78,6 @@
     top: -10px;
     left: 0px;
     background-color: #333;
-    box-shadow: rgba(255, 255, 255, 0.3) 1px 1px 0;
+    box-shadow: rgba(white, 0.3) 1px 1px 0;
   }
 }

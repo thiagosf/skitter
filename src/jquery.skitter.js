@@ -113,7 +113,7 @@
     dots:           false,
 
     // Width label
-    width_label:      null,
+    // width_label:      null,
 
     // Final opacity of elements in hideTools
     opacity_elements:   0.75,
@@ -289,12 +289,12 @@
       this.box_skitter.find('.container_skitter').width(this.settings.width_skitter);
       this.box_skitter.find('.container_skitter').height(this.settings.height_skitter);
       
-      var width_label = this.settings.width_label ? this.settings.width_label : this.settings.width_skitter;
+      // var width_label = this.settings.width_label ? this.settings.width_label : this.settings.width_skitter;
       // this.box_skitter.find('.label_skitter').width(width_label);
       // this.box_skitter.find('.label_skitter').width(width_label);
       
       var initial_select_class = ' image_number_select', u = 0;
-      this.settings.images_links = new Array();
+      this.settings.images_links = [];
       
       // Add image, link, animation type and label
       var addImageLink = function (link, src, animation_type, label, target) {
@@ -611,6 +611,7 @@
       this.loadImages();
 
       this.setResponsive();
+      this.setTouchSupport();
     },
     
     /**
@@ -625,13 +626,14 @@
       var total = this.settings.images_links.length;
       
       var u = 0;
-      $.each(this.settings.images_links, function(i)
-      {
-        var self_il = this;
+      for (var i in this.settings.images_links) {
+        var self_il = this.settings.images_links[i];
+        var src = self.getImageName(self_il[0]);
         var loading = $('<span class="image_loading"></span>');
-        loading.css({position:'absolute', top:'-9999em'});
-        self.box_skitter.append(loading);
         var img = new Image();
+
+        loading.css({ position:'absolute', top:'-9999em' });
+        self.box_skitter.append(loading);
         
         $(img).load(function () {
           ++u;
@@ -643,8 +645,8 @@
         }).error(function () {
           self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
           self.box_skitter.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
-        }).attr('src', self_il[0]);
-      });
+        }).attr('src', src);
+      }
     }, 
     
     /**
@@ -3202,7 +3204,7 @@
      */
     shuffleArray: function (arrayOrigem) {
       var self = this;
-      var arrayDestino = new Array();
+      var arrayDestino = [];
       var indice;
       while (arrayOrigem.length > 0) {
         indice = self.randomUnique(0, arrayOrigem.length - 1);
@@ -3386,6 +3388,38 @@
         }
       }
       return image;
+    },
+
+    /**
+     * Touches support
+     */
+    setTouchSupport: function() {
+      var self = this;
+      var last_position_x = 0;
+      var last_position_x_move = 0;
+      var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
+
+      if (isTouch) {
+        this.box_skitter.on('touchstart', function(e) {
+          if (e.originalEvent.touches.length > 0) {
+            last_position_x = e.originalEvent.touches[0].pageX;
+          }
+        });
+
+        this.box_skitter.on('touchmove', function(e) {
+          if (e.originalEvent.touches.length > 0) {
+            last_position_x_move = e.originalEvent.touches[0].pageX;
+          }
+        });
+
+        this.box_skitter.on('touchend', function(e) {
+          if (last_position_x < last_position_x_move) {
+            self.box_skitter.find('.prev_button').trigger('click');
+          } else {
+            self.box_skitter.find('.next_button').trigger('click');
+          }
+        });
+      }
     }
   });
   

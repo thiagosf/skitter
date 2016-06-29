@@ -35,27 +35,22 @@
     background-color: transparent;
     .image_number {
       background-color: #fff;
-      box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 0;
+      box-shadow: rgba(black, 0.2) 1px 1px 0;
       font-size: 12px;
       font-weight: normal;
       color: #333;
       &:hover {
         background-color: #ccc;
       }
-    }
-    .image_number_select {
-      background-color: #111;
-      color: #fff;
-      &:hover {
+      &.image_number_select {
         background-color: #111;
         color: #fff;
       }
     }
   }
   .info_slide_dots {
-    bottom: 10px;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 0;
+    background: rgba(black, 0.07);
+    box-shadow: rgba(black, 0.3) 1px 1px 0;
     .image_number {
       width: 14px;
       height: 14px;
@@ -63,10 +58,7 @@
       &:hover {
         background-color: #333;
       }
-    }
-    .image_number_select {
-      background-color: #111;
-      &:hover {
+      &.image_number_select {
         background-color: #111;
       }
     }
@@ -75,6 +67,6 @@
     top: 5px;
     left: 5px;
     background-color: #fff;
-    box-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0;
+    box-shadow: rgba(black, 0.5) 1px 1px 0;
   }
 }

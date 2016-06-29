@@ -10,10 +10,10 @@
     background-position: -55px -0px;
     width: 55px;
     height: 55px;
-    top: 10px !important;
-    left: 10px !important;
-    bottom: auto !important;
-    right: auto !important;
+    top: 10px;
+    left: 10px;
+    bottom: auto;
+    right: auto;
     margin-top: 0;
     &.play_button {
       background-position: -0px -0px;
@@ -25,10 +25,10 @@
     background-position: -55px -55px;
     width: 55px;
     height: 55px;
-    top: 10px !important;
-    left: 65px !important;
-    bottom: auto !important;
-    right: auto !important;
+    top: 10px;
+    left: 65px;
+    bottom: auto;
+    right: auto;
     margin-top: 0;
   }
   .next_button {
@@ -60,11 +60,7 @@
       &:hover {
         background-color: #ccc;
       }
-    }
-    .image_number_select {
-      background-color: #111;
-      color: #fff;
-      &:hover {
+      &.image_number_select {
         background-color: #111;
         color: #fff;
       }
@@ -79,17 +75,14 @@
       &:hover {
         background-color: #999;
       }
-    }
-    .image_number_select {
-      background-color: #555;
-      &:hover {
+      &.image_number_select {
         background-color: #555;
       }
     }
   }
   .progressbar {
-    top: 0 !important;
-    left: 0 !important;
+    top: 0;
+    left: 0;
     width: 100%;
     background-color: #fff;
     border-radius: 0;

@@ -62,8 +62,9 @@
     margin-top: -25px;
     transition: all 0.2s;
   }
-  .prev_button:hover, .next_button:hover {
-    opacity: 0.5 !important;
+  .prev_button:hover,
+  .next_button:hover {
+    opacity: 0.5;
   }
   .info_slide {
     position: absolute;
@@ -87,17 +88,8 @@
       &:hover {
         background-color: #000;
       }
-    }
-    .image_number_select {
-      background-color: #cc3333;
-      float: left;
-      padding: 2px 10px;
-      margin: 0 5px 0 0;
-      &:hover {
+      &.image_number_select {
         background-color: #cc3333;
-        float: left;
-        padding: 2px 10px;
-        margin: 0 5px 0 0;
       }
     }
   }
@@ -113,27 +105,21 @@
     top: auto;
     top: 0;
     left: 0;
-    padding: 0 !important;
+    padding: 0;
     opacity: 1.0;
     .image_number {
       overflow: hidden;
       width: 100px;
       height: 50px;
       position: relative;
-      margin: 0 !important;
-      padding: 0 !important;
-      border-radius: 0 !important;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
       background-size: cover;
       background-position: center center;
       &.image_number_select {
         opacity: .4;
       }
-      // img {
-      //   position: absolute;
-      //   top: -30px;
-      //   left: -30px;
-      //   height: 100px;
-      // }
     }
   }
   .box_scroll_thumbs {
@@ -172,15 +158,8 @@
       &:hover {
         background-color: #000;
       }
-    }
-    .image_number_select {
-      background-color: #cc3333;
-      float: left;
-      margin: 0 5px 0 0;
-      &:hover {
+      &.image_number_select {
         background-color: #cc3333;
-        float: left;
-        margin: 0 5px 0 0;
       }
     }
   }
@@ -249,29 +228,29 @@
   box-shadow: rgba(0, 0, 0, 0.7) 2px 2px 5px;
   overflow: hidden;
   ul {
-    height: 100px !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    list-style: none !important;
-    display: block !important;
-    position: absolute !important;
+    height: 100px;
+    overflow: hidden;
+    margin: 0;
+    list-style: none;
+    display: block;
+    position: absolute;
     top: 0;
     left: 0;
     li {
-      width: 100px !important;
-      height: 100px !important;
-      overflow: hidden !important;
-      float: left !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      position: relative !important;
-      display: block !important;
+      width: 100px;
+      height: 100px;
+      overflow: hidden;
+      float: left;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      display: block;
       img {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        height: 150px !important;
-        width: auto !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 150px;
+        width: auto;
       }
     }
   }
@@ -314,16 +293,14 @@
     margin-top: -25px;
     opacity: 0;
     transition: all 0.2s;
-    &.play_button {}
     &:hover {
-      opacity: 0.5 !important;
+      opacity: 0.5;
     }
   }
   .focus_button:hover {
-    opacity: 0.5 !important;
+    opacity: 0.5;
   }
 }
 
 @import "themes/all";
 @import "base/all";
-

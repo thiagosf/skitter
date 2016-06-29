@@ -4,56 +4,63 @@
 .skitter-minimalist {
   .prev_button, .next_button, .play_pause_button, .focus_button {
     display: block;
-    background: url('images/sprite-minimalist.png') no-repeat !important;
+    background: url('images/sprite-minimalist.png') no-repeat;
   }
   .prev_button {
-    background-position: -0px -0px !important;
-    width: 24px !important;
-    height: 28px !important;
-    left: -45px !important;
+    background-position: -0px -0px;
+    width: 24px;
+    height: 28px;
+    left: -45px;
   }
   .next_button {
-    background-position: -0px -28px !important;
-    width: 24px !important;
-    height: 28px !important;
-    right: -45px !important;
+    background-position: -0px -28px;
+    width: 24px;
+    height: 28px;
+    right: -45px;
   }
   .play_pause_button {
-    background-position: -0px -74px !important;
-    width: 18px !important;
-    height: 18px !important;
+    background-position: -0px -74px;
+    width: 18px;
+    height: 18px;
     &.play_button {
-      background-position: -0px -56px !important;
-      width: 18px !important;
-      height: 18px !important;
+      background-position: -0px -56px;
+      width: 18px;
+      height: 18px;
     }
   }
   .focus_button {
-    background-position: -0px -92px !important;
-    width: 18px !important;
-    height: 18px !important;
+    background-position: -0px -92px;
+    width: 18px;
+    height: 18px;
   }
   .info_slide {
     background-color: transparent;
     .image_number {
       background-color: #000;
-      box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+      box-shadow: rgba(white, 0.2) 1px 1px 0;
       font-size: 12px;
       font-weight: normal;
+      background-color: #999;
       &:hover {
         background-color: #111;
       }
-    }
-    .image_number_select {
-      background-color: #cc3333;
-      &:hover {
+      &.image_number_select {
         background-color: #cc3333;
       }
     }
   }
-  .info_slide_dots .image_number {
-    width: 14px;
-    height: 14px;
-    box-shadow: rgba(255, 255, 255, 0.2) 1px 1px 0;
+  .info_slide_dots {
+    .image_number {
+      width: 14px;
+      height: 14px;
+      box-shadow: rgba(white, 0.2) 1px 1px 0;
+      background-color: #999;
+      &:hover {
+        background-color: #111;
+      }
+      &.image_number_select {
+        background-color: #cc3333;
+      }
+    }
   }
 }
