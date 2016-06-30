@@ -5,6 +5,7 @@
   .play_pause_button, .next_button, .focus_button, .prev_button {
     display: block;
     background: url('images/sprite-square.png') no-repeat;
+    background-size: 110px auto;
   }
   .play_pause_button {
     background-position: -55px -0px;
@@ -15,6 +16,7 @@
     bottom: auto;
     right: auto;
     margin-top: 0;
+    transform: none;
     &.play_button {
       background-position: -0px -0px;
       width: 55px;
@@ -30,6 +32,7 @@
     bottom: auto;
     right: auto;
     margin-top: 0;
+    transform: none;
   }
   .next_button {
     background-position: -0px -55px;
@@ -39,6 +42,7 @@
     left: auto;
     right: 10px;
     margin: 0;
+    transform: none;
   }
   .prev_button {
     background-position: -0px -110px;
@@ -48,6 +52,7 @@
     left: auto;
     right: 65px;
     margin: 0;
+    transform: none;
   }
   .info_slide {
     background-color: transparent;

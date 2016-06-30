@@ -10,18 +10,19 @@
     background-position: -0px -0px;
     width: 24px;
     height: 28px;
-    left: -45px;
   }
   .next_button {
     background-position: -0px -28px;
     width: 24px;
     height: 28px;
-    right: -45px;
   }
   .play_pause_button {
     background-position: -0px -74px;
     width: 18px;
     height: 18px;
+    transform: none;
+    top: 35px;
+    left: 35px;
     &.play_button {
       background-position: -0px -56px;
       width: 18px;
@@ -32,6 +33,9 @@
     background-position: -0px -92px;
     width: 18px;
     height: 18px;
+    transform: none;
+    top: 35px;
+    left: 95px;
   }
   .info_slide {
     background-color: transparent;

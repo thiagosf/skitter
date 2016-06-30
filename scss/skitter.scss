@@ -42,24 +42,24 @@
     position: absolute;
     top: 50%;
     left: 35px;
+    transform: translateY(-50%);
     z-index: 152;
     width: 42px;
     height: 42px;
     overflow: hidden;
     text-indent: -9999em;
-    margin-top: -25px;
     transition: all 0.2s;
   }
   .next_button {
     position: absolute;
     top: 50%;
     right: 35px;
+    transform: translateY(-50%);
     z-index: 152;
     width: 42px;
     height: 42px;
     overflow: hidden;
     text-indent: -9999em;
-    margin-top: -25px;
     transition: all 0.2s;
   }
   .prev_button:hover,
@@ -272,25 +272,24 @@
 .box_skitter {
   .focus_button {
     position: absolute;
-    top: 50%;
     z-index: 100;
     width: 42px;
     height: 42px;
     overflow: hidden;
     text-indent: -9999em;
-    margin-top: -25px;
     opacity: 0;
     transition: all 0.2s;
   }
   .play_pause_button {
     position: absolute;
     top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
     z-index: 151;
     width: 42px;
     height: 42px;
     overflow: hidden;
     text-indent: -9999em;
-    margin-top: -25px;
     opacity: 0;
     transition: all 0.2s;
     &:hover {

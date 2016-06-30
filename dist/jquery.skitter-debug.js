@@ -26,183 +26,177 @@
   
   var defaults = {
     // Animation velocity
-    velocity:         1,
+    velocity: 1,
 
     // Interval between transitions
-    interval:         2500, 
+    interval: 2500, 
 
     // Default animation
-    animation:        '',
+    animation: '',
 
     // Numbers display
-    numbers:        true,
+    numbers: true,
 
     // Navigation display
-    navigation:       true,
+    navigation: true,
 
     // Label display
-    label:          true,
+    label: true,
 
     // Easing default
-    easing_default:     '',
+    easing_default: '',
 
     // The skitters box (internal)
-    box_skitter:      null,
+    box_skitter: null,
 
     // @deprecated
-    time_interval:      null,
+    time_interval: null,
 
     // Image link (internal)
-    images_links:       null,
+    images_links: null,
 
     // Actual image (internal)
-    image_atual:      null,
+    image_atual: null,
 
     // Actual link (internal)
-    link_atual:       null,
+    link_atual: null,
 
     // Actual label (internal)
-    label_atual:      null,
+    label_atual: null,
 
     // Actual target (internal)
-    target_atual:       '_self',
+    target_atual: '_self',
 
     // Skitter width (internal)
-    width_skitter:      null,
+    width_skitter: null,
 
     // Skitter height (internal)
-    height_skitter:     null,
+    height_skitter: null,
 
     // Image number loop (internal)
-    image_i:        1,
+    image_i: 1,
 
     // Is animating (internal)
-    is_animating:       false,
+    is_animating: false,
 
     // Is hover box_skitter (internal)
-    is_hover_box_skitter:   false,
+    is_hover_box_skitter: false,
 
     // Smart randomly (internal)
-    random_ia:        null,
+    random_ia: null,
 
     // Randomly sliders
-    show_randomly:      false,
+    show_randomly: false,
 
     // Navigation with thumbs
-    thumbs:         false,
+    thumbs: false,
 
     // Animation/style number/dot
-    animateNumberOut:     false,
+    animateNumberOut: false,
 
     // Animation/style hover number/dot
-    animateNumberOver:    false,
+    animateNumberOver: false,
 
     // Animation/style active number/dot
-    animateNumberActive:  false,
+    animateNumberActive: false,
 
     // Hide numbers and navigation
-    hideTools:        false,
+    hideTools: false,
 
     // Fullscreen mode
-    fullscreen:       false,
+    fullscreen: false,
 
     // Loading data from XML file
-    xml:          false,
+    xml: false,
 
     // Navigation with dots
-    dots:           false,
-
-    // Width label
-    // width_label:      null,
+    dots: false,
 
     // Final opacity of elements in hideTools
-    opacity_elements:   0.75,
+    opacity_elements: 0.75,
 
     // Interval animation hover elements hideTools 
     interval_in_elements: 200, 
 
     // Interval animation out elements hideTools
-    interval_out_elements:  300, 
+    interval_out_elements: 300, 
 
     // Onload Callback
-    onLoad:         null,
+    onLoad: null,
 
     // Function call to change image
-    imageSwitched:      null,
+    imageSwitched: null,
 
     // @deprecated
-    max_number_height:    20,
+    max_number_height: 20,
 
     // Alignment of numbers/dots/thumbs
-    numbers_align:      'left',
+    numbers_align: 'left',
 
     // Preview with dots
-    preview:        false,
+    preview: false,
 
     // Focus slideshow
-    focus:          false,
+    focus: false,
 
     // Focus active (internal)
-    foucs_active:     false,
-
-    // Position of button focus slideshow
-    focus_position:     'center',
+    foucs_active: false,
 
     // Option play/pause manually
-    controls:       false,
+    controls: false,
 
     // Position of button controls
-    controls_position:    'center',
+    controls_position: 'center',
 
     // Displays progress bar
-    progressbar:      false,
+    progressbar: false,
 
     // CSS progress bar
-    progressbar_css:    {},
+    progressbar_css: {},
 
     // Is paused (internal)
-    is_paused:        false,
+    is_paused: false,
 
     // Is blur (internal)
-    is_blur:        false,
+    is_blur: false,
 
     // Is paused time (internal)
-    is_paused_time:     false,
+    is_paused_time: false,
 
     // Time start (internal)
-    timeStart:        0,
+    timeStart: 0,
 
     // Elapsed time (internal)
-    elapsedTime:      0,
+    elapsedTime: 0,
 
     // Stop animation to move mouse over it.
-    stop_over:        true,
+    stop_over: true,
 
     // Enable navigation keys
     enable_navigation_keys: false,
 
     // Specific animations
-    with_animations:    [],
+    with_animations: [],
 
     // Function call to go over the navigation buttons
-    // mouseOverButton:     function() { $(this).stop().animate({opacity:0.5}, 200); }, 
-    mouseOverButton:    null, 
+    // mouseOverButton: function() { $(this).stop().animate({opacity:0.5}, 200); }, 
+    mouseOverButton: null, 
 
     // Function call to go out the navigation buttons
-    // mouseOutButton:    function() { $(this).stop().animate({opacity:1}, 200); }, 
-    mouseOutButton:     null, 
+    // mouseOutButton: function() { $(this).stop().animate({opacity:1}, 200); }, 
+    mouseOutButton: null, 
 
     // Sets whether the slideshow will start automatically
-    auto_play:        true, 
+    auto_play: true, 
 
     // Label animation type
-    labelAnimation:     'slideUp', 
+    labelAnimation: 'slideUp', 
 
     // Theme
     theme: null, 
 
     // Structure (internal)
-    structure:          '<a href="#" class="prev_button">prev</a>'
+    structure:    '<a href="#" class="prev_button">prev</a>'
                 + '<a href="#" class="next_button">next</a>'
                 + '<span class="info_slide"></span>'
                 + '<div class="container_skitter">'
@@ -213,14 +207,25 @@
                 + '</div>',
     
     // Responsive
+    //  Example:
+    //   responsive: {
+    //     small: {
+    //       animation: 'fade',
+    //       max_width: 768,
+    //       suffix: '-small'
+    //     },
+    //     medium: {
+    //       animation: 'fadeFour',
+    //       max_width: 1024,
+    //       suffix: '-medium'
+    //     }
+    //   }
     responsive: {
       small: {
-        max_width: 768,
-        suffix: '-small'
+        max_width: 768
       },
       medium: {
-        max_width: 1024,
-        suffix: '-medium'
+        max_width: 1024
       }
     }
   };
@@ -773,11 +778,29 @@
         'swapBlocks',
         'cut'
       ];
-            
+
       if (self.settings.progressbar) self.hideProgressBar();
       
-      animation_type = (this.settings.animation == '' && this.settings.images_links[this.settings.image_i][2]) ? 
-        this.settings.images_links[this.settings.image_i][2] : (this.settings.animation == '' ? 'default' : this.settings.animation);
+      var animation_type;
+      if (this.settings.animation == '' && this.settings.images_links[this.settings.image_i][2]) {
+        animation_type = this.settings.images_links[this.settings.image_i][2];
+      } else if (this.settings.animation == '') {
+        animation_type = 'default';
+      } else {
+        animation_type = this.settings.animation;
+      }
+
+      // Animation fixed by window size
+      if (self.settings.responsive) {
+        var window_width = $(window).width();
+        for (var name in self.settings.responsive) {
+          var item = self.settings.responsive[name];
+          if (window_width < item.max_width && item.animation) {
+            animation_type = item.animation;
+            break;
+          }
+        }
+      }
       
       // RandomUnique
       if (animation_type == 'randomSmart') 
@@ -2880,28 +2903,10 @@
     // Focus Skitter
     focusSkitter: function() {
       var self = this;
-      
       var focus_button = $('<a href="#" class="focus_button">focus</a>');
+
       self.box_skitter.append(focus_button);
-      
-      var _left = (self.settings.width_skitter - focus_button.width()) / 2;
-      var _space = 0;
-      
-      if (self.settings.controls) _left -= 25;
-      if (self.settings.controls_position == self.settings.focus_position) _space = focus_button.width() + 5;
-      
-      var cssPosition = {left: _left};
-      
-      switch (self.settings.focus_position)
-      {
-        case 'leftTop'    : cssPosition = {left: 5 + _space, top: 30}; break;
-        case 'rightTop'   : cssPosition = {right: 5 + _space, top: 30}; break;
-        case 'leftBottom'   : cssPosition = {left: 5 + _space, bottom: 5, top: 'auto'}; break;
-        case 'rightBottom'  : cssPosition = {right: 5 + _space, bottom: 5, top: 'auto'}; break;
-      }
-      
       focus_button
-        .css(cssPosition)
         .animate({opacity:0.3}, self.settings.interval_in_elements);
       
       $(document).keypress(function(e) {
@@ -2971,26 +2976,23 @@
      */
     setControls: function() {
       var self = this;
-      
       var play_pause_button = $('<a href="#" class="play_pause_button">pause</a>');
+      
       self.box_skitter.append(play_pause_button);
       
-      var _left = (self.settings.width_skitter - play_pause_button.width()) / 2;
-      
-      if (self.settings.focus) _left += 25;
-      
-      var cssPosition = {left: '50%', 'transform': 'translateX(-50%)'};
-      
-      switch (self.settings.controls_position)
-      {
-        case 'leftTop' : cssPosition = {left: 5, top: 30, transform: null}; break;
-        case 'rightTop' : cssPosition = {right: 5, top: 30, transform: null}; break;
-        case 'leftBottom' : cssPosition = {left: 5, bottom: 5, top: 'auto', transform: null}; break;
-        case 'rightBottom' : cssPosition = {right: 5, bottom: 5, top: 'auto', transform: null}; break;
-      }
+      // var _left = (self.settings.width_skitter - play_pause_button.width()) / 2;
+      // if (self.settings.focus) _left += 25;
+      // var cssPosition = {left: '50%', 'transform': 'translateX(-50%)'};
+      // switch (self.settings.controls_position)
+      // {
+      //   case 'leftTop' : cssPosition = {left: 5, top: 30, transform: null}; break;
+      //   case 'rightTop' : cssPosition = {right: 5, top: 30, transform: null}; break;
+      //   case 'leftBottom' : cssPosition = {left: 5, bottom: 5, top: 'auto', transform: null}; break;
+      //   case 'rightBottom' : cssPosition = {right: 5, bottom: 5, top: 'auto', transform: null}; break;
+      // }
       
       play_pause_button
-        .css(cssPosition)
+        // .css(cssPosition)
         .animate({opacity:0.3}, self.settings.interval_in_elements);
       
       play_pause_button.click(function() {
@@ -3380,7 +3382,7 @@
       if (this.settings.responsive) {
         for (var name in this.settings.responsive) {
           var item = this.settings.responsive[name];
-          if (window_width < item.max_width) {
+          if (window_width < item.max_width && item.suffix) {
             var extension = image.split('.').reverse()[0];
             image = image.replace('.' + extension, item.suffix + '.' + extension);
             break;

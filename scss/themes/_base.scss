@@ -5,6 +5,7 @@
   .focus_button, .next_button, .prev_button, .play_pause_button {
     display: block;
     background: url('images/sprite-default.png') no-repeat;
+    background-size: 84px auto;
   }
   .next_button {
     background-position: -0px -42px;
@@ -30,5 +31,7 @@
     background-position: -42px -0px;
     width: 42px;
     height: 42px;
+    top: 35px;
+    left: 35px;
   }
 }
