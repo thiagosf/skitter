@@ -16,14 +16,14 @@
   <!-- Init Skitter -->
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-      $('.box_skitter_large').skitter({
-        // dots: true,
-        // numbers_align: 'center',
-        // theme: 'clean',
-        controls: true,
+      $('.skitter-large').skitter({
         // numbers: true,
-        focus: true,
-        thumbs: true,
+        // numbers_align: 'center',
+        // // theme: 'clean',
+        // controls: true,
+        // // numbers: true,
+        // focus: true,
+        // // thumbs: true,
         responsive: {
           small: {
             animation: 'fade',
@@ -38,13 +38,13 @@
         }
       });
 
-      var currentTheme = 'skitter-clean';
+      var currentTheme = '';
       $('#change-theme').on('click', 'a', function(e) {
         e.preventDefault();
         var theme = 'skitter-' +  $(this).data('theme')
         $('#change-theme a').removeClass('current');
         $(this).addClass('current');
-        $('.box_skitter').removeClass(currentTheme).addClass(theme);
+        $('.skitter-large').removeClass(currentTheme).addClass(theme);
         currentTheme = theme;
       })
     });
@@ -58,18 +58,9 @@
       Skitter
       <small>Slideshow for anytime!</small>
     </h1>
-    <nav class="skitter-themes" id="change-theme">
-      <ul>
-        <li><a href="#" data-theme="">Default</a></li>
-        <li><a href="#" data-theme="square">Square</a></li>
-        <li><a href="#" data-theme="clean" class="current">Clean</a></li>
-        <li><a href="#" data-theme="minimalist">Minimalist</a></li>
-        <li><a href="#" data-theme="round">Round</a></li>
-      </ul>
-    </nav>
     <div id="content">
       <div class="border_box">
-        <div class="box_skitter box_skitter_large">
+        <div class="skitter skitter-large with-dots">
           <ul>
             <li><a href="#cube"><img src="images/example/001.jpg" class="cubeHide" /></a><div class="label_text"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="#see-more" class="btn btn-small btn-yellow">See more</a></p></div></li>
             <li><a href="#cubeRandom"><img src="images/example/002.jpg" class="cubeSize" /></a><div class="label_text"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore officiis voluptatum reprehenderit vitae amet beatae dolorem labore dignissimos nesciunt. Harum, blanditiis suscipit beatae unde id non, necessitatibus praesentium nisi quidem. <a href="#" class="btn btn-small btn-yellow">See more</a></p></div></li>
@@ -79,6 +70,15 @@
         </div>
       </div>
     </div>
+    <nav class="skitter-themes" id="change-theme">
+      <ul>
+        <li><a href="#" data-theme="" class="current">Default</a></li>
+        <li><a href="#" data-theme="square">Square</a></li>
+        <li><a href="#" data-theme="clean">Clean</a></li>
+        <li><a href="#" data-theme="minimalist">Minimalist</a></li>
+        <li><a href="#" data-theme="round">Round</a></li>
+      </ul>
+    </nav>
     <p class="see-documentation-p"><a href="http://www.skitter-slider.net/documentation" class="btn btn-green">See documentation</a></p>
   </div>
 </body>

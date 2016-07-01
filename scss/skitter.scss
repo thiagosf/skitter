@@ -1,8 +1,11 @@
-.box_skitter {
+.skitter {
   position: relative;
   max-width: 800px;
   height: 300px;
   background: black;
+  &.with-dots {
+    margin-bottom: 60px;
+  }
   img {
     max-width: none;
   }
@@ -89,7 +92,8 @@
         background-color: #000;
       }
       &.image_number_select {
-        background-color: #cc3333;
+        background-color: #ccc;
+        color: black;
       }
     }
   }
@@ -145,21 +149,21 @@
     padding: 5px 0 5px 5px;
     border-radius: 50px;
     .image_number {
-      background-color: #333;
+      background-color: #999;
       float: left;
       margin: 0 5px 0 0;
       cursor: pointer;
       border-radius: 50px;
-      width: 18px;
-      height: 18px;
+      width: 14px;
+      height: 14px;
       text-indent: -9999em;
       overflow: hidden;
       transition: all 0.2s;
       &:hover {
-        background-color: #000;
+        background-color: #777;
       }
       &.image_number_select {
-        background-color: #cc3333;
+        background-color: #222;
       }
     }
   }
@@ -269,7 +273,7 @@
   background-color: #000;
 }
 
-.box_skitter {
+.skitter {
   .focus_button {
     position: absolute;
     z-index: 100;

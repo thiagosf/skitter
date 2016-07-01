@@ -35,7 +35,7 @@
     animation: '',
 
     // Numbers display
-    numbers: true,
+    numbers: false,
 
     // Navigation display
     navigation: true,
@@ -47,7 +47,7 @@
     easing_default: '',
 
     // The skitters box (internal)
-    box_skitter: null,
+    skitter_box: null,
 
     // @deprecated
     time_interval: null,
@@ -79,8 +79,8 @@
     // Is animating (internal)
     is_animating: false,
 
-    // Is hover box_skitter (internal)
-    is_hover_box_skitter: false,
+    // Is hover skitter_box (internal)
+    is_hover_skitter_box: false,
 
     // Smart randomly (internal)
     random_ia: null,
@@ -110,7 +110,7 @@
     xml: false,
 
     // Navigation with dots
-    dots: false,
+    dots: true,
 
     // Final opacity of elements in hideTools
     opacity_elements: 0.75,
@@ -131,7 +131,7 @@
     max_number_height: 20,
 
     // Alignment of numbers/dots/thumbs
-    numbers_align: 'left',
+    numbers_align: 'center',
 
     // Preview with dots
     preview: false,
@@ -144,9 +144,6 @@
 
     // Option play/pause manually
     controls: false,
-
-    // Position of button controls
-    controls_position: 'center',
 
     // Displays progress bar
     progressbar: false,
@@ -222,6 +219,7 @@
     //   }
     responsive: {
       small: {
+        animation: 'fade',
         max_width: 768
       },
       medium: {
@@ -231,7 +229,7 @@
   };
   
   $.skitter = function(obj, options, number) {
-    this.box_skitter = $(obj);
+    this.skitter_box = $(obj);
     this.timer = null;
     this.settings = $.extend({}, defaults, options || {});
     this.number_skitter = number;
@@ -258,14 +256,14 @@
       if (this.settings.fullscreen) {
         var width = $(window).width();
         var height = $(window).height();
-        this.box_skitter.width(width).height(height);
-        this.box_skitter.css({'position':'absolute', 'top':0, 'left':0, 'z-index':1000});
+        this.skitter_box.width(width).height(height);
+        this.skitter_box.css({'position':'absolute', 'top':0, 'left':0, 'z-index':1000});
         this.settings.stop_over = false;
         $('body').css({'overflown':'hidden'});
       }
       
-      this.settings.width_skitter   = parseFloat(this.box_skitter.css('width'));
-      this.settings.height_skitter  = parseFloat(this.box_skitter.css('height'));
+      this.settings.width_skitter   = parseFloat(this.skitter_box.css('width'));
+      this.settings.height_skitter  = parseFloat(this.skitter_box.css('height'));
       
       if (!this.settings.width_skitter || !this.settings.height_skitter) {
         console.warn('Width or height size is null! - Skitter Slideshow');
@@ -274,11 +272,11 @@
 
       // Theme
       if ( this.settings.theme ) {
-        this.box_skitter.addClass('skitter-' + this.settings.theme);
+        this.skitter_box.addClass('skitter-' + this.settings.theme);
       }
       
       // Structure html
-      this.box_skitter.append(this.settings.structure);
+      this.skitter_box.append(this.settings.structure);
       
       // Settings
       this.settings.easing_default  = this.getEasing(this.settings.easing);
@@ -286,17 +284,17 @@
       if (this.settings.velocity >= 2) this.settings.velocity = 1.3;
       if (this.settings.velocity <= 0) this.settings.velocity = 1;
       
-      this.box_skitter.find('.info_slide').hide();
-      this.box_skitter.find('.label_skitter').hide();
-      this.box_skitter.find('.prev_button').hide();
-      this.box_skitter.find('.next_button').hide();
+      this.skitter_box.find('.info_slide').hide();
+      this.skitter_box.find('.label_skitter').hide();
+      this.skitter_box.find('.prev_button').hide();
+      this.skitter_box.find('.next_button').hide();
             
-      this.box_skitter.find('.container_skitter').width(this.settings.width_skitter);
-      this.box_skitter.find('.container_skitter').height(this.settings.height_skitter);
+      this.skitter_box.find('.container_skitter').width(this.settings.width_skitter);
+      this.skitter_box.find('.container_skitter').height(this.settings.height_skitter);
       
       // var width_label = this.settings.width_label ? this.settings.width_label : this.settings.width_skitter;
-      // this.box_skitter.find('.label_skitter').width(width_label);
-      // this.box_skitter.find('.label_skitter').width(width_label);
+      // this.skitter_box.find('.label_skitter').width(width_label);
+      // this.skitter_box.find('.label_skitter').width(width_label);
       
       var initial_select_class = ' image_number_select', u = 0;
       this.settings.images_links = [];
@@ -312,12 +310,12 @@
           else {
             dimension_thumb = 'width="100"';
           }
-          self.box_skitter.find('.info_slide').append(
+          self.skitter_box.find('.info_slide').append(
             '<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'" style="background-image: url(' + src + ');"></span> '
           );
         }
         else {
-          self.box_skitter.find('.info_slide').append(
+          self.skitter_box.find('.info_slide').append(
             '<span class="image_number'+initial_select_class+'" rel="'+(u - 1)+'" id="image_n_'+u+'_'+self.number_skitter+'">'+u+'</span> '
           );
         }
@@ -351,7 +349,7 @@
       }
       // Load from HTML
       else {
-        this.box_skitter.find('ul li').each(function(){
+        this.skitter_box.find('ul li').each(function(){
           ++u;
           var link      = ($(this).find('a').length) ? $(this).find('a').attr('href') : '#';
           var src       = $(this).find('img').attr('src');
@@ -370,15 +368,15 @@
         self.settings.animateNumberOver = {opacity:0.5};
         self.settings.animateNumberActive = {opacity:1};
         
-        self.box_skitter.find('.info_slide').addClass('info_slide_thumb');
-        var width_info_slide = (u + 1) * self.box_skitter.find('.info_slide_thumb .image_number').width();
-        self.box_skitter.find('.info_slide_thumb').width(width_info_slide);
-        self.box_skitter.css({height:self.box_skitter.height() + self.box_skitter.find('.info_slide').height()});
+        self.skitter_box.find('.info_slide').addClass('info_slide_thumb');
+        var width_info_slide = (u + 1) * self.skitter_box.find('.info_slide_thumb .image_number').width();
+        self.skitter_box.find('.info_slide_thumb').width(width_info_slide);
+        self.skitter_box.css({height:self.skitter_box.height() + self.skitter_box.find('.info_slide').height()});
         
-        self.box_skitter.append('<div class="container_thumbs"></div>');
-        var copy_info_slide = self.box_skitter.find('.info_slide').clone();
-        self.box_skitter.find('.info_slide').remove();
-        self.box_skitter.find('.container_thumbs')
+        self.skitter_box.append('<div class="container_thumbs"></div>');
+        var copy_info_slide = self.skitter_box.find('.info_slide').clone();
+        self.skitter_box.find('.info_slide').remove();
+        self.skitter_box.find('.container_thumbs')
           .width(self.settings.width_skitter)
           .append(copy_info_slide);
         
@@ -387,9 +385,9 @@
           width_skitter = this.settings.width_skitter,
           height_skitter = this.settings.height_skitter, 
           w_info_slide_thumb = 0,
-          info_slide_thumb = self.box_skitter.find('.info_slide_thumb'),
+          info_slide_thumb = self.skitter_box.find('.info_slide_thumb'),
           x_value = 0,
-          y_value = self.box_skitter.offset().top;
+          y_value = self.skitter_box.offset().top;
           
         info_slide_thumb.find('.image_number').each(function(){
           width_image += $(this).outerWidth();
@@ -402,8 +400,8 @@
         width_value = width_skitter - 100;
         
         if (width_info_slide > self.settings.width_skitter) {
-          self.box_skitter.mousemove(function(e){
-            x_value = self.box_skitter.offset().left + 90;
+          self.skitter_box.mousemove(function(e){
+            x_value = self.skitter_box.offset().left + 90;
             
             var x = e.pageX, y = e.pageY, new_x = 0;
             
@@ -421,26 +419,26 @@
           });
         }
         
-        self.box_skitter.find('.scroll_thumbs').css({'left':10});
+        self.skitter_box.find('.scroll_thumbs').css({'left':10});
         
         if (width_info_slide < self.settings.width_skitter) {
-          self.box_skitter.find('.info_slide').width('auto');
-          self.box_skitter.find('.box_scroll_thumbs').hide();
+          self.skitter_box.find('.info_slide').width('auto');
+          self.skitter_box.find('.box_scroll_thumbs').hide();
           
           var class_info = '.info_slide';
           switch (self.settings.numbers_align) {
             case 'center' : 
-              var _vleft = (self.settings.width_skitter - self.box_skitter.find(class_info).width()) / 2;
-              // self.box_skitter.find(class_info).css({'left':_vleft});
-              self.box_skitter.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
+              var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).width()) / 2;
+              // self.skitter_box.find(class_info).css({'left':_vleft});
+              self.skitter_box.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
               break;
               
             case 'right' : 
-              self.box_skitter.find(class_info).css({'left':'auto', 'right':'-5px'});
+              self.skitter_box.find(class_info).css({'left':'auto', 'right':'-5px'});
               break;
               
             case 'left' : 
-              self.box_skitter.find(class_info).css({'left':'0px'});
+              self.skitter_box.find(class_info).css({'left':'0px'});
               break;
           }
         }
@@ -451,34 +449,34 @@
         var class_info = '.info_slide';
         
         if (self.settings.dots) {
-          self.box_skitter.find('.info_slide').addClass('info_slide_dots').removeClass('info_slide');
+          self.skitter_box.find('.info_slide').addClass('info_slide_dots').removeClass('info_slide');
           class_info = '.info_slide_dots';
         }
         
         switch (self.settings.numbers_align) {
           case 'center' : 
-            var _vleft = (self.settings.width_skitter - self.box_skitter.find(class_info).width()) / 2;
-            // self.box_skitter.find(class_info).css({'left':_vleft});
-            self.box_skitter.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
+            var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).width()) / 2;
+            // self.skitter_box.find(class_info).css({'left':_vleft});
+            self.skitter_box.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
             break;
             
           case 'right' : 
-            self.box_skitter.find(class_info).css({'left':'auto', 'right':'15px'});
+            self.skitter_box.find(class_info).css({'left':'auto', 'right':'15px'});
             break;
             
           case 'left' : 
-            self.box_skitter.find(class_info).css({'left':'15px'});
+            self.skitter_box.find(class_info).css({'left':'15px'});
             break;
         }
         
         if (!self.settings.dots) {
-          if (self.box_skitter.find('.info_slide').height() > 20) {
-            self.box_skitter.find('.info_slide').hide();
+          if (self.skitter_box.find('.info_slide').height() > 20) {
+            self.skitter_box.find('.info_slide').hide();
           }
         }
       }
       
-      this.box_skitter.find('ul').hide();
+      this.skitter_box.find('ul').hide();
       
       if (this.settings.show_randomly)
       this.settings.images_links.sort(function(a,b) {return Math.random() - 0.5;});
@@ -490,7 +488,7 @@
       
       if (this.settings.images_links.length > 1) 
       {
-        this.box_skitter.find('.prev_button').click(function() {
+        this.skitter_box.find('.prev_button').click(function() {
           if (self.settings.is_animating == false) {
             
             self.settings.image_i -= 2;
@@ -507,15 +505,15 @@
           return false;
         });
         
-        this.box_skitter.find('.next_button').click(function() {
+        this.skitter_box.find('.next_button').click(function() {
           self.jumpToImage(self.settings.image_i);
           return false;
         });
         
-        self.box_skitter.find('.next_button, .prev_button').bind('mouseover', self.settings.mouseOverButton);
-        self.box_skitter.find('.next_button, .prev_button').bind('mouseleave', self.settings.mouseOutButton);
+        self.skitter_box.find('.next_button, .prev_button').bind('mouseover', self.settings.mouseOverButton);
+        self.skitter_box.find('.next_button, .prev_button').bind('mouseleave', self.settings.mouseOutButton);
         
-        // this.box_skitter.find('.image_number').hover(function() {
+        // this.skitter_box.find('.image_number').hover(function() {
         //   if ($(this).attr('class') != 'image_number image_number_select') {
         //     if ( self.settings.animateNumberOver ) {
         //       $(this).stop().animate(self.settings.animateNumberOver, 300);
@@ -529,7 +527,7 @@
         //   }
         // });
         
-        this.box_skitter.find('.image_number').click(function(){
+        this.skitter_box.find('.image_number').click(function(){
           if ($(this).attr('class') != 'image_number image_number_select') {
             var imageNumber = parseInt($(this).attr('rel'));
             self.jumpToImage(imageNumber);
@@ -538,15 +536,15 @@
         });
         
         if ( self.settings.animateNumberOut ) {
-          // this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
+          // this.skitter_box.find('.image_number').css(self.settings.animateNumberOut);
         }
 
         if ( self.settings.animateNumberActive ) {
-          // this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
+          // this.skitter_box.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
         }
 
-        // this.box_skitter.find('.image_number').css(self.settings.animateNumberOut);
-        // this.box_skitter.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
+        // this.skitter_box.find('.image_number').css(self.settings.animateNumberOut);
+        // this.skitter_box.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
         
         // Preview with dots
         if (self.settings.preview && self.settings.dots) 
@@ -565,22 +563,22 @@
           preview.find('ul').width(width_preview_ul);
           $(class_info).append(preview);
           
-          self.box_skitter.find(class_info).find('.image_number').mouseenter(function() {
+          self.skitter_box.find(class_info).find('.image_number').mouseenter(function() {
             if (self.isLargeDevice()) {
-              var _left_info = parseFloat(self.box_skitter.find(class_info).offset().left);
+              var _left_info = parseFloat(self.skitter_box.find(class_info).offset().left);
               var _left_image = parseFloat($(this).offset().left);
               var _left_preview = (_left_image - _left_info) - 43;
               
               var rel = parseInt($(this).attr('rel'));
-              var image_current_preview = self.box_skitter.find('.preview_slide_current img').attr('src');
+              var image_current_preview = self.skitter_box.find('.preview_slide_current img').attr('src');
               var _left_ul = -(rel * 100);
               
-              self.box_skitter.find('.preview_slide').find('ul').animate({left: _left_ul}, {duration:200, queue: false, easing: 'easeOutSine'});
-              self.box_skitter.find('.preview_slide').fadeTo(1,1).animate({left: _left_preview}, {duration:200, queue: false});
+              self.skitter_box.find('.preview_slide').find('ul').animate({left: _left_ul}, {duration:200, queue: false, easing: 'easeOutSine'});
+              self.skitter_box.find('.preview_slide').fadeTo(1,1).animate({left: _left_preview}, {duration:200, queue: false});
             }
           });
           
-          self.box_skitter.find(class_info).mouseleave(function() {
+          self.skitter_box.find(class_info).mouseleave(function() {
             if (self.isLargeDevice()) {
               $('.preview_slide').animate({opacity: 'hide'}, {duration: 200, queue: false});
             }
@@ -627,7 +625,7 @@
       var self = this;
       
       var loading = $('<div class="loading">Loading</div>');
-      this.box_skitter.append(loading);
+      this.skitter_box.append(loading);
       var total = this.settings.images_links.length;
       
       var u = 0;
@@ -638,18 +636,18 @@
         var img = new Image();
 
         loading.css({ position:'absolute', top:'-9999em' });
-        self.box_skitter.append(loading);
+        self.skitter_box.append(loading);
         
         $(img).load(function () {
           ++u;
           if (u == total) {
-            self.box_skitter.find('.loading').remove();
-            self.box_skitter.find('.image_loading').remove();
+            self.skitter_box.find('.loading').remove();
+            self.skitter_box.find('.image_loading').remove();
             self.start();
           }
         }).error(function () {
-          self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
-          self.box_skitter.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
+          self.skitter_box.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
+          self.skitter_box.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
         }).attr('src', src);
       }
     }, 
@@ -662,12 +660,12 @@
       var self = this;
       var init_pause = false;
 
-      if (this.settings.numbers || this.settings.thumbs) this.box_skitter.find('.info_slide').fadeIn(500);
-      if (this.settings.dots) this.box_skitter.find('.info_slide_dots').fadeIn(500);
-      if (this.settings.label) this.box_skitter.find('.label_skitter').show();
+      if (this.settings.numbers || this.settings.thumbs) this.skitter_box.find('.info_slide').fadeIn(500);
+      if (this.settings.dots) this.skitter_box.find('.info_slide_dots').fadeIn(500);
+      if (this.settings.label) this.skitter_box.find('.label_skitter').show();
       if (this.settings.navigation) {
-        this.box_skitter.find('.prev_button').fadeIn(500);
-        this.box_skitter.find('.next_button').fadeIn(500);
+        this.skitter_box.find('.prev_button').fadeIn(500);
+        this.skitter_box.find('.next_button').fadeIn(500);
       }
       
       if (self.settings.auto_play) {
@@ -677,8 +675,8 @@
       self.windowFocusOut();
       self.setLinkAtual();
       
-      self.box_skitter.find('.image > a img').attr({'src': self.getCurrentImage()});
-      img_link = self.box_skitter.find('.image > a');
+      self.skitter_box.find('.image > a img').attr({'src': self.getCurrentImage()});
+      img_link = self.skitter_box.find('.image > a');
       img_link = self.resizeImage(img_link);
       img_link.find('img').fadeIn(1500);
       
@@ -692,14 +690,14 @@
       var mouseOverInit = function() {
         if (self.settings.stop_over) {
           init_pause = true;
-          self.settings.is_hover_box_skitter = true;
+          self.settings.is_hover_skitter_box = true;
           self.clearTimer(true);
           self.pauseProgressBar();
         }
       };
 
-      self.box_skitter.mouseover(mouseOverInit);
-      self.box_skitter.find('.next_button').mouseover(mouseOverInit);
+      self.skitter_box.mouseover(mouseOverInit);
+      self.skitter_box.find('.next_button').mouseover(mouseOverInit);
       
       if (self.settings.images_links.length > 1 && !init_pause) {
         if (self.settings.auto_play) {
@@ -707,7 +705,7 @@
         }
       } 
       else {
-        self.box_skitter.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
+        self.skitter_box.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
       }
       
       if ($.isFunction(self.settings.onLoad)) self.settings.onLoad(self);
@@ -722,13 +720,13 @@
     {
       if (this.settings.is_animating == false) {
         this.settings.elapsedTime = 0;
-        this.box_skitter.find('.box_clone').stop();
+        this.skitter_box.find('.box_clone').stop();
         this.clearTimer(true);
         this.settings.image_i = Math.floor(imageNumber);
         
-        this.box_skitter.find('.image > a').attr({'href': this.settings.link_atual});
-        this.box_skitter.find('.image_main').attr({'src': this.getCurrentImage()});
-        this.box_skitter.find('.box_clone').remove();
+        this.skitter_box.find('.image > a').attr({'href': this.settings.link_atual});
+        this.skitter_box.find('.image_main').attr({'src': this.getCurrentImage()});
+        this.skitter_box.find('.box_clone').remove();
 
         this.nextImage();
       }
@@ -1079,7 +1077,7 @@
       this.setActualLevel();
 
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
 
       var max_w = self.getMaxW(8);
       var max_h = self.getMaxH(8);
@@ -1154,7 +1152,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(8);
       var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -1218,7 +1216,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(8);
       var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -1295,7 +1293,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(8);
       var division_w  = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -1700,8 +1698,8 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
-      this.box_skitter.find('.image_main').hide();
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').hide();
       
       var total     = options.total;
       
@@ -2067,7 +2065,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
       
@@ -2122,7 +2120,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var total     = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / 10));
       
@@ -2221,7 +2219,7 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
       
       var max_w       = self.getMaxW(12);
       var total       = max_w;
@@ -2265,7 +2263,7 @@
       this.setActualLevel();
 
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
 
       var max_w      = self.getMaxW(10);
       var division_w = Math.ceil(this.settings.width_skitter / (this.settings.width_skitter / max_w));
@@ -2318,8 +2316,8 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
-      this.box_skitter.find('.image_main').hide();
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').hide();
       
       var total     = options.total;
       
@@ -2396,8 +2394,8 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
-      this.box_skitter.find('.image_main').hide();
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').hide();
       
       var total       = 2;
       var width_box     = this.settings.width_skitter;
@@ -2461,8 +2459,8 @@
       this.setActualLevel();
       
       this.setLinkAtual();
-      this.box_skitter.find('.image_main').attr({'src':this.getCurrentImage()});
-      this.box_skitter.find('.image_main').hide();
+      this.skitter_box.find('.image_main').attr({'src':this.getCurrentImage()});
+      this.skitter_box.find('.image_main').hide();
       
       var total       = 2;
       var width_box     = this.settings.width_skitter;
@@ -2518,13 +2516,13 @@
     finishAnimation: function (options) 
     {
       var self = this;
-      this.box_skitter.find('.image_main').show();
+      this.skitter_box.find('.image_main').show();
       this.showBoxText();
       this.settings.is_animating = false;
-      this.box_skitter.find('.image_main').attr({'src': this.getCurrentImage()});
-      this.box_skitter.find('.image > a').attr({'href': this.settings.link_atual});
+      this.skitter_box.find('.image_main').attr({'src': this.getCurrentImage()});
+      this.skitter_box.find('.image > a').attr({'href': this.settings.link_atual});
       
-      if (!this.settings.is_hover_box_skitter && !this.settings.is_paused && !this.settings.is_blur) {
+      if (!this.settings.is_hover_skitter_box && !this.settings.is_paused && !this.settings.is_blur) {
         this.timer = setTimeout(function() { self.completeMove(); }, this.settings.interval);
       }
       
@@ -2535,7 +2533,7 @@
     completeMove: function () 
     {
       this.clearTimer(true);
-      this.box_skitter.find('.box_clone').remove();
+      this.skitter_box.find('.box_clone').remove();
       if (!this.settings.is_paused && !this.settings.is_blur) this.nextImage();
     },
 
@@ -2566,9 +2564,9 @@
     addClassNumber: function () 
     {
       var self = this;
-      // this.box_skitter.find('.image_number_select').animate(self.settings.animateNumberOut, 500).removeClass('image_number_select');
+      // this.skitter_box.find('.image_number_select').animate(self.settings.animateNumberOut, 500).removeClass('image_number_select');
       // $('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).animate(self.settings.animateNumberActive, 700).addClass('image_number_select');
-      this.box_skitter.find('.image_number_select').removeClass('image_number_select');
+      this.skitter_box.find('.image_number_select').removeClass('image_number_select');
       $('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).addClass('image_number_select');
     },
 
@@ -2626,10 +2624,10 @@
       return img_clone;
     }, 
 
-    // Add box clone in box_skitter
+    // Add box clone in skitter_box
     addBoxClone: function(box_clone)
     {
-      this.box_skitter.find('.container_skitter').append(box_clone);
+      this.skitter_box.find('.container_skitter').append(box_clone);
     },
     
     // Get accepts easing 
@@ -2665,7 +2663,7 @@
     // Set value for text
     setValueBoxText: function () 
     {
-      this.box_skitter.find('.label_skitter').html(this.settings.label_atual);
+      this.skitter_box.find('.label_skitter').html(this.settings.label_atual);
     },
     
     // Show box text
@@ -2678,11 +2676,11 @@
         switch ( self.settings.labelAnimation ) {
 
           case 'slideUp' : default : 
-            self.box_skitter.find('.label_skitter').slideDown(400);
+            self.skitter_box.find('.label_skitter').slideDown(400);
             break;
 
           case 'left' : case 'right' : 
-            self.box_skitter.find('.label_skitter').animate({ left: 0 }, 400, 'easeInOutQuad');
+            self.skitter_box.find('.label_skitter').animate({ left: 0 }, 400, 'easeInOutQuad');
             break;
 
           case 'fixed' : 
@@ -2700,14 +2698,14 @@
       switch ( self.settings.labelAnimation ) {
 
         case 'slideUp' : default : 
-          this.box_skitter.find('.label_skitter').slideUp(200, function() {
+          this.skitter_box.find('.label_skitter').slideUp(200, function() {
             self.setValueBoxText();
           });
           break;
 
         case 'left' : case 'right' : 
-          var _left = ( self.settings.labelAnimation == 'left' ) ? -(self.box_skitter.find('.label_skitter').width()) : (self.box_skitter.find('.label_skitter').width());
-          self.box_skitter.find('.label_skitter').animate({ left: _left }, 400, 'easeInOutQuad', function() {
+          var _left = ( self.settings.labelAnimation == 'left' ) ? -(self.skitter_box.find('.label_skitter').width()) : (self.skitter_box.find('.label_skitter').width());
+          self.skitter_box.find('.label_skitter').animate({ left: _left }, 400, 'easeInOutQuad', function() {
             self.setValueBoxText();
           });
           break;
@@ -2718,16 +2716,16 @@
       }
     },
     
-    // Stop time to get over box_skitter
+    // Stop time to get over skitter_box
     stopOnMouseOver: function () 
     {
       var self = this;
 
       if ( self.settings.stop_over ) 
       {
-        self.box_skitter.hover(function() {
+        self.skitter_box.hover(function() {
           
-          if (self.settings.stop_over) self.settings.is_hover_box_skitter = true;
+          if (self.settings.stop_over) self.settings.is_hover_skitter_box = true;
           
           if (!self.settings.is_paused_time) {
             self.pauseTime();
@@ -2737,7 +2735,7 @@
           self.clearTimer(true);
           
         }, function() {
-          if (self.settings.stop_over) self.settings.is_hover_box_skitter = false;
+          if (self.settings.stop_over) self.settings.is_hover_skitter_box = false;
           
           if (self.settings.elapsedTime == 0 && !self.settings.is_animating && !self.settings.is_paused) {
             self.startTime();
@@ -2751,14 +2749,14 @@
           
           if (!self.settings.is_animating && self.settings.images_links.length > 1) {
             self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
-            self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
-            self.box_skitter.find('.image > a').attr({'href': self.settings.link_atual});
+            self.skitter_box.find('.image_main').attr({'src': self.getCurrentImage()});
+            self.skitter_box.find('.image > a').attr({'href': self.settings.link_atual});
           }
         });
       }
       else
       {
-        self.box_skitter.hover(function() {
+        self.skitter_box.hover(function() {
           self.setHideTools('hover');
         }, function() {
           self.setHideTools('out');
@@ -2776,7 +2774,7 @@
       if ( type == 'hover' ) {
         if (self.settings.hideTools) {
           if (self.settings.numbers) {
-            self.box_skitter
+            self.skitter_box
               .find('.info_slide')
               .show()
               .css({opacity:0})
@@ -2784,7 +2782,7 @@
           }
           
           if (self.settings.navigation) {
-            self.box_skitter
+            self.skitter_box
               .find('.prev_button, .next_button')
               .show()
               .css({opacity:0})
@@ -2792,7 +2790,7 @@
           }
 
           if (self.settings.focus && !self.settings.foucs_active) {
-            self.box_skitter
+            self.skitter_box
               .find('.focus_button')
               .stop()
               .show().css({opacity:0})
@@ -2800,7 +2798,7 @@
           }
           
           if (self.settings.controls) {
-            self.box_skitter
+            self.skitter_box
             .find('.play_pause_button')
             .stop()
             .show().css({opacity:0})
@@ -2809,14 +2807,14 @@
         }
 
         if (self.settings.focus && !self.settings.foucs_active && !self.settings.hideTools) {
-          self.box_skitter
+          self.skitter_box
             .find('.focus_button')
             .stop()
             .animate({opacity:1}, interval_in_elements);
         }
         
         if (self.settings.controls && !self.settings.hideTools) {
-          self.box_skitter
+          self.skitter_box
             .find('.play_pause_button')
             .stop()
             .animate({opacity:1}, interval_in_elements);
@@ -2825,7 +2823,7 @@
       else {
         if (self.settings.hideTools) {
           if (self.settings.numbers) {
-            self.box_skitter
+            self.skitter_box
               .find('.info_slide')
               .queue("fx", [])
               .show()
@@ -2834,7 +2832,7 @@
           }
           
           if (self.settings.navigation) {
-            self.box_skitter
+            self.skitter_box
               .find('.prev_button, .next_button')
               .queue("fx", [])
               .show()
@@ -2843,7 +2841,7 @@
           }
 
           if (self.settings.focus && !self.settings.foucs_active) {
-            self.box_skitter
+            self.skitter_box
               .find('.focus_button')
               .stop()
               .css({opacity: opacity_elements})
@@ -2851,7 +2849,7 @@
           }
 
           if (self.settings.controls) {
-            self.box_skitter
+            self.skitter_box
               .find('.play_pause_button')
               .stop()
               .css({opacity: opacity_elements})
@@ -2860,14 +2858,14 @@
         }
         
         if (self.settings.focus && !self.settings.foucs_active && !self.settings.hideTools) {
-          self.box_skitter
+          self.skitter_box
             .find('.focus_button')
             .stop()
             .animate({opacity:0.3}, interval_out_elements);
         }
         
         if (self.settings.controls && !self.settings.hideTools) {
-          self.box_skitter
+          self.skitter_box
             .find('.play_pause_button')
             .stop()
             .animate({opacity:0.3}, interval_out_elements);
@@ -2884,20 +2882,20 @@
     // Set link atual
     setLinkAtual: function() {
       if (this.settings.link_atual != '#' && this.settings.link_atual != '') {
-        this.box_skitter.find('.image > a').attr({'href': this.settings.link_atual, 'target': this.settings.target_atual});
+        this.skitter_box.find('.image > a').attr({'href': this.settings.link_atual, 'target': this.settings.target_atual});
       }
       else {
-        this.box_skitter.find('.image > a').removeAttr('href');
+        this.skitter_box.find('.image > a').removeAttr('href');
       }
     },
     
     // Hide tools
     hideTools: function() {
-      this.box_skitter.find('.info_slide').fadeTo(0, 0);
-      this.box_skitter.find('.prev_button').fadeTo(0, 0);
-      this.box_skitter.find('.next_button').fadeTo(0, 0);
-      this.box_skitter.find('.focus_button').fadeTo(0, 0);
-      this.box_skitter.find('.play_pause_button').fadeTo(0, 0);
+      this.skitter_box.find('.info_slide').fadeTo(0, 0);
+      this.skitter_box.find('.prev_button').fadeTo(0, 0);
+      this.skitter_box.find('.next_button').fadeTo(0, 0);
+      this.skitter_box.find('.focus_button').fadeTo(0, 0);
+      this.skitter_box.find('.play_pause_button').fadeTo(0, 0);
     }, 
     
     // Focus Skitter
@@ -2905,7 +2903,7 @@
       var self = this;
       var focus_button = $('<a href="#" class="focus_button">focus</a>');
 
-      self.box_skitter.append(focus_button);
+      self.skitter_box.append(focus_button);
       focus_button
         .animate({opacity:0.3}, self.settings.interval_in_elements);
       
@@ -2914,10 +2912,10 @@
         if (code == 27) $('#overlay_skitter').trigger('click');
       });
 
-      var _top = $('.box_skitter').offset().top;
-      var _left = $('.box_skitter').offset().left;
+      var _top = $('.skitter_box').offset().top;
+      var _left = $('.skitter_box').offset().left;
       
-      self.box_skitter.find('.focus_button').click(function() {
+      self.skitter_box.find('.focus_button').click(function() {
         if ( self.settings.foucs_active ) return false;
         self.settings.foucs_active = true;
         
@@ -2928,19 +2926,19 @@
           .hide()
           .fadeTo(self.settings.interval_in_elements, 0.98);
           
-        var _topFinal = (($(window).height() - $('.box_skitter').height()) / 2) + $(document).scrollTop();
-        var _leftFinal = ($(window).width() - $('.box_skitter').width()) / 2;
+        var _topFinal = (($(window).height() - $('.skitter_box').height()) / 2) + $(document).scrollTop();
+        var _leftFinal = ($(window).width() - $('.skitter_box').width()) / 2;
         
-        self.box_skitter.before('<div id="mark_position"></div>');
+        self.skitter_box.before('<div id="mark_position"></div>');
         $('body').prepend(div);
-        $('body').prepend(self.box_skitter);
-        self.box_skitter
+        $('body').prepend(self.skitter_box);
+        self.skitter_box
           .css({'top':_top, 'left':_left, 'position':'absolute', 'z-index':9999})
           .animate({'top':_topFinal, 'left':_leftFinal}, 2000, 'easeOutExpo');
         
         $('#mark_position') 
-          .width($('.box_skitter').width())
-          .height($('.box_skitter').height())
+          .width($('.skitter_box').width())
+          .height($('.skitter_box').height())
           .css({'background':'none'})
           .fadeTo(300,0.3);
         
@@ -2953,12 +2951,12 @@
         self.settings.foucs_active = false;
         $(this).addClass('finish_overlay_skitter');
         
-        if (!self.settings.hideTools) self.box_skitter.find('.focus_button').animate({opacity:0.3}, 200);
+        if (!self.settings.hideTools) self.skitter_box.find('.focus_button').animate({opacity:0.3}, 200);
         
-        self.box_skitter
+        self.skitter_box
           .stop()
           .animate({'top':_top, 'left':_left}, 200, 'easeOutExpo', function() {
-            $('#mark_position').before(self.box_skitter);
+            $('#mark_position').before(self.skitter_box);
             $(this).css({'position':'relative', 'top':0, 'left': 0});
             $('#mark_position').remove();
           });
@@ -2977,22 +2975,10 @@
     setControls: function() {
       var self = this;
       var play_pause_button = $('<a href="#" class="play_pause_button">pause</a>');
-      
-      self.box_skitter.append(play_pause_button);
-      
-      // var _left = (self.settings.width_skitter - play_pause_button.width()) / 2;
-      // if (self.settings.focus) _left += 25;
-      // var cssPosition = {left: '50%', 'transform': 'translateX(-50%)'};
-      // switch (self.settings.controls_position)
-      // {
-      //   case 'leftTop' : cssPosition = {left: 5, top: 30, transform: null}; break;
-      //   case 'rightTop' : cssPosition = {right: 5, top: 30, transform: null}; break;
-      //   case 'leftBottom' : cssPosition = {left: 5, bottom: 5, top: 'auto', transform: null}; break;
-      //   case 'rightBottom' : cssPosition = {right: 5, bottom: 5, top: 'auto', transform: null}; break;
-      // }
-      
+
+      self.skitter_box.append(play_pause_button);
+
       play_pause_button
-        // .css(cssPosition)
         .animate({opacity:0.3}, self.settings.interval_in_elements);
       
       play_pause_button.click(function() {
@@ -3006,7 +2992,7 @@
           self.clearTimer(true);
         }
         else {
-          if (!self.settings.is_animating && !self.box_skitter.find('.progressbar').is(':visible')) {
+          if (!self.settings.is_animating && !self.skitter_box.find('.progressbar').is(':visible')) {
             self.settings.elapsedTime = 0;
           }
           else {
@@ -3025,8 +3011,8 @@
             self.clearTimer(true);
             if (!self.settings.is_animating && self.settings.images_links.length > 1) {
               self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
-              self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
-              self.box_skitter.find('.image > a').attr({'href': self.settings.link_atual});
+              self.skitter_box.find('.image_main').attr({'src': self.getCurrentImage()});
+              self.skitter_box.find('.image > a').attr({'href': self.settings.link_atual});
             }
           }
         }
@@ -3051,7 +3037,7 @@
       var self = this;
       
       var progressbar = $('<div class="progressbar"></div>');
-      self.box_skitter.append(progressbar);
+      self.skitter_box.append(progressbar);
       
       if (self.objectSize(self.settings.progressbar_css) == 0)  {
         if (parseInt(progressbar.css('width')) > 0) {
@@ -3073,8 +3059,8 @@
      */
     startProgressBar: function() {
       var self = this;
-      if (self.settings.is_hover_box_skitter || self.settings.is_paused || self.settings.is_blur || !self.settings.progressbar) return false;
-      self.box_skitter.find('.progressbar')
+      if (self.settings.is_hover_skitter_box || self.settings.is_paused || self.settings.is_blur || !self.settings.progressbar) return false;
+      self.skitter_box.find('.progressbar')
         .hide()
         .dequeue()
         .width(self.settings.progressbar_css.width)
@@ -3087,7 +3073,7 @@
     pauseProgressBar: function() {
       var self = this;
       if (!self.settings.is_animating) {
-        self.box_skitter.find('.progressbar').stop();
+        self.skitter_box.find('.progressbar').stop();
       }
     },
     
@@ -3097,9 +3083,9 @@
     resumeProgressBar: function() {
       var self = this;
       
-      if (self.settings.is_hover_box_skitter || self.settings.is_paused || !self.settings.progressbar) return false;
+      if (self.settings.is_hover_skitter_box || self.settings.is_paused || !self.settings.progressbar) return false;
       
-      self.box_skitter.find('.progressbar').dequeue().animate({width: self.settings.progressbar_css.width}, (self.settings.interval - self.settings.elapsedTime), 'linear');
+      self.skitter_box.find('.progressbar').dequeue().animate({width: self.settings.progressbar_css.width}, (self.settings.interval - self.settings.elapsedTime), 'linear');
     },
     
     /**
@@ -3110,7 +3096,7 @@
       
       if (!self.settings.progressbar) return false;
       
-      self.box_skitter.find('.progressbar').stop().fadeOut(300, function() {
+      self.skitter_box.find('.progressbar').stop().fadeOut(300, function() {
         $(this).width(self.settings.progressbar_css.width);
       });
     },
@@ -3170,11 +3156,11 @@
       $(window).keydown(function(e) {
         // Next
         if (e.keyCode == 39 || e.keyCode == 40) {
-          self.box_skitter.find('.next_button').trigger('click');
+          self.skitter_box.find('.next_button').trigger('click');
         }
         // Prev
         else if (e.keyCode == 37 || e.keyCode == 38) {
-          self.box_skitter.find('.prev_button').trigger('click');
+          self.skitter_box.find('.prev_button').trigger('click');
         }
       });
     },
@@ -3251,8 +3237,8 @@
           if (self.settings.elapsedTime <= self.settings.interval) {
             self.clearTimer(true); // Fix bug IE: double next
             self.timer = setTimeout(function() { self.completeMove(); }, self.settings.interval - self.settings.elapsedTime);
-            self.box_skitter.find('.image_main').attr({'src': self.getCurrentImage()});
-            self.box_skitter.find('.image > a').attr({'href': self.settings.link_atual});
+            self.skitter_box.find('.image_main').attr({'src': self.getCurrentImage()});
+            self.skitter_box.find('.image > a').attr({'href': self.settings.link_atual});
           }
         }
       });
@@ -3281,8 +3267,8 @@
       var self = this;
       var was_set = false;
 
-      this.box_skitter.css('width', '100%');
-      this.box_skitter.find('.image_main')
+      this.skitter_box.css('width', '100%');
+      this.skitter_box.find('.image_main')
         .attr({ src: this.getCurrentImage() })
         .css({ 'width': '100%', 'height': 'auto' })
         .on('load', function() {
@@ -3301,9 +3287,9 @@
       }, 3000);
 
       var _setDimensions = function() {
-        var image = self.box_skitter.find('.image_main');
-        var width_box = self.box_skitter.width();
-        var height_box = self.box_skitter.height();
+        var image = self.skitter_box.find('.image_main');
+        var width_box = self.skitter_box.width();
+        var height_box = self.skitter_box.height();
         var width_image = image.width();
         var height_image = image.height();
         var width = width_box;
@@ -3311,7 +3297,7 @@
 
         self.settings.width_skitter = width;
         self.settings.height_skitter = height;
-        self.box_skitter
+        self.skitter_box
           .width(width)
           .height(height)
           .find('.container_skitter')
@@ -3370,7 +3356,7 @@
      * Get old image
      */
     getOldImage: function() {
-      var image = this.box_skitter.find('.image_main').attr('src');
+      var image = this.skitter_box.find('.image_main').attr('src');
       return image;
     },
 
@@ -3402,23 +3388,23 @@
       var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 
       if (isTouch) {
-        this.box_skitter.on('touchstart', function(e) {
+        this.skitter_box.on('touchstart', function(e) {
           if (e.originalEvent.touches.length > 0) {
             last_position_x = e.originalEvent.touches[0].pageX;
           }
         });
 
-        this.box_skitter.on('touchmove', function(e) {
+        this.skitter_box.on('touchmove', function(e) {
           if (e.originalEvent.touches.length > 0) {
             last_position_x_move = e.originalEvent.touches[0].pageX;
           }
         });
 
-        this.box_skitter.on('touchend', function(e) {
+        this.skitter_box.on('touchend', function(e) {
           if (last_position_x < last_position_x_move) {
-            self.box_skitter.find('.prev_button').trigger('click');
+            self.skitter_box.find('.prev_button').trigger('click');
           } else {
-            self.box_skitter.find('.next_button').trigger('click');
+            self.skitter_box.find('.next_button').trigger('click');
           }
         });
       }

@@ -30,7 +30,7 @@ $(document).ready(function() {
 ### Add the images through the unordered list
 
 ```html
-<div class="box_skitter box_skitter_large">
+<div class="skitter skitter-large">
   <ul>
     <li>
       <a href="#cut"><img src="images/001.jpg" class="cut" /></a>
@@ -47,3 +47,9 @@ $(document).ready(function() {
   </ul>
 </div>
 ```
+
+## Todo
+
+- [ ] Separate into small pieces the source code.
+- [ ] Create unit tests
+- [ ] Exchange images for background divs (for animations)

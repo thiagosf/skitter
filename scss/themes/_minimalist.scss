@@ -5,6 +5,7 @@
   .prev_button, .next_button, .play_pause_button, .focus_button {
     display: block;
     background: url('images/sprite-minimalist.png') no-repeat;
+    background-size: 24px auto;
   }
   .prev_button {
     background-position: -0px -0px;
@@ -49,7 +50,7 @@
         background-color: #111;
       }
       &.image_number_select {
-        background-color: #cc3333;
+        background-color: #ccc;
       }
     }
   }
@@ -63,7 +64,7 @@
         background-color: #111;
       }
       &.image_number_select {
-        background-color: #cc3333;
+        background-color: #ccc;
       }
     }
   }

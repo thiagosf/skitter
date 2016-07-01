@@ -5,6 +5,7 @@
   .prev_button, .next_button, .play_pause_button, .focus_button {
     display: block;
     background: url('images/sprite-round.png') no-repeat;
+    background-size: 47px auto;
   }
   .prev_button {
     background-position: -0px -0px;
@@ -30,7 +31,7 @@
     height: 23px;
     top: 0;
     left: 24px;
-    margin-top: 0;
+    transform: none;
     &.play_button {
       background-position: -0px -47px;
       width: 47px;
@@ -57,6 +58,7 @@
       }
       &.image_number_select {
         background-color: #111;
+        color: white;
       }
     }
   }
