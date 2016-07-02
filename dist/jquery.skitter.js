@@ -265,6 +265,9 @@
       this.settings.width_skitter   = parseFloat(this.skitter_box.css('width'));
       this.settings.height_skitter  = parseFloat(this.skitter_box.css('height'));
       
+      this.settings.original_width_skitter   = this.settings.width_skitter;
+      this.settings.original_height_skitter  = this.settings.height_skitter;
+
       if (!this.settings.width_skitter || !this.settings.height_skitter) {
         console.warn('Width or height size is null! - Skitter Slideshow');
         return false;
@@ -2616,9 +2619,6 @@
     // Redimensiona imagem
     resizeImage: function(img_clone) 
     {
-      // if (this.settings.fullscreen) {
-      //   img_clone.find('img').height(this.settings.height_skitter);
-      // }
       img_clone.find('img').width(this.settings.width_skitter);
       img_clone.find('img').height(this.settings.height_skitter);
       return img_clone;
@@ -3294,6 +3294,11 @@
         var height_image = image.height();
         var width = width_box;
         var height = (height_image * width_box) / width_image;
+
+        if (self.settings.fullscreen) {
+          width = $(window).width();
+          height = $(window).height();
+        }
 
         self.settings.width_skitter = width;
         self.settings.height_skitter = height;
