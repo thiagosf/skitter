@@ -286,10 +286,6 @@
       this.skitter_box.find('.container_skitter').width(this.settings.width_skitter);
       this.skitter_box.find('.container_skitter').height(this.settings.height_skitter);
       
-      // var width_label = this.settings.width_label ? this.settings.width_label : this.settings.width_skitter;
-      // this.skitter_box.find('.label_skitter').width(width_label);
-      // this.skitter_box.find('.label_skitter').width(width_label);
-      
       var initial_select_class = ' image_number_select', u = 0;
       this.settings.images_links = [];
       
@@ -418,7 +414,6 @@
           switch (self.settings.numbers_align) {
             case 'center' : 
               var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).width()) / 2;
-              // self.skitter_box.find(class_info).css({'left':_vleft});
               self.skitter_box.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
               break;
               
@@ -445,7 +440,6 @@
         switch (self.settings.numbers_align) {
           case 'center' : 
             var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).width()) / 2;
-            // self.skitter_box.find(class_info).css({'left':_vleft});
             self.skitter_box.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
             break;
             
@@ -937,7 +931,6 @@
 
         var _vtop       = init_top + (height_box * col_t) + (col_t * 150);
         var _vleft      = -self.settings.width_skitter;
-        //var _vleft      = (init_left + (width_box * col)) + (col * 50);
         
         var _vtop_image   = -(height_box * col_t);
         
@@ -956,12 +949,8 @@
         } 
         else {
           time_animate = 500;
-          //box_clone.css({left:(this.settings.width_skitter / 2), top:this.settings.height_skitter + 50, width:width_box, height:height_box});
           box_clone.css({left:(this.settings.width_skitter) + (width_box * i), top:this.settings.height_skitter + (height_box * i), width:width_box, height:height_box});
         }
-        
-        //box_clone.find('img').css({left:_vleft_image, top:_vtop_image});
-        //box_clone.find('img').css({left:_vleft_image+100, top:_vtop_image});
         
         this.addBoxClone(box_clone);
         
@@ -1013,7 +1002,6 @@
         
         var delay_time = 80 * (i);
         var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
-        //box_clone.delay(delay_time).animate({top:_btop, left:_bleft, opacity:'show'}, time_animate, easing, callback);
         
         box_clone.show().delay(delay_time).animate({top:_btop, left:_bleft}, time_animate, easing);
         box_clone.find('img').hide().delay(delay_time+100).animate({opacity:'show'}, time_animate+300, easing, callback);
@@ -3262,7 +3250,7 @@
           .find('.container_skitter')
             .width(width)
             .height(height)
-          .find('img')
+          .find('> a img, > img')
             .width(width)
             .height(height);
       };

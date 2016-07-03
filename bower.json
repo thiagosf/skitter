@@ -2,15 +2,16 @@
   "name": "skitter-slideshow",
   "version": "5.0.0",
   "homepage": "http://skitter-slider.net",
-  "description": "Skitter is a jquery slider with multiple transitions and customization options",
+  "description": "Skitter is a jquery slider responsive with multiple transitions and customization.",
   "main": [
-    "dist/jquery.skitter.js"
+    "src/jquery.skitter.js"
   ],
   "keywords": [
     "slider",
     "slideshow",
     "transition",
-    "animation"
+    "animation",
+    "responsive"
   ],
   "authors": [
     "Thiago Silva Ferreira <thiago@thiagosf.net>"

@@ -13,17 +13,17 @@ License: Dual licensed under the MIT or GPL Version 2
 ### Add the CSS and JS files inside <head>
 
 ```html
-<link type="text/css" href="css/skitter.styles.min.css" media="all" rel="stylesheet" />
+<link type="text/css" href="dist/skitter.css" media="all" rel="stylesheet" />
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
-<script type="text/javascript" src="js/jquery.skitter.min.js"></script>
+<script type="text/javascript" src="dist/jquery.skitter.min.js"></script>
 ```
 
 ### Init the Skitter
 
 ```javascript
 $(document).ready(function() {
-  $(".box_skitter_large").skitter();
+  $(".skitter-large").skitter();
 });
 ```
 

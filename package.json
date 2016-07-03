@@ -1,13 +1,10 @@
 {
   "name": "SkitterSlideshow",
-  "version": "4.5.0",
+  "version": "5.0.0",
   "description": "Slideshow for anytime",
-  "main": "src/skitter.js",
+  "main": "src/jquery.skitter.js",
   "directories": {
     "example": "examples"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -17,7 +14,8 @@
     "slider",
     "slideshow",
     "transition",
-    "animation"
+    "animation",
+    "responsive"
   ],
   "author": "Thiago Silva Ferreira <thiago@thiagosf.net>",
   "license": "MIT",

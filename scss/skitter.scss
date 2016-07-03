@@ -9,7 +9,8 @@
   &.with-thumbs {
     margin-bottom: 60px;
   }
-  img {
+  > a img,
+  > img {
     max-width: none;
   }
   ul {
@@ -24,7 +25,8 @@
   }
   .image {
     overflow: hidden;
-    img {
+    > a img,
+    > img {
       width: 100%;
       display: none;
     }
