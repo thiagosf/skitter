@@ -15,13 +15,18 @@
   var skitters = [];
 
   $.fn.skitter = function(options) {
-    return this.each(function() {
-      if ( $(this).data('skitter_number') == undefined ) {
-        $(this).data('skitter_number', number_skitter);
-        skitters.push(new $sk(this, options, number_skitter));
-        ++number_skitter;
-      }
-    });
+    if (typeof options == 'string') {
+      var current_skitter = skitters[$(this).data('skitter_number')];
+      return current_skitter[arguments[0]].call(current_skitter, arguments[1]);
+    } else {
+      return this.each(function() {
+        if ( $(this).data('skitter_number') == undefined ) {
+          $(this).data('skitter_number', number_skitter);
+          skitters.push(new $sk(this, options, number_skitter));
+          ++number_skitter;
+        }
+      });
+    }
   };
 
   var defaults = {
@@ -233,8 +238,46 @@
   $sk.fn = $sk.prototype = {};
   
   $sk.fn.extend = $.extend;
-  
+
   $sk.fn.extend({
+    // Available animations
+    animations: [
+      'cube', 
+      'cubeRandom', 
+      'block', 
+      'cubeStop', 
+      'cubeStopRandom', 
+      'cubeHide', 
+      'cubeSize', 
+      'horizontal', 
+      'showBars', 
+      'showBarsRandom', 
+      'tube',
+      'fade',
+      'fadeFour',
+      'paralell',
+      'blind',
+      'blindHeight',
+      'blindWidth',
+      'directionTop',
+      'directionBottom',
+      'directionRight',
+      'directionLeft',
+      'cubeSpread',
+      'glassCube',
+      'glassBlock',
+      'circles',
+      'circlesInside',
+      'circlesRotate',
+      'cubeShow',
+      'upBars', 
+      'downBars', 
+      'hideBars', 
+      'swapBars', 
+      'swapBarsBack', 
+      'swapBlocks',
+      'cut'
+    ],
     
     /**
      * Init
@@ -692,43 +735,7 @@
     {
       var self = this;
       
-      animations_functions = [
-        'cube', 
-        'cubeRandom', 
-        'block', 
-        'cubeStop', 
-        'cubeStopRandom', 
-        'cubeHide', 
-        'cubeSize', 
-        'horizontal', 
-        'showBars', 
-        'showBarsRandom', 
-        'tube',
-        'fade',
-        'fadeFour',
-        'paralell',
-        'blind',
-        'blindHeight',
-        'blindWidth',
-        'directionTop',
-        'directionBottom',
-        'directionRight',
-        'directionLeft',
-        'cubeSpread',
-        'glassCube',
-        'glassBlock',
-        'circles',
-        'circlesInside',
-        'circlesRotate',
-        'cubeShow',
-        'upBars', 
-        'downBars', 
-        'hideBars', 
-        'swapBars', 
-        'swapBarsBack', 
-        'swapBlocks',
-        'cut'
-      ];
+      animations_functions = this.animations;
 
       if (self.settings.progressbar) self.hideProgressBar();
       
@@ -1984,7 +1991,7 @@
             top:    -_itop, 
             left:   -_ileft
           }
-        }).css3({
+        }).skitterCss3({
           'border-radius': radius+'px'
         });
         
@@ -2038,7 +2045,7 @@
             top:    -_itop, 
             left:   -_ileft
           }
-        }).css3({
+        }).skitterCss3({
           'border-radius': radius+'px'
         });
         
@@ -2054,6 +2061,8 @@
       }
     },
 
+    // Obs.: animacao com problemas, igual ao animationCirclesInside
+    // @todo Usar css3 para rotate
     animationCirclesRotate: function(options)
     {
       var self = this;
@@ -2084,7 +2093,7 @@
         var box_clone = null;
 
         box_clone = this.getBoxCloneImgOld(image_old);
-        box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).css3({
+        box_clone.css({left: _ileft, top:_itop, width:size_box, height:size_box}).skitterCss3({
           'border-radius': radius+'px'
         });
         box_clone.find('img').css({left: -_ileft, top: -_itop});
@@ -2097,7 +2106,7 @@
         var delay_time = 200 * i;
         var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
         var _rotate = (i % 2 == 0) ? '+=2deg' : '+=2deg';
-        box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'hide', rotate: _rotate}, time_animate, easing, callback);
+        box_clone.delay(delay_time).animate({ top: _ftop, left: _fleft, opacity: 'hide' }, time_animate, easing, callback);
       }
     },
     
@@ -3355,171 +3364,52 @@
           }
         });
       }
+    },
+
+    /**
+     * Get available animations (public api)
+     */
+    getAnimations: function() {
+      return this.animations;
+    },
+
+    /**
+     * Set animation (public api)
+     */
+    setAnimation: function(animation) {
+      this.settings.animation = animation;
+    },
+
+    /**
+     * Next (public api)
+     */
+    next: function() {
+      this.skitter_box.find('.next_button').trigger('click');
+    },
+
+    /**
+     * Prev (public api)
+     */
+    prev: function() {
+      this.skitter_box.find('.prev_button').trigger('click');
     }
   });
   
   /**
-   * Helper function for cross-browser CSS3 support, prepends all possible prefixes to all properties passed in
+   * Helper function for cross-browser CSS3 support, prepends 
+   * all possible prefixes to all properties passed in
    * @param {Object} props Ker/value pairs of CSS3 properties
    */
-  $.fn.css3 = function(props) {
+  $.fn.skitterCss3 = function(props) {
     var css = {};
     var prefixes = ['moz', 'ms', 'o', 'webkit'];
     for(var prop in props) {
-      // Add the vendor specific versions
       for(var i=0; i<prefixes.length; i++)
         css['-'+prefixes[i]+'-'+prop] = props[prop];
-      // Add the actual version 
       css[prop] = props[prop];
     }
     this.css(css);
     return this;
-  };
-  
-  // Monkey patch jQuery 1.3.1+ to add support for setting or animating CSS
-  // scale and rotation independently.
-  // 2009-2010 Zachary Johnson www.zachstronaut.com
-  // Updated 2010.11.06
-  var rotateUnits = 'deg';
-  
-  $.fn.rotate = function (val) {
-    var style = $(this).css('transform') || 'none';
-    if (typeof val == 'undefined') {
-      if (style) {
-        var m = style.match(/rotate\(([^)]+)\)/);
-        if (m && m[1]) {
-          return m[1];
-        }
-      }
-      return 0;
-    }
-    var m = val.toString().match(/^(-?\d+(\.\d+)?)(.+)?$/);
-    if (m) {
-      if (m[3]) rotateUnits = m[3];
-      $(this).css('transform',
-        style.replace(/none|rotate\([^)]*\)/, '') + 'rotate(' + m[1] + rotateUnits + ')'
-      );
-    }
-    
-    return this;
-  };
-  
-  // Note that scale is unitless.
-  $.fn.scale = function (val, duration, options) {
-    var style = $(this).css('transform');
-    if (typeof val == 'undefined') {
-      if (style) {
-        var m = style.match(/scale\(([^)]+)\)/);
-        if (m && m[1]) {
-          return m[1];
-        }
-      }
-      return 1;
-    }
-    $(this).css('transform',
-      style.replace(/none|scale\([^)]*\)/, '') + 'scale(' + val + ')'
-    );
-    return this;
-  };
-
-  // fx.cur() must be monkey patched because otherwise it would always
-  // return 0 for current rotate and scale values
-  var curProxied = $.fx.prototype.cur;
-  $.fx.prototype.cur = function () {
-    if (this.prop == 'rotate') {
-      return parseFloat($(this.elem).rotate());
-    }
-    else if (this.prop == 'scale') {
-      return parseFloat($(this.elem).scale());
-    }
-    return curProxied.apply(this, arguments);
-  };
-  
-  $.fx.step.rotate = function (fx) {
-    $(fx.elem).rotate(fx.now + rotateUnits);
-  };
-  
-  $.fx.step.scale = function (fx) {
-    $(fx.elem).scale(fx.now);
-  };
-  
-  var animateProxied = $.fn.animate;
-  $.fn.animate = function (prop) {
-    if (typeof prop['rotate'] != 'undefined') {
-      var m = prop['rotate'].toString().match(/^(([+-]=)?(-?\d+(\.\d+)?))(.+)?$/);
-      if (m && m[5]) {
-        rotateUnits = m[5];
-      }
-      prop['rotate'] = m[1];
-    }
-    
-    return animateProxied.apply(this, arguments);
-  };
-  
-  // Monkey patch jQuery 1.3.1+ css() method to support CSS 'transform'
-  // property uniformly across Safari/Chrome/Webkit, Firefox 3.5+, IE 9+, and Opera 11+.
-  // 2009-2011 Zachary Johnson www.zachstronaut.com
-  // Updated 2011.05.04 (May the fourth be with you!)
-  function getTransformProperty(element) {
-    var properties = ['transform', 'WebkitTransform', 'msTransform', 'MozTransform', 'OTransform'];
-    var p;
-    while (p = properties.shift()) {
-      if (typeof element.style[p] != 'undefined') {
-        return p;
-      }
-    }
-    return 'transform';
-  };
-  
-  var _propsObj = null;
-  
-  var proxied = $.fn.css;
-  $.fn.css = function (arg, val) {
-    if (_propsObj === null) {
-      if (typeof $.cssProps != 'undefined') {
-        _propsObj = $.cssProps;
-      }
-      else if (typeof $.props != 'undefined') {
-        _propsObj = $.props;
-      }
-      else {
-        _propsObj = {};
-      }
-    }
-    if
-    (
-      typeof _propsObj['transform'] == 'undefined'
-      &&
-      (
-        arg == 'transform'
-        ||
-        (
-          typeof arg == 'object'
-          && typeof arg['transform'] != 'undefined'
-        )
-      )
-    ) {
-      _propsObj['transform'] = getTransformProperty(this.get(0));
-    }
-    if (_propsObj['transform'] != 'transform') {
-      // Call in form of css('transform' ...)
-      if (arg == 'transform') {
-        arg = _propsObj['transform'];
-        if (typeof val == 'undefined' && jQuery.style) {
-          return jQuery.style(this.get(0), arg);
-        }
-      }
-      // Call in form of css({'transform': ...})
-      else if
-      (
-        typeof arg == 'object'
-        && typeof arg['transform'] != 'undefined'
-      ) {
-        arg[_propsObj['transform']] = arg['transform'];
-        delete arg['transform'];
-      }
-    }
-    return proxied.apply(this, arguments);
   };
 
 })(jQuery);

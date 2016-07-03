@@ -72,7 +72,14 @@ body {
 .skitter-themes ul { }
 .skitter-themes ul li { display: inline-block; }
 .skitter-themes ul li a { padding: 10px; display: inline-block; color: black; text-decoration: none; font-size: 14px; font-weight: bold; text-transform: uppercase; border-radius: 2px; border: 2px solid; margin: 0 5px 10px 5px; }
-.skitter-themes ul li a.current { color: #999; }
+.skitter-themes ul li a.active { color: #999; }
+
+.skitter-animations { text-align: center; margin: 20px 0 10px 0; }
+.skitter-animations h3 { text-transform: uppercase; margin: 0 0 10px 0; }
+.skitter-animations ul { }
+.skitter-animations ul li { display: inline-block; }
+.skitter-animations ul li a { display: inline-block; color: black; text-decoration: none; font-size: 14px; border-bottom: 1px solid; margin: 0 5px 10px 5px; }
+.skitter-animations ul li a.active { color: #999; }
 
 @media (max-width: 767px) {
   .skitter-themes ul li a { 
