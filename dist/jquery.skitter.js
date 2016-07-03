@@ -1455,17 +1455,17 @@
       for (i = 0;i<total;i++) {
         
         if (i == 0) {
-          var _vtop = '-100px';
-          var _vleft = '-100px';
+          var _vtop = '-40px';
+          var _vleft = '-40px';
         } else if (i == 1) {
-          var _vtop = '-100px';
-          var _vleft = '100px';
+          var _vtop = '-40px';
+          var _vleft = '40px';
         } else if (i == 2) {
-          var _vtop = '100px';
-          var _vleft = '-100px';
+          var _vtop = '40px';
+          var _vleft = '-40px';
         } else if (i == 3) {
-          var _vtop = '100px';
-          var _vleft = '100px';
+          var _vtop = '40px';
+          var _vleft = '40px';
         }
       
         var box_clone = this.getBoxClone();
