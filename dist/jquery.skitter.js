@@ -11,9 +11,9 @@
  * @example http://thiagosf.net/projects/jquery/skitter/
  */
 ;(function($) {
-  var number_skitter = 0,
-    skitters = [];
-  
+  var number_skitter = 0;
+  var skitters = [];
+
   $.fn.skitter = function(options) {
     return this.each(function() {
       if ( $(this).data('skitter_number') == undefined ) {
@@ -23,7 +23,7 @@
       }
     });
   };
-  
+
   var defaults = {
     // Animation velocity
     velocity: 1,
@@ -90,15 +90,6 @@
 
     // Navigation with thumbs
     thumbs: false,
-
-    // Animation/style number/dot
-    animateNumberOut: false,
-
-    // Animation/style hover number/dot
-    animateNumberOver: false,
-
-    // Animation/style active number/dot
-    animateNumberActive: false,
 
     // Hide numbers and navigation
     hideTools: false,
@@ -366,11 +357,6 @@
       // Thumbs
       if (self.settings.thumbs && !self.settings.fullscreen) 
       {
-        // New animation
-        self.settings.animateNumberOut = {opacity:0.3};
-        self.settings.animateNumberOver = {opacity:0.5};
-        self.settings.animateNumberActive = {opacity:1};
-        
         self.skitter_box.find('.info_slide').addClass('info_slide_thumb');
         var width_info_slide = (u + 1) * self.skitter_box.find('.info_slide_thumb .image_number').width();
         self.skitter_box.find('.info_slide_thumb').width(width_info_slide);
@@ -516,20 +502,6 @@
         self.skitter_box.find('.next_button, .prev_button').bind('mouseover', self.settings.mouseOverButton);
         self.skitter_box.find('.next_button, .prev_button').bind('mouseleave', self.settings.mouseOutButton);
         
-        // this.skitter_box.find('.image_number').hover(function() {
-        //   if ($(this).attr('class') != 'image_number image_number_select') {
-        //     if ( self.settings.animateNumberOver ) {
-        //       $(this).stop().animate(self.settings.animateNumberOver, 300);
-        //     }
-        //   }
-        // }, function(){
-        //   if ($(this).attr('class') != 'image_number image_number_select') {
-        //     if ( self.settings.animateNumberOut ) {
-        //       $(this).stop().animate(self.settings.animateNumberOut, 500);
-        //     }
-        //   }
-        // });
-        
         this.skitter_box.find('.image_number').click(function(){
           if ($(this).attr('class') != 'image_number image_number_select') {
             var imageNumber = parseInt($(this).attr('rel'));
@@ -537,17 +509,6 @@
           }
           return false;
         });
-        
-        if ( self.settings.animateNumberOut ) {
-          // this.skitter_box.find('.image_number').css(self.settings.animateNumberOut);
-        }
-
-        if ( self.settings.animateNumberActive ) {
-          // this.skitter_box.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
-        }
-
-        // this.skitter_box.find('.image_number').css(self.settings.animateNumberOut);
-        // this.skitter_box.find('.image_number:eq(0)').css(self.settings.animateNumberActive);
         
         // Preview with dots
         if (self.settings.preview && self.settings.dots) 
@@ -626,30 +587,25 @@
     loadImages: function () 
     {
       var self = this;
-      
-      var loading = $('<div class="loading">Loading</div>');
-      this.skitter_box.append(loading);
+      var loading = $('<div class="skitter-spinner"><div class="icon-sending"></div></div>');
       var total = this.settings.images_links.length;
-      
       var u = 0;
+      
+      this.skitter_box.append(loading);
+      
       for (var i in this.settings.images_links) {
         var self_il = this.settings.images_links[i];
         var src = self.getImageName(self_il[0]);
-        var loading = $('<span class="image_loading"></span>');
         var img = new Image();
-
-        loading.css({ position:'absolute', top:'-9999em' });
-        self.skitter_box.append(loading);
         
         $(img).load(function () {
           ++u;
           if (u == total) {
-            self.skitter_box.find('.loading').remove();
-            self.skitter_box.find('.image_loading').remove();
+            self.skitter_box.find('.skitter-spinner').remove();
             self.start();
           }
         }).error(function () {
-          self.skitter_box.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
+          self.skitter_box.find('.skitter-spinner, .image_number, .next_button, .prev_button').remove();
           self.skitter_box.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
         }).attr('src', src);
       }
@@ -708,7 +664,7 @@
         }
       } 
       else {
-        self.skitter_box.find('.loading, .image_loading, .image_number, .next_button, .prev_button').remove();
+        self.skitter_box.find('.skitter-spinner, .image_number, .next_button, .prev_button').remove();
       }
       
       if ($.isFunction(self.settings.onLoad)) self.settings.onLoad(self);
@@ -2567,8 +2523,6 @@
     addClassNumber: function () 
     {
       var self = this;
-      // this.skitter_box.find('.image_number_select').animate(self.settings.animateNumberOut, 500).removeClass('image_number_select');
-      // $('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).animate(self.settings.animateNumberActive, 700).addClass('image_number_select');
       this.skitter_box.find('.image_number_select').removeClass('image_number_select');
       $('#image_n_'+(this.settings.image_i+1)+'_'+self.number_skitter).addClass('image_number_select');
     },

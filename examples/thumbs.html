@@ -9,33 +9,22 @@
   <link href="../dist/skitter.css" type="text/css" media="all" rel="stylesheet" />
   
   <!-- Skitter JS -->
-  <script src="js/jquery-2.1.1.min.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="../dist/jquery.skitter.min.js"></script>
+  <script type="text/javascript" language="javascript" src="js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" language="javascript" src="js/jquery.easing.1.3.js"></script>
+  <script type="text/javascript" language="javascript" src="../dist/jquery.skitter.min.js"></script>
   
   <!-- Init Skitter -->
   <script type="text/javascript" language="javascript">
     $(document).ready(function() {
       $('.skitter-large').skitter({
-        responsive: {
-          small: {
-            animation: 'fade',
-            max_width: 768,
-            suffix: '-small'
-          },
-          medium: {
-            animation: 'directionRight',
-            max_width: 1024,
-            suffix: '-medium'
-          }
-        }
+        thumbs: true,
+        dots: false
       });
     });
   </script>
   
   <!-- Custom -->
   <link href="css/styles.css" type="text/css" media="all" rel="stylesheet" />
-  <script src="js/app.js"></script>
 </head>
 <body>
   <div id="page">
@@ -45,7 +34,7 @@
     </h1>
     <div id="content">
       <div class="skitter-large-box">
-        <div class="skitter skitter-large with-dots">
+        <div class="skitter skitter-large with-thumbs">
           <ul>
             <li><a href="#cube"><img src="images/example/001.jpg" class="cubeHide" /></a><div class="label_text"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="#see-more" class="btn btn-small btn-yellow">See more</a></p></div></li>
             <li><a href="#cubeRandom"><img src="images/example/002.jpg" class="cubeSize" /></a><div class="label_text"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore officiis voluptatum reprehenderit vitae amet beatae dolorem labore dignissimos nesciunt. Harum, blanditiis suscipit beatae unde id non, necessitatibus praesentium nisi quidem. <a href="#" class="btn btn-small btn-yellow">See more</a></p></div></li>
@@ -55,15 +44,6 @@
         </div>
       </div>
     </div>
-    <nav class="skitter-themes" id="change-theme">
-      <ul>
-        <li><a href="#" data-theme="" class="current">Default</a></li>
-        <li><a href="#" data-theme="square">Square</a></li>
-        <li><a href="#" data-theme="clean">Clean</a></li>
-        <li><a href="#" data-theme="minimalist">Minimalist</a></li>
-        <li><a href="#" data-theme="round">Round</a></li>
-      </ul>
-    </nav>
     <p class="see-documentation-p"><a href="http://www.skitter-slider.net/documentation" class="btn btn-green">See documentation</a></p>
   </div>
 </body>

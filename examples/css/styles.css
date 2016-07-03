@@ -29,10 +29,10 @@ body {
 }
 #page h1 small {
   font-weight: normal;
-  font-size: 20px;
+  font-size: 18px;
   display: block;
   color: #999;
-  letter-spacing: -1px;
+  letter-spacing: 0;
 }
 .see-documentation-p {
   text-align: right;

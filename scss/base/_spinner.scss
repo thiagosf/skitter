@@ -1,0 +1,28 @@
+.skitter-spinner {
+  padding: 10px 12px;
+  border-radius: 100%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .icon-sending {
+    display: inline-block;
+    animation: rotateMe 500ms linear infinite;
+    border-radius: 100%;
+    border: 2px solid white;
+    border-bottom-color: transparent;
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+  }
+}
+
+@keyframes rotateMe {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
