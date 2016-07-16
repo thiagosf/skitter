@@ -43,7 +43,7 @@
     numbers: false,
 
     // Navigation display
-    navigation: true,
+    navigation: false,
 
     // Label display
     label: true,
