@@ -1,10 +1,9 @@
-/* =Clean theme
--------------------------------------------------------------- */
+// Clean theme
 
 .skitter-clean {
   .prev_button, .next_button, .play_pause_button, .focus_button {
     display: block;
-    background: url('images/sprite-clean.png') no-repeat;
+    background: url('../images/skitter/sprite-clean.png') no-repeat;
     background-size: 47px auto;
   }
   .prev_button {

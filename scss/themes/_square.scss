@@ -1,10 +1,9 @@
-/* =Square theme
--------------------------------------------------------------- */
+// Square theme
 
 .skitter-square {
   .play_pause_button, .next_button, .focus_button, .prev_button {
     display: block;
-    background: url('images/sprite-square.png') no-repeat;
+    background: url('../images/skitter/sprite-square.png') no-repeat;
     background-size: 110px auto;
   }
   .play_pause_button {

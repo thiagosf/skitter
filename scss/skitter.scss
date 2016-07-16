@@ -173,10 +173,6 @@
     }
   }
 }
-
-/* =Loading
--------------------------------------------------------------- */
-
 .loading {
   position: absolute;
   top: 50%;
@@ -186,14 +182,9 @@
   color: #fff;
   text-indent: -9999em;
   overflow: hidden;
-  background: url(images/ajax-loader.gif) no-repeat left top;
   width: 32px;
   height: 32px;
 }
-
-/* =Label
--------------------------------------------------------------- */
-
 .label_skitter {
   z-index: 150;
   position: absolute;
@@ -264,10 +255,6 @@
     }
   }
 }
-
-/* =Focus
--------------------------------------------------------------- */
-
 #overlay_skitter {
   position: absolute;
   top: 0;
@@ -277,7 +264,6 @@
   opacity: 1;
   background-color: #000;
 }
-
 .skitter {
   .focus_button {
     position: absolute;

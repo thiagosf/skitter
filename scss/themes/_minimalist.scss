@@ -1,10 +1,9 @@
-/* =Minimalist theme
--------------------------------------------------------------- */
+// Minimalist theme
 
 .skitter-minimalist {
   .prev_button, .next_button, .play_pause_button, .focus_button {
     display: block;
-    background: url('images/sprite-minimalist.png') no-repeat;
+    background: url('../images/skitter/sprite-minimalist.png') no-repeat;
     background-size: 24px auto;
   }
   .prev_button {

@@ -4,9 +4,13 @@ With 38 different animations, two types of navigation and many options to custom
 
 License: Dual licensed under the MIT or GPL Version 2 
 
-## Bower support 
+## Bower 
 
-`bower install skitter-slideshow --save`
+`bower install skitter --save`
+
+## Manually
+
+Download zip [https://github.com/thiagosf/SkitterSlideshow/archive/master.zip](https://github.com/thiagosf/SkitterSlideshow/archive/master.zip) and move files in `dist` directory for you application. Attention: you need to download the dependencies manually.
 
 ## How to install
 

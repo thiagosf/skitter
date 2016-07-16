@@ -1,10 +1,9 @@
-/* =Default theme
--------------------------------------------------------------- */
+// Default theme
 
 .skitter {
   .focus_button, .next_button, .prev_button, .play_pause_button {
     display: block;
-    background: url('images/sprite-default.png') no-repeat;
+    background: url('../images/skitter/sprite-default.png') no-repeat;
     background-size: 84px auto;
   }
   .next_button {
