@@ -54,6 +54,9 @@ $(document).ready(function() {
 
 ## Todo
 
+- [ ] Update WP-Plugin
+- [ ] Update CakePHP Plugin
+- [x] Refactor variable names applying a pattern.
 - [ ] Separate into small pieces the source code.
 - [ ] Create unit tests
 - [ ] Exchange images for background divs (for animations)

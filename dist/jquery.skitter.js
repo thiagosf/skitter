@@ -97,7 +97,7 @@
     thumbs: false,
 
     // Hide numbers and navigation
-    hideTools: false,
+    hide_tools: false,
 
     // Fullscreen mode
     fullscreen: false,
@@ -108,13 +108,13 @@
     // Navigation with dots
     dots: true,
 
-    // Final opacity of elements in hideTools
+    // Final opacity of elements in hide_tools
     opacity_elements: 0.75,
 
-    // Interval animation hover elements hideTools 
+    // Interval animation hover elements hide_tools 
     interval_in_elements: 200, 
 
-    // Interval animation out elements hideTools
+    // Interval animation out elements hide_tools
     interval_out_elements: 300, 
 
     // Onload Callback
@@ -157,7 +157,7 @@
     is_paused_time: false,
 
     // Time start (internal)
-    timeStart: 0,
+    time_start: 0,
 
     // Elapsed time (internal)
     elapsedTime: 0,
@@ -183,7 +183,7 @@
     auto_play: true, 
 
     // Label animation type
-    labelAnimation: 'slideUp', 
+    label_animation: 'slideUp', 
 
     // Theme
     theme: null, 
@@ -602,8 +602,8 @@
         self.addProgressBar();
       }
 
-      // hideTools
-      if (self.settings.hideTools) {
+      // hide_tools
+      if (self.settings.hide_tools) {
         self.hideTools();
       }
 
@@ -2624,7 +2624,7 @@
 
       if ( this.settings.label_atual != undefined && this.settings.label_atual != '' && self.settings.label ) {
 
-        switch ( self.settings.labelAnimation ) {
+        switch ( self.settings.label_animation ) {
 
           case 'slideUp' : default : 
             self.skitter_box.find('.label_skitter').slideDown(400);
@@ -2646,7 +2646,7 @@
     {
       var self = this;
 
-      switch ( self.settings.labelAnimation ) {
+      switch ( self.settings.label_animation ) {
 
         case 'slideUp' : default : 
           this.skitter_box.find('.label_skitter').slideUp(200, function() {
@@ -2655,7 +2655,7 @@
           break;
 
         case 'left' : case 'right' : 
-          var _left = ( self.settings.labelAnimation == 'left' ) ? -(self.skitter_box.find('.label_skitter').width()) : (self.skitter_box.find('.label_skitter').width());
+          var _left = ( self.settings.label_animation == 'left' ) ? -(self.skitter_box.find('.label_skitter').width()) : (self.skitter_box.find('.label_skitter').width());
           self.skitter_box.find('.label_skitter').animate({ left: _left }, 400, 'easeInOutQuad', function() {
             self.setValueBoxText();
           });
@@ -2723,7 +2723,7 @@
       var interval_out_elements = self.settings.interval_out_elements;
 
       if ( type == 'hover' ) {
-        if (self.settings.hideTools) {
+        if (self.settings.hide_tools) {
           if (self.settings.numbers) {
             self.skitter_box
               .find('.info_slide')
@@ -2757,14 +2757,14 @@
           }
         }
 
-        if (self.settings.focus && !self.settings.foucs_active && !self.settings.hideTools) {
+        if (self.settings.focus && !self.settings.foucs_active && !self.settings.hide_tools) {
           self.skitter_box
             .find('.focus_button')
             .stop()
             .animate({opacity:1}, interval_in_elements);
         }
         
-        if (self.settings.controls && !self.settings.hideTools) {
+        if (self.settings.controls && !self.settings.hide_tools) {
           self.skitter_box
             .find('.play_pause_button')
             .stop()
@@ -2772,7 +2772,7 @@
         }
       }
       else {
-        if (self.settings.hideTools) {
+        if (self.settings.hide_tools) {
           if (self.settings.numbers) {
             self.skitter_box
               .find('.info_slide')
@@ -2808,14 +2808,14 @@
           }
         }
         
-        if (self.settings.focus && !self.settings.foucs_active && !self.settings.hideTools) {
+        if (self.settings.focus && !self.settings.foucs_active && !self.settings.hide_tools) {
           self.skitter_box
             .find('.focus_button')
             .stop()
             .animate({opacity:0.3}, interval_out_elements);
         }
         
-        if (self.settings.controls && !self.settings.hideTools) {
+        if (self.settings.controls && !self.settings.hide_tools) {
           self.skitter_box
             .find('.play_pause_button')
             .stop()
@@ -2902,7 +2902,7 @@
         self.settings.foucs_active = false;
         $(this).addClass('finish_overlay_skitter');
         
-        if (!self.settings.hideTools) self.skitter_box.find('.focus_button').animate({opacity:0.3}, 200);
+        if (!self.settings.hide_tools) self.skitter_box.find('.focus_button').animate({opacity:0.3}, 200);
         
         self.skitter_box
           .stop()
@@ -3062,7 +3062,7 @@
       
       var date = new Date();
       self.settings.elapsedTime = 0;
-      self.settings.timeStart = date.getTime();
+      self.settings.time_start = date.getTime();
       
       // Start progress bar
       self.startProgressBar();
@@ -3078,7 +3078,7 @@
       self.settings.is_paused_time = true;
       
       var date = new Date();
-      self.settings.elapsedTime += date.getTime() - self.settings.timeStart;
+      self.settings.elapsedTime += date.getTime() - self.settings.time_start;
       
       // Pause progress bar
       self.pauseProgressBar();
@@ -3093,7 +3093,7 @@
       self.settings.is_paused_time = false;
       
       var date = new Date();
-      self.settings.timeStart = date.getTime();
+      self.settings.time_start = date.getTime();
       
       // Resume progress bar
       self.resumeProgressBar();
