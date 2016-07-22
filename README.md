@@ -10,7 +10,7 @@ License: Dual licensed under the MIT or GPL Version 2
 
 ## Manually
 
-Download zip [https://github.com/thiagosf/SkitterSlideshow/archive/master.zip](https://github.com/thiagosf/SkitterSlideshow/archive/master.zip) and move files in `dist` directory for you application. Attention: you need to download the dependencies manually.
+Download zip [https://github.com/thiagosf/skitter/archive/master.zip](https://github.com/thiagosf/skitter/archive/master.zip) and move files in `dist` directory for you application. Attention: you need to download the dependencies manually.
 
 ## How to install
 
