@@ -1,5 +1,5 @@
 {
-  "name": "SkitterSlideshow",
+  "name": "skitter",
   "version": "5.0.0",
   "description": "Slideshow for anytime",
   "main": "src/jquery.skitter.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thiagosf/SkitterSlideshow.git"
+    "url": "https://github.com/thiagosf/skitter.git"
   },
   "keywords": [
     "slider",
@@ -20,7 +20,7 @@
   "author": "Thiago Silva Ferreira <thiago@thiagosf.net>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thiagosf/SkitterSlideshow/issues"
+    "url": "https://github.com/thiagosf/skitter/issues"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.9.0",
