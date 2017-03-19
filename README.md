@@ -1,6 +1,6 @@
 # Skitter - Slideshow for anytime!
 
-With 38 different animations, two types of navigation and many options to customize!
+Skitter has 38 different animations, two types of navigations and many options to customize!
 
 License: Dual licensed under the MIT or GPL Version 2 
 
