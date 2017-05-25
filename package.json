@@ -6,6 +6,9 @@
   "directories": {
     "example": "examples"
   },
+  "scripts": {
+    "build": "gulp dist"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/thiagosf/skitter.git"

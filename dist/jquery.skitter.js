@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 5.0.0
+ * @version 5.0.1
  * @created August 04, 2010
- * @updated June 25, 2016
+ * @updated May 24, 2017
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -450,7 +450,6 @@
         self.skitter_box.find('.scroll_thumbs').css({'left':10});
         
         if (width_info_slide < self.settings.width_skitter) {
-          self.skitter_box.find('.info_slide').width('auto');
           self.skitter_box.find('.box_scroll_thumbs').hide();
           
           var class_info = '.info_slide';
