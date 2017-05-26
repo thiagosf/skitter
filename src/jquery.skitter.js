@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 5.0.1
+ * @version 5.0.2
  * @created August 04, 2010
- * @updated May 24, 2017
+ * @updated May 26, 2017
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -2862,8 +2862,8 @@
         if (code == 27) $('#overlay_skitter').trigger('click');
       });
 
-      var _top = $('.skitter_box').offset().top;
-      var _left = $('.skitter_box').offset().left;
+      var _top = self.skitter_box.offset().top;
+      var _left = self.skitter_box.offset().left;
       
       self.skitter_box.find('.focus_button').click(function() {
         if ( self.settings.foucs_active ) return false;
@@ -2876,8 +2876,8 @@
           .hide()
           .fadeTo(self.settings.interval_in_elements, 0.98);
           
-        var _topFinal = (($(window).height() - $('.skitter_box').height()) / 2) + $(document).scrollTop();
-        var _leftFinal = ($(window).width() - $('.skitter_box').width()) / 2;
+        var _topFinal = (($(window).height() - self.skitter_box.height()) / 2) + $(document).scrollTop();
+        var _leftFinal = ($(window).width() - self.skitter_box.width()) / 2;
         
         self.skitter_box.before('<div id="mark_position"></div>');
         $('body').prepend(div);
@@ -2887,8 +2887,8 @@
           .animate({'top':_topFinal, 'left':_leftFinal}, 2000, 'easeOutExpo');
         
         $('#mark_position') 
-          .width($('.skitter_box').width())
-          .height($('.skitter_box').height())
+          .width(self.skitter_box.width())
+          .height(self.skitter_box.height())
           .css({'background':'none'})
           .fadeTo(300,0.3);
         
