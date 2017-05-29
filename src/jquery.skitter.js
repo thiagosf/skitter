@@ -634,13 +634,13 @@
         var src = self.getImageName(self_il[0]);
         var img = new Image();
         
-        $(img).load(function () {
+        $(img).load('load', function () {
           ++u;
           if (u == total) {
             self.skitter_box.find('.skitter-spinner').remove();
             self.start();
           }
-        }).error(function () {
+        }).on('error', function () {
           self.skitter_box.find('.skitter-spinner, .image_number, .next_button, .prev_button').remove();
           self.skitter_box.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
         }).attr('src', src);
