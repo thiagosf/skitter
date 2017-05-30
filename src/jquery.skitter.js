@@ -634,7 +634,7 @@
         var src = self.getImageName(self_il[0]);
         var img = new Image();
         
-        $(img).load('load', function () {
+        $(img).on('load', function () {
           ++u;
           if (u == total) {
             self.skitter_box.find('.skitter-spinner').remove();
