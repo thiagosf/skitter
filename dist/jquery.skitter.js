@@ -3,7 +3,7 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 5.0.2
+ * @version 5.0.3
  * @created August 04, 2010
  * @updated May 26, 2017
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
@@ -634,13 +634,13 @@
         var src = self.getImageName(self_il[0]);
         var img = new Image();
         
-        $(img).load(function () {
+        $(img).on('load', function () {
           ++u;
           if (u == total) {
             self.skitter_box.find('.skitter-spinner').remove();
             self.start();
           }
-        }).error(function () {
+        }).on('error', function () {
           self.skitter_box.find('.skitter-spinner, .image_number, .next_button, .prev_button').remove();
           self.skitter_box.html('<p style="color:white;background:black;">Error loading images. One or more images were not found.</p>');
         }).attr('src', src);
