@@ -4,6 +4,10 @@ Skitter has 38 different animations, two types of navigations and many options t
 
 License: Dual licensed under the MIT or GPL Version 2 
 
+## NPM
+
+`npm install skitter-slider`
+
 ## Bower 
 
 `bower install skitter --save`
