@@ -3,14 +3,24 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 5.0.3
+ * @version 5.1.3
  * @created August 04, 2010
  * @updated May 26, 2017
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
  */
-;(function($) {
+;(function (factory) {
+  if (typeof define === "function" && define.amd) {
+    define(['jquery'], function ($) {
+      return factory($);
+    });
+  } else if (typeof module === "object" && typeof module.exports === "object") {
+    exports = factory(require('jquery'));
+  } else {
+    factory(jQuery);
+  }
+})(function($) {
   var number_skitter = 0;
   var skitters = [];
 
@@ -3411,4 +3421,4 @@
     return this;
   };
 
-})(jQuery);
+});

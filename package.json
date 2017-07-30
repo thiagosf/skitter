@@ -1,8 +1,8 @@
 {
   "name": "skitter",
-  "version": "5.0.3",
+  "version": "5.1.3",
   "description": "Slideshow for anytime",
-  "main": "src/jquery.skitter.js",
+  "main": "dist/jquery.skitter.js",
   "directories": {
     "example": "examples"
   },
@@ -20,7 +20,7 @@
     "animation",
     "responsive"
   ],
-  "author": "Thiago Silva Ferreira <thiago@thiagosf.net>",
+  "author": "Thiago Silva Ferreira <thiago@thiagosf.net> (http://thiagosf.net)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/thiagosf/skitter/issues"

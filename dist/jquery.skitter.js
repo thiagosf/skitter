@@ -10,7 +10,17 @@
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
  */
-;(function($) {
+;(function (factory) {
+  if (typeof define === "function" && define.amd) {
+    define(['jquery'], function ($) {
+      return factory($);
+    });
+  } else if (typeof module === "object" && typeof module.exports === "object") {
+    exports = factory(require('jquery'));
+  } else {
+    factory(jQuery);
+  }
+})(function($) {
   var number_skitter = 0;
   var skitters = [];
 
@@ -3411,4 +3421,4 @@
     return this;
   };
 
-})(jQuery);
+});
