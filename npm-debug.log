@@ -1,0 +1,123 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/6.8.1/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.10.8
+3 info using node@v6.8.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/thiago/Sites/skitter-git',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/thiago/.npm/skitter/5.1.3/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/thiago/.npm correctMkdir not in flight; initializing
+10 info lifecycle skitter@5.1.3~prepublish: skitter@5.1.3
+11 silly lifecycle skitter@5.1.3~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/thiago/.npm/skitter/5.1.3/package.tgz',
+12 verbose tar pack   '/Users/thiago/Sites/skitter-git' ]
+13 verbose tarball /Users/thiago/.npm/skitter/5.1.3/package.tgz
+14 verbose folder /Users/thiago/Sites/skitter-git
+15 verbose addLocalTarball adding from inside cache /Users/thiago/.npm/skitter/5.1.3/package.tgz
+16 verbose correctMkdir /Users/thiago/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd skitter@5.1.3
+18 verbose afterAdd /Users/thiago/.npm/skitter/5.1.3/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/thiago/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/thiago/.npm/skitter/5.1.3/package/package.json written
+21 silly publish { name: 'skitter',
+21 silly publish   version: '5.1.3',
+21 silly publish   description: 'Slideshow for anytime',
+21 silly publish   main: 'dist/jquery.skitter.js',
+21 silly publish   directories: { example: 'examples' },
+21 silly publish   scripts: { build: 'gulp dist' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/thiagosf/skitter.git' },
+21 silly publish   keywords: [ 'slider', 'slideshow', 'transition', 'animation', 'responsive' ],
+21 silly publish   author:
+21 silly publish    { name: 'Thiago Silva Ferreira',
+21 silly publish      email: 'thiago@thiagosf.net',
+21 silly publish      url: 'http://thiagosf.net' },
+21 silly publish   license: 'MIT',
+21 silly publish   bugs: { url: 'https://github.com/thiagosf/skitter/issues' },
+21 silly publish   devDependencies:
+21 silly publish    { 'babel-preset-es2015': '^6.9.0',
+21 silly publish      'babel-preset-stage-0': '^6.5.0',
+21 silly publish      gulp: '~3.9.1',
+21 silly publish      'gulp-autoprefixer': '^3.1.0',
+21 silly publish      'gulp-babel': '^6.1.2',
+21 silly publish      'gulp-concat': '^2.6.0',
+21 silly publish      'gulp-minify': '0.0.12',
+21 silly publish      'gulp-sass': '~2.3.2',
+21 silly publish      'gulp-webserver': '~0.9.1' },
+21 silly publish   readme: '# Skitter - Slideshow for anytime!\n\nSkitter has 38 different animations, two types of navigations and many options to customize!\n\nLicense: Dual licensed under the MIT or GPL Version 2 \n\n## Bower \n\n`bower install skitter --save`\n\n## Manually\n\nDownload zip [https://github.com/thiagosf/skitter/archive/master.zip](https://github.com/thiagosf/skitter/archive/master.zip) and move files in `dist` directory for you application. Attention: you need to download the dependencies manually.\n\n## How to install\n\n### Add the CSS and JS files inside <head>\n\n```html\n<link type="text/css" href="dist/skitter.css" media="all" rel="stylesheet" />\n<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>\n<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>\n<script type="text/javascript" src="dist/jquery.skitter.min.js"></script>\n```\n\n### Init the Skitter\n\n```javascript\n$(document).ready(function() {\n  $(".skitter-large").skitter();\n});\n```\n\n### Add the images through the unordered list\n\n```html\n<div class="skitter skitter-large">\n  <ul>\n    <li>\n      <a href="#cut"><img src="images/001.jpg" class="cut" /></a>\n      <div class="label_text"><p>cut</p></div>\n    </li>\n    <li>\n      <a href="#swapBlocks"><img src="images/002.jpg" class="swapBlocks" /></a>\n      <div class="label_text"><p>swapBlocks</p></div>\n    </li>\n    <li>\n      <a href="#swapBarsBack"><img src="images/003.jpg" class="swapBarsBack" /></a>\n      <div class="label_text"><p>swapBarsBack</p></div>\n    </li>\n  </ul>\n</div>\n```\n\n## Todo\n\n- [ ] Update WP-Plugin\n- [ ] Update CakePHP Plugin\n- [x] Refactor variable names applying a pattern.\n- [ ] Separate into small pieces the source code.\n- [ ] Create unit tests\n- [ ] Exchange images for background divs (for animations)\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '63d81874855a0078f3b12033ebbcf9e28baa8e67',
+21 silly publish   homepage: 'https://github.com/thiagosf/skitter#readme',
+21 silly publish   _id: 'skitter@5.1.3',
+21 silly publish   _shasum: '9076429aff5331ae2af73561b5367c92f9a75011',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name skitter
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'skitter',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'skitter',
+26 silly mapToRegistry   name: 'skitter',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/skitter
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/thiago/.npm/skitter/5.1.3/package.tgz
+30 verbose request uri https://registry.npmjs.org/skitter
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 10:29:16 PM
+33 verbose request using bearer token for auth
+34 verbose request id 0d4e5ea3325753a2
+35 http request PUT https://registry.npmjs.org/skitter
+36 http 403 https://registry.npmjs.org/skitter
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '101',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Sun, 30 Jul 2017 01:29:24 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-gru7120-GRU',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1501378157.440807,VS0,VE6907',
+37 verbose headers   vary: 'Accept-Encoding, Accept' }
+38 verbose request invalidating /Users/thiago/.npm/registry.npmjs.org/skitter on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: you do not have permission to publish "skitter". Are you logged in as the correct user? : skitter
+40 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+40 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+40 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:187:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1044:10)
+40 verbose stack     at emitOne (events.js:96:13)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:965:12)
+41 verbose statusCode 403
+42 verbose pkgid skitter
+43 verbose cwd /Users/thiago/Sites/skitter-git
+44 error Darwin 16.7.0
+45 error argv "/usr/local/Cellar/node/6.8.1/bin/node" "/usr/local/bin/npm" "publish"
+46 error node v6.8.1
+47 error npm  v3.10.8
+48 error code E403
+49 error you do not have permission to publish "skitter". Are you logged in as the correct user? : skitter
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
