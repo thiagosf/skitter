@@ -1,6 +1,6 @@
 {
   "name": "skitter-slider",
-  "version": "5.1.3",
+  "version": "5.1.4",
   "description": "Slideshow for anytime",
   "main": "dist/jquery.skitter.js",
   "directories": {

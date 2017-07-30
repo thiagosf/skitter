@@ -3,7 +3,7 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 5.1.3
+ * @version 5.1.4
  * @created August 04, 2010
  * @updated May 26, 2017
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
