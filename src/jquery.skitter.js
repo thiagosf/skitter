@@ -407,9 +407,9 @@
       if (self.settings.thumbs && !self.settings.fullscreen) 
       {
         self.skitter_box.find('.info_slide').addClass('info_slide_thumb');
-        var width_info_slide = (u + 1) * self.skitter_box.find('.info_slide_thumb .image_number').width();
+        var width_info_slide = (u + 1) * self.skitter_box.find('.info_slide_thumb .image_number').outerWidth();
         self.skitter_box.find('.info_slide_thumb').width(width_info_slide);
-        self.skitter_box.css({height:self.skitter_box.height() + self.skitter_box.find('.info_slide').height()});
+        self.skitter_box.css({height:self.skitter_box.height() + self.skitter_box.find('.info_slide').outerHeight()});
         
         self.skitter_box.append('<div class="container_thumbs"></div>');
         var copy_info_slide = self.skitter_box.find('.info_slide').clone();
@@ -432,7 +432,7 @@
         });
         
         info_slide_thumb.width(width_image+'px');
-        w_info_slide_thumb = info_slide_thumb.width();
+        w_info_slide_thumb = info_slide_thumb.outerWidth();
         width_value = this.settings.width_skitter;
         
         width_value = width_skitter - 100;
@@ -465,7 +465,7 @@
           var class_info = '.info_slide';
           switch (self.settings.numbers_align) {
             case 'center' : 
-              var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).width()) / 2;
+              var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).outerWidth()) / 2;
               self.skitter_box.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
               break;
               
@@ -491,7 +491,7 @@
         
         switch (self.settings.numbers_align) {
           case 'center' : 
-            var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).width()) / 2;
+            var _vleft = (self.settings.width_skitter - self.skitter_box.find(class_info).outerWidth()) / 2;
             self.skitter_box.find(class_info).css({'left': '50%', 'transform': 'translateX(-50%)'});
             break;
             
@@ -505,7 +505,7 @@
         }
         
         if (!self.settings.dots) {
-          if (self.skitter_box.find('.info_slide').height() > 20) {
+          if (self.skitter_box.find('.info_slide').outerHeight() > 20) {
             self.skitter_box.find('.info_slide').hide();
           }
         }
@@ -2664,7 +2664,7 @@
           break;
 
         case 'left' : case 'right' : 
-          var _left = ( self.settings.label_animation == 'left' ) ? -(self.skitter_box.find('.label_skitter').width()) : (self.skitter_box.find('.label_skitter').width());
+          var _left = ( self.settings.label_animation == 'left' ) ? -(self.skitter_box.find('.label_skitter').outerWidth()) : (self.skitter_box.find('.label_skitter').outerWidth());
           self.skitter_box.find('.label_skitter').animate({ left: _left }, 400, 'easeInOutQuad', function() {
             self.setValueBoxText();
           });
