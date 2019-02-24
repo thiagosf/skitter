@@ -3,9 +3,9 @@
  * @name jquery.skitter.js
  * @description Slideshow
  * @author Thiago Silva Ferreira - http://thiagosf.net
- * @version 5.1.5
+ * @version 5.1.6
  * @created August 04, 2010
- * @updated Jul 30, 2018
+ * @updated Feb 23, 2019
  * @copyright (c) 2010 Thiago Silva Ferreira - http://thiagosf.net
  * @license Dual licensed under the MIT or GPL Version 2 licenses
  * @example http://thiagosf.net/projects/jquery/skitter/
@@ -1982,6 +1982,11 @@
       var radius    = Math.sqrt(Math.pow((this.settings.width_skitter), 2) + Math.pow((this.settings.height_skitter), 2));
       var radius    = Math.ceil(radius);
       
+      var callbackFn = function () {
+        self.skitter_box.find('.box_clone').remove();
+        self.finishAnimation();
+      }
+      
       for (i = 0; i < total; i++) {
         var _ileft = (self.settings.width_skitter / 2) - (size_box / 2);
         var _itop = (self.settings.height_skitter / 2) - (size_box / 2);
@@ -2009,7 +2014,7 @@
         this.addBoxClone(box_clone);
         
         var delay_time = 70 * i;
-        var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+        var callback = (i == (total - 1)) ? callbackFn : '';
         box_clone.delay(delay_time).animate({top: _ftop, left: _fleft, opacity: 'show'}, time_animate, easing, callback);
         
       }
@@ -2237,6 +2242,11 @@
       var width_box = Math.ceil(this.settings.width_skitter / division_w);
       var height_box = this.settings.height_skitter;
 
+      var callbackFn = function () {
+        self.skitter_box.find('.box_clone').remove();
+        self.finishAnimation();
+      }
+
       for (i = 0; i < total; i++) {
         var _vtop = 0;
         var _vleft = width_box * i;
@@ -2259,7 +2269,7 @@
         box_clone_main.show();
 
         var delay_time = 50 * i;
-        var callback = (i == (total - 1)) ? function() { self.finishAnimation(); } : '';
+        var callback = (i == (total - 1)) ? callbackFn : '';
         
         box_clone.delay(delay_time).animate({left:_fleft}, time_animate, easing, callback);
       }
