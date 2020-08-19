@@ -223,16 +223,7 @@
     //       suffix: '-medium'
     //     }
     //   }
-    responsive: {
-      small: {
-        animation: 'fade',
-        max_width: 768
-      },
-      medium: {
-        max_width: 1024
-      }
-    }
-  };
+
   
   $.skitter = function(obj, options, number) {
     this.skitter_box = $(obj);
